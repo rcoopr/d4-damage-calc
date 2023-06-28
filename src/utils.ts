@@ -32,7 +32,7 @@ export function createShareLink() {
     }
   }
 
-  window.history.replaceState(null, '', url);
+  // window.history.replaceState(null, '', url);
   copy(url.toString());
 }
 
