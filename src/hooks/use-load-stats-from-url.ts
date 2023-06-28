@@ -1,9 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect } from 'react';
 import { getSearchParams } from '../utils';
-import { Stats, sources, stats, useStats } from '../store';
+import { getDefaultStore } from 'jotai';
+import { sources } from '../store/item-selection';
+import { stats, Stats, statsAtoms } from '../store/stats';
 
 export function useLoadStatsFromUrl() {
   useEffect(() => {
+    const defaultStore = getDefaultStore();
     const searchParams = getSearchParams();
 
     for (const source of sources) {
@@ -14,8 +18,9 @@ export function useLoadStatsFromUrl() {
           stats.map((stat, index) => [stat.id, stat.validator(paramStats[index])])
         ) as Stats;
 
-        const setStats = useStats[source].getState().setAll;
-        setStats(parsedStats);
+        // const setStats = statsAtoms[source].
+        // const setStats = useStats[source].getState().setAll;
+        defaultStore.set(statsAtoms[source], parsedStats);
       }
     }
 

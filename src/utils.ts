@@ -1,5 +1,7 @@
-import { StatSource, useStats, isDefaultStats, stats, sources } from './store';
 import copy from 'copy-text-to-clipboard';
+import { getDefaultStore } from 'jotai';
+import { StatSource, sources } from './store/item-selection';
+import { statsAtoms, isDefaultStats, stats } from './store/stats';
 
 export const dpsFormatter = new Intl.NumberFormat('en-GB', {
   style: 'decimal',
@@ -16,7 +18,9 @@ export function capitalize<T extends string>(string: T) {
 }
 
 export function stringifyStats(source: StatSource) {
-  const statValues = useStats[source].getState();
+  const defaultStore = getDefaultStore();
+
+  const statValues = defaultStore.get(statsAtoms.base);
 
   return isDefaultStats(source, statValues)
     ? ''

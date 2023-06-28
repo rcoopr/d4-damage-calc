@@ -1,13 +1,14 @@
 import type { Config } from 'tailwindcss';
 import DaisyUi from 'daisyui';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 const config: Config = {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Space Grotesk"'],
-        mono: ['"Jetbrains Mono"', 'Menlo'],
+        sans: ['"Space Grotesk"', ...defaultTheme.fontFamily.sans],
+        mono: ['"Jetbrains Mono"', 'Menlo', ...defaultTheme.fontFamily.mono],
       },
     },
   },

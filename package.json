@@ -13,10 +13,10 @@
     "@vercel/analytics": "^1.0.1",
     "clsx": "^1.2.1",
     "copy-text-to-clipboard": "^3.1.0",
+    "jotai": "^2.2.1",
     "lodash.isequal": "^4.5.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "zustand": "^4.3.8"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",

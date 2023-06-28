@@ -1,54 +1,68 @@
 import clsx from 'clsx';
-import { useBuckets, useStats, useCombinedBuckets } from '../store';
 import { dpsFormatter } from '../utils';
+import { ChangeEventHandler, useCallback } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import { computedStats } from '../store/dps';
+import { ItemSource, wornItemAtom } from '../store/item-selection';
 
 const MAX_SATURATION = 3;
-const MAX_SATURATION_AT = 5;
+const MAX_SATURATION_AT = 10;
 
-export function DpsComparison({ item }: { item?: 1 | 2 }) {
-  const { damageMultiplier } = useBuckets('base');
-  const weaponDps = useStats.base((state) => state.weaponDps);
+export function DpsComparison({ item }: { item?: ItemSource }) {
+  const [wornItem, setWornItem] = useAtom(wornItemAtom);
 
-  const totalDps = weaponDps * damageMultiplier;
+  const handleClick = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (ev) => {
+      setWornItem(ev.currentTarget.checked && item ? item : null);
+    },
+    [setWornItem, item]
+  );
 
-  const item1WeaponDps = useStats.item1((state) => state.weaponDps);
-  const item2WeaponDps = useStats.item2((state) => state.weaponDps);
+  const baseDps = useAtomValue(computedStats).dps.base;
+  const dpsWithItem1 = useAtomValue(computedStats).dps.item1;
+  const dpsWithItem2 = useAtomValue(computedStats).dps.item2;
 
-  const { damageMultiplier: dmItem1 } = useCombinedBuckets('item1');
-  const { damageMultiplier: dmItem2 } = useCombinedBuckets('item2');
+  const item1Dps = dpsWithItem1 - baseDps;
+  const item2Dps = dpsWithItem2 - baseDps;
 
-  const totalDpsItem1 = (weaponDps + item1WeaponDps) * dmItem1;
-  const totalDpsItem2 = (weaponDps + item2WeaponDps) * dmItem2;
-
-  const item1Dps = totalDpsItem1 - totalDps;
-  const item2Dps = totalDpsItem2 - totalDps;
-
-  if (item)
+  if (item) {
     return (
       <DpsLabel
         size="small"
-        label={`Item ${item}`}
-        dps={item === 1 ? item1Dps : item2Dps}
-        compareWith={item === 1 ? item2Dps : item1Dps}
-        hide={item === 1 ? item1Dps === 0 : item2Dps === 0}
+        label={`Item ${item.charAt(item.length - 1)}`}
+        dps={item === 'item1' ? item1Dps : item2Dps}
+        compareWith={item === 'item1' ? item2Dps : item1Dps}
+        hide={wornItem === item ? false : item === 'item1' ? item1Dps === 0 : item2Dps === 0}
         prefix="+"
-      />
+      >
+        <div className="flex items-center gap-3 h-full">
+          <span className="text-sm text-stone-400">Worn?</span>
+          <input
+            id={`worn-${item}`}
+            checked={wornItem === item}
+            onChange={handleClick}
+            className="checkbox checkbox-sm rounded"
+            type="checkbox"
+          />
+        </div>
+      </DpsLabel>
     );
+  }
 
   return (
     <div className="flex flex-col mb-12">
-      <DpsLabel label="Total DPS:" dps={totalDps} />
+      <DpsLabel label="Base DPS:" dps={baseDps} />
       <DpsLabel
         label="With Item 1:"
-        dps={totalDpsItem1}
-        compareWith={totalDpsItem2}
-        hide={totalDps === totalDpsItem1}
+        dps={dpsWithItem1}
+        compareWith={dpsWithItem2}
+        // hide={totalDps === totalDpsItem1}
       />
       <DpsLabel
         label="With Item 2:"
-        dps={totalDpsItem2}
-        compareWith={totalDpsItem1}
-        hide={totalDps === totalDpsItem2}
+        dps={dpsWithItem2}
+        compareWith={dpsWithItem1}
+        // hide={totalDps === totalDpsItem2}
       />
     </div>
   );
@@ -58,9 +72,10 @@ function DpsLabel({
   label,
   dps,
   compareWith,
-  hide,
+  // hide,
   size = 'base',
   prefix = '',
+  children,
 }: {
   label: string;
   dps: number;
@@ -68,6 +83,7 @@ function DpsLabel({
   hide?: boolean;
   size?: 'small' | 'base';
   prefix?: string;
+  children?: React.ReactNode;
 }) {
   const percentIncrease = compareWith ? Math.max((100 * (dps - compareWith)) / compareWith, 0) : 0;
   const textSaturation = Math.min(
@@ -78,13 +94,14 @@ function DpsLabel({
   return (
     <div
       className={clsx(
-        'font-medium text-stone-400 flex justify-between items-end transition-opacity',
-        hide ? 'opacity-0' : 'opacity-100',
+        'font-medium text-stone-400 flex items-end transition-opacity',
+        // hide ? 'opacity-0' : 'opacity-100',
         size === 'base' ? 'text-xl' : 'text-lg'
       )}
     >
-      <h2>{label}</h2>
-      <div className="flex items-end">
+      <h2 className="pr-24">{label}</h2>
+      {children}
+      <div className="flex items-end ml-auto">
         <span
           className={clsx(
             'transition-opacity mb-[3px] text-base pr-2 text-success underline underline-offset-[3px]',

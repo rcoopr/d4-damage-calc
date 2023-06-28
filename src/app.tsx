@@ -4,12 +4,15 @@ import { ItemComparison } from './stats/item-comparison';
 import { DpsComparison } from './stats/dps-comparison';
 import { useLoadStatsFromUrl } from './hooks/use-load-stats-from-url';
 import { CopyLinkButton } from './copy-link-button';
+import { useAtomValue } from 'jotai';
+import { computedStats } from './store/dps';
 
 export default function App() {
   useLoadStatsFromUrl();
+  const stats = useAtomValue(computedStats);
 
   return (
-    <main className="flex flex-col items-center text-stone-300 bg-stone-900 min-h-screen px-16">
+    <main className="flex flex-col items-center text-stone-300 bg-stone-900 min-h-screen px-16 font-sans">
       <div className="my-12 text-stone-300 flex gap-4 items-center">
         <h1 className="text-3xl font-bold">Diablo 4 Damage Calculator</h1>
         <CopyLinkButton />
@@ -24,7 +27,8 @@ export default function App() {
                 &ensp;
               </h3>
               <StatInput source="base" />
-              <RelativeStatsVisualization name="base" />
+              <pre>{JSON.stringify(stats.statsTotal, null, 2)}</pre>
+              {/* <RelativeStatsVisualization name="base" /> */}
             </div>
           </div>
           <div className="divider lg:divider-horizontal" />
