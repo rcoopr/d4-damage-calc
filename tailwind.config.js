@@ -2,7 +2,12 @@
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['"Space Grotesk"'],
+        mono: ['"Jetbrains Mono"', 'Menlo'],
+      },
+    },
   },
   plugins: [],
 };

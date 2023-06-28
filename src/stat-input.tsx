@@ -1,7 +1,58 @@
 import { useCallback, ChangeEventHandler } from 'react';
-import { StatOwner, Stats, useStats } from './store';
+import { StatSource, Stats, useBuckets, useCombinedBuckets, useStats } from './store';
+import { capitalize, dpsFormatter } from './utils';
+import { clsx } from 'clsx';
 
-export function StatInput({ name }: { name: StatOwner }) {
+export function DpsHeader() {
+  const { damageMultiplier } = useBuckets('base');
+  const weaponDps = useStats.base((state) => state.weaponDps);
+
+  const totalDps = weaponDps * damageMultiplier;
+
+  const item1WeaponDps = useStats.item1((state) => state.weaponDps);
+  const item2WeaponDps = useStats.item2((state) => state.weaponDps);
+
+  const { damageMultiplier: dmItem1 } = useCombinedBuckets('item1');
+  const { damageMultiplier: dmItem2 } = useCombinedBuckets('item2');
+
+  const totalDpsItem1 = (weaponDps + item1WeaponDps) * dmItem1;
+  const totalDpsItem2 = (weaponDps + item2WeaponDps) * dmItem2;
+
+  return (
+    <>
+      <div className="text-xl font-medium flex justify-between items-end">
+        <h2>Total DPS: </h2>
+        <span className="font-mono text-3xl text-orange-500">{dpsFormatter.format(totalDps)}</span>
+      </div>
+      <div className="text-xl font-medium flex justify-between items-end">
+        <h2>With Item 1: </h2>
+        <span
+          className={clsx(
+            'font-mono text-3xl',
+            totalDpsItem1 < totalDps ? 'text-red-400' : 'text-emerald-400',
+            totalDpsItem1 < totalDpsItem2 ? 'font-extralight opacity-80' : 'font-bold'
+          )}
+        >
+          {dpsFormatter.format(totalDpsItem1)}
+        </span>
+      </div>
+      <div className="mb-12 text-xl font-medium flex justify-between items-end">
+        <h2>With Item 2: </h2>
+        <span
+          className={clsx(
+            'font-mono text-3xl',
+            totalDpsItem2 < totalDps ? 'text-red-400' : 'text-emerald-400',
+            totalDpsItem2 < totalDpsItem1 ? 'font-extralight opacity-80' : 'font-bold'
+          )}
+        >
+          {dpsFormatter.format(totalDpsItem2)}
+        </span>
+      </div>
+    </>
+  );
+}
+
+export function StatInput({ name }: { name: StatSource }) {
   return (
     <>
       <Input input={name} stat="weaponDps" label="Weapon DPS" />
@@ -21,11 +72,14 @@ function Input({
   ...inputProps
 }: {
   stat: keyof Stats;
-  input: StatOwner;
+  input: StatSource;
   label: string;
   prefix?: string;
 } & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
-  const [value, setValue] = useStats[input]((state) => [state[stat], state[`set${stat}`]]);
+  const [value, setValue] = useStats[input]((state) => [
+    state[stat],
+    state[`set${capitalize(stat)}`],
+  ]);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (ev) => setValue(Number(ev.currentTarget.value)),
@@ -63,11 +117,14 @@ function Slider({
   ...inputProps
 }: {
   stat: keyof Stats;
-  input: StatOwner;
+  input: StatSource;
   label: string;
   prefix?: string;
 } & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
-  const [value, setValue] = useStats[input]((state) => [state[stat], state[`set${stat}`]]);
+  const [value, setValue] = useStats[input]((state) => [
+    state[stat],
+    state[`set${capitalize(stat)}`],
+  ]);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (ev) => setValue(Number(ev.currentTarget.value)),
