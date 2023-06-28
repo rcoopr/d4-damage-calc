@@ -1,8 +1,13 @@
 import { atom } from 'jotai';
-import { wornItemAtom } from './item-selection';
+import { StatSource, wornItemAtom } from './item-selection';
 import { statsAtoms, Stats } from './stats';
 
-export const computedStats = atom((get) => {
+type ComputedStats = {
+  statsTotal: Record<StatSource, Stats>;
+  dps: Record<StatSource, number>;
+};
+
+export const computedStatsAtom = atom<ComputedStats>((get) => {
   const baseStats = get(statsAtoms.base);
   const item1Stats = get(statsAtoms.item1);
   const item2Stats = get(statsAtoms.item2);
@@ -11,8 +16,8 @@ export const computedStats = atom((get) => {
   const wornStats = wornItem ? get(statsAtoms[wornItem]) : undefined;
 
   const statsWithoutItems = adjustStats(baseStats, wornStats, wornItem ? -1 : 0);
-  const statsWithItem1 = adjustStats(statsWithoutItems, item1Stats, wornItem === 'item1' ? 0 : 1);
-  const statsWithItem2 = adjustStats(statsWithoutItems, item2Stats, wornItem === 'item2' ? 0 : 1);
+  const statsWithItem1 = adjustStats(statsWithoutItems, item1Stats);
+  const statsWithItem2 = adjustStats(statsWithoutItems, item2Stats);
 
   return {
     statsTotal: {
@@ -25,7 +30,7 @@ export const computedStats = atom((get) => {
       item1: calculateDps(statsWithItem1),
       item2: calculateDps(statsWithItem2),
     },
-  };
+  } as ComputedStats;
 });
 
 function calculateDps(stats: Stats) {

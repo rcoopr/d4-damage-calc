@@ -9,6 +9,11 @@ export const dpsFormatter = new Intl.NumberFormat('en-GB', {
   maximumFractionDigits: 2,
 });
 
+export const compactFormatter = new Intl.NumberFormat('en-GB', {
+  style: 'decimal',
+  maximumFractionDigits: 2,
+});
+
 function formatForSearchParam(number: number) {
   return number.toFixed(2).replace(/[.,]00$/, '');
 }

@@ -1,22 +1,27 @@
-import { StatSource, useBuckets, useStats } from '../store';
+import { useAtomValue } from 'jotai';
+import { computedStatsAtom } from '../store/dps';
+import { StatSource } from '../store/item-selection';
 
 const calculateRelativeValue = (bucket1: number, bucket2: number) => {
   return (1 + bucket2) / (1 + bucket1);
 };
 
-export function RelativeStatsVisualization({ name }: { name: StatSource }) {
-  const stats = useStats[name]();
+export function RelativeStatsVisualization({ source }: { source: StatSource }) {
+  // const stats = useStats[source]();
+  const computedStats = useAtomValue(computedStatsAtom);
+  const s = computedStats.statsTotal[source];
 
-  const { buckets } = useBuckets(name);
+  const buckets = [
+    s.mainStat / 10,
+    s.additive,
+    s.vulnerable,
+    (s.critDamage * Math.min(s.critChance, 100)) / 100,
+  ];
 
-  // const damageMultiplier = buckets.reduce((product, bucket) => product * (1 + bucket / 100), 1);
+  const weaponILevelRelativePower = 1 / calculateRelativeValue(buckets[0] / 5, 10);
 
-  // const contributions = buckets.map((bucket) => bucket / 100 / damageMultiplier);
-  // const contributionSum = contributions.reduce((a, b) => a + b, 0);
-  // const proportions = contributions.map((value) => value / contributionSum ?? 1);
-  // const proportionsElementWidths = proportions.map((value) => `${(value * 100).toFixed(2)}%`);
+  const relativeValues = buckets.map((bucket) => calculateRelativeValue(s.mainStat / 10, bucket));
 
-  const relativeValues = buckets.map((bucket) => calculateRelativeValue(bucket, stats.mainStat));
   const largestRelativeValue = Math.max(...relativeValues);
   const normalizedRelativeValues = relativeValues.map(
     (value) => value / largestRelativeValue ?? 0.001
@@ -25,13 +30,13 @@ export function RelativeStatsVisualization({ name }: { name: StatSource }) {
     (value) => `${(value * 100).toFixed(2)}%`
   );
 
-  const relativeCritDamage = (relativeValues[3] * 100) / stats.critChance;
-  const relativeCritChance = (relativeValues[3] * 100) / stats.critDamage;
+  const relativeCritDamage = (relativeValues[3] * 100) / s.critChance;
+  const relativeCritChance = (relativeValues[3] * 100) / s.critDamage;
 
   return (
     <>
-      <h4 className="italic text-stone-400 text-xl mt-6">Relative Value</h4>
-      <RelativeValue width={relativeElementWidths[0]} label="1 Mainstat Equals..." />
+      <h4 className="italic text-stone-400 text-xl mt-6">Relative Values</h4>
+      <RelativeValue width={relativeElementWidths[0]} label="10 Mainstat Equals..." />
       <RelativeValue
         width={relativeElementWidths[1]}
         label={`${relativeValues[1].toFixed(2)} Additive`}
@@ -42,7 +47,6 @@ export function RelativeStatsVisualization({ name }: { name: StatSource }) {
       />
       <RelativeValue
         width={relativeElementWidths[3]}
-        // label={`${relativeValues[3].toFixed(2)} Crit Mult`}
         label={() => (
           <span>
             {relativeCritDamage.toFixed(2)}% Crit Dmg <span className="text-xs">OR</span>{' '}
@@ -50,13 +54,7 @@ export function RelativeStatsVisualization({ name }: { name: StatSource }) {
           </span>
         )}
       />
-      {/* <RelativeValue />
-      <RelativeValue label="Damage Contribution" />
-      <RelativeValue width={proportionsElementWidths[0]} />
-      <RelativeValue width={proportionsElementWidths[1]} />
-      <RelativeValue width={proportionsElementWidths[2]} />
-      <RelativeValue width={proportionsElementWidths[3]} />
-      <RelativeValue /> */}
+      <RelativeValue label={`${weaponILevelRelativePower.toFixed(2)} Item Level`} />
     </>
   );
 }
@@ -86,3 +84,18 @@ function RelativeValue({
     </div>
   );
 }
+
+// const damageMultiplier = buckets.reduce((product, bucket) => product * (1 + bucket / 100), 1);
+// const contributions = buckets.map((bucket) => bucket / 100 / damageMultiplier);
+// const contributionSum = contributions.reduce((a, b) => a + b, 0);
+// const proportions = contributions.map((value) => value / contributionSum ?? 1);
+// const proportionsElementWidths = proportions.map((value) => `${(value * 100).toFixed(2)}%`);
+// {
+/* <RelativeValue />
+      <RelativeValue label="Damage Contribution" />
+      <RelativeValue width={proportionsElementWidths[0]} />
+      <RelativeValue width={proportionsElementWidths[1]} />
+      <RelativeValue width={proportionsElementWidths[2]} />
+      <RelativeValue width={proportionsElementWidths[3]} />
+      <RelativeValue /> */
+// }

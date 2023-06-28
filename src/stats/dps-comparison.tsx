@@ -2,11 +2,14 @@ import clsx from 'clsx';
 import { dpsFormatter } from '../utils';
 import { ChangeEventHandler, useCallback } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
-import { computedStats } from '../store/dps';
+import { computedStatsAtom } from '../store/dps';
 import { ItemSource, wornItemAtom } from '../store/item-selection';
 
 const MAX_SATURATION = 3;
 const MAX_SATURATION_AT = 10;
+
+// TODO - refactor labels into header / item-specific labels.
+// add background charts for dps comparison to header
 
 export function DpsComparison({ item }: { item?: ItemSource }) {
   const [wornItem, setWornItem] = useAtom(wornItemAtom);
@@ -18,9 +21,9 @@ export function DpsComparison({ item }: { item?: ItemSource }) {
     [setWornItem, item]
   );
 
-  const baseDps = useAtomValue(computedStats).dps.base;
-  const dpsWithItem1 = useAtomValue(computedStats).dps.item1;
-  const dpsWithItem2 = useAtomValue(computedStats).dps.item2;
+  const baseDps = useAtomValue(computedStatsAtom).dps.base;
+  const dpsWithItem1 = useAtomValue(computedStatsAtom).dps.item1;
+  const dpsWithItem2 = useAtomValue(computedStatsAtom).dps.item2;
 
   const item1Dps = dpsWithItem1 - baseDps;
   const item2Dps = dpsWithItem2 - baseDps;
@@ -56,13 +59,13 @@ export function DpsComparison({ item }: { item?: ItemSource }) {
         label="With Item 1:"
         dps={dpsWithItem1}
         compareWith={dpsWithItem2}
-        // hide={totalDps === totalDpsItem1}
+        hide={dpsWithItem1 === baseDps}
       />
       <DpsLabel
         label="With Item 2:"
         dps={dpsWithItem2}
         compareWith={dpsWithItem1}
-        // hide={totalDps === totalDpsItem2}
+        hide={dpsWithItem2 === baseDps}
       />
     </div>
   );
@@ -72,7 +75,7 @@ function DpsLabel({
   label,
   dps,
   compareWith,
-  // hide,
+  hide,
   size = 'base',
   prefix = '',
   children,
@@ -95,23 +98,24 @@ function DpsLabel({
     <div
       className={clsx(
         'font-medium text-stone-400 flex items-end transition-opacity',
-        // hide ? 'opacity-0' : 'opacity-100',
+        hide ? 'opacity-0' : 'opacity-100',
         size === 'base' ? 'text-xl' : 'text-lg'
       )}
     >
       <h2 className="pr-24">{label}</h2>
       {children}
-      <div className="flex items-end ml-auto">
-        <span
+      <div className="flex items-end ml-auto relative">
+        <div
           className={clsx(
-            'transition-opacity mb-[3px] text-base pr-2 text-success underline underline-offset-[3px]',
+            'transition-opacity text-base pl-2 text-success underline underline-offset-[3px]',
+            'absolute left-full h-full top-1/2 -translate-y-1/2 flex items-center',
             compareWith && dps > compareWith ? 'opacity-100' : 'opacity-0',
             size === 'base' ? 'text-base' : 'text-sm'
           )}
           style={{ filter: `saturate(${textSaturation.toFixed(2)})` }}
         >
           +{percentIncrease.toFixed(2)}%
-        </span>
+        </div>
 
         <span
           className={clsx(
