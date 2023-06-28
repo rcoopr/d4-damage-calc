@@ -82,7 +82,7 @@ export function useBuckets(name: StatSource) {
   const stats = useStats[name]();
 
   const buckets = [
-    stats.mainStat,
+    stats.mainStat / 10,
     stats.additive,
     stats.vulnerable,
     (stats.critDamage * Math.min(stats.critChance, 100)) / 100,
@@ -98,7 +98,7 @@ export function useCombinedBuckets(name: StatSource) {
   const itemStats = useStats[name]();
 
   const buckets = [
-    baseStats.mainStat + itemStats.mainStat,
+    (baseStats.mainStat + itemStats.mainStat) / 10,
     baseStats.additive + itemStats.additive,
     baseStats.vulnerable + itemStats.vulnerable,
     ((baseStats.critDamage + itemStats.critDamage) *
