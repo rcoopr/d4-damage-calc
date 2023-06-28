@@ -44,15 +44,10 @@ const defaultItemStats: Stats = {
 };
 
 export function isDefaultStats(source: StatSource, stats: Stats & SetStats) {
-  const {
-    setAdditive,
-    setCritChance,
-    setCritDamage,
-    setMainStat,
-    setVulnerable,
-    setWeaponDps,
-    ...statValues
-  } = stats;
+  const statValues = Object.fromEntries(
+    Object.entries(stats).filter(([key]) => !key.startsWith('set'))
+  );
+
   return isEqual(statValues, source === 'base' ? defaultBaseStats : defaultItemStats);
 }
 
@@ -75,12 +70,8 @@ const statFactory = (name: string, base?: boolean) =>
 
 export const sources = ['base', 'item1', 'item2'] as const;
 
-// export const useStats: Record<StatSource, ReturnType<typeof statFactory>> = Object.fromEntries(
-//   sources.map((source) => [source, statFactory(source, source === 'base')])
-// );
-
 export const useStats = {
-  base: statFactory('base'),
+  base: statFactory('base', true),
   item1: statFactory('item1'),
   item2: statFactory('item2'),
 };

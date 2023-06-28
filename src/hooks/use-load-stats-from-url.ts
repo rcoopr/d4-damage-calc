@@ -18,5 +18,7 @@ export function useLoadStatsFromUrl() {
         setStats(parsedStats);
       }
     }
+
+    window.history.replaceState(null, '', new URL(window.location.origin));
   }, []);
 }
