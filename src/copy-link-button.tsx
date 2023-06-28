@@ -23,7 +23,7 @@ export function CopyLinkButton() {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative tooltip tooltip-top" data-tip="Click to Copy Link">
       <div data-open={open} className="copy-tip-right copy-tip-scale">
         <div data-open={open} className="copy-tip-rotate">
           <div className="copy-tail-right">Copied!</div>
