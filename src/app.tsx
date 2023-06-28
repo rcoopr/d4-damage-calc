@@ -10,7 +10,7 @@ export default function App() {
   useLoadStatsFromUrl();
 
   return (
-    <main className="flex flex-col items-center text-stone-300 bg-stone-900 min-h-screen px-24 font-sans">
+    <main className="flex flex-col items-center text-stone-300 bg-stone-900 min-h-screen px-24 font-sans selection:bg-orange-500/50">
       <div className="my-12 text-stone-300 flex gap-4 items-center">
         <h1 className="text-3xl font-bold">Diablo 4 Damage Calculator</h1>
         <CopyLinkButton />

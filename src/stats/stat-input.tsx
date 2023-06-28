@@ -76,7 +76,7 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
           'border w-64 rounded-md block px-2.5 py-1.5 pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
           error
             ? 'focus:ring-error focus:border-error border-error bg-error-content selection:bg-error/50'
-            : 'focus:ring-orange-500 focus:border-orange-500 border-stone-600 bg-stone-700 selection:bg-orange-500/50'
+            : 'focus:ring-orange-500 focus:border-orange-500 border-stone-600 bg-stone-700'
         )}
       />
     </div>
@@ -85,11 +85,15 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
 
 function Slider({ id, source, unit, ...inputProps }: InputProps) {
   const [stats, setStats] = useAtom(statsAtoms[source]);
+  const baseValue = useAtomValue(statsAtoms.base)[id];
+  const wornItem = useAtomValue(wornItemAtom);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (ev) => setStats((s) => ({ ...s, [id]: Number(ev.currentTarget.value) })),
     [setStats, id]
   );
+
+  const error = wornItem === source && baseValue < stats[id];
 
   return (
     <div className="relative w-64 justify-between">
@@ -100,9 +104,17 @@ function Slider({ id, source, unit, ...inputProps }: InputProps) {
         {...inputProps}
         value={stats[id].toString()}
         onChange={onChange}
-        className="w-full range range-xs range-primary mt-3 mb-1 block h-4 cursor-pointer appearance-none overflow-hidden bg-transparent rounded-full "
+        className={clsx(
+          'w-full range range-xs mt-3 mb-1 block h-4 cursor-pointer appearance-none overflow-hidden bg-transparent rounded-full',
+          error ? 'range-error' : 'range-primary'
+        )}
       />
-      <div className="flex items-center px-3 text-stone-400">
+      <div
+        className={clsx(
+          'flex items-center px-3',
+          error ? 'text-error selection:bg-error/50' : 'text-stone-400'
+        )}
+      >
         {unit && <span>{unit}&ensp;</span>}
         <span className="font-mono">{stats[id].toFixed(1)}</span>
       </div>
