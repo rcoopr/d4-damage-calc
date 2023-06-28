@@ -1,38 +1,83 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import isEqual from 'lodash.isequal';
 
-export type StatName =
-  | 'weaponDps'
-  | 'mainStat'
-  | 'additive'
-  | 'vulnerable'
-  | 'critDamage'
-  | 'critChance';
+function defaultStatValidator(value?: string | number) {
+  const asNumber = Number(value);
+  return Math.max(0, Number.isNaN(asNumber) ? 0 : asNumber);
+}
+
+export const stats = [
+  { id: 'weaponDps', label: 'Weapon DPS', validator: defaultStatValidator },
+  { id: 'mainStat', label: 'Main Stat', unit: '', validator: defaultStatValidator },
+  { id: 'additive', label: 'Additive', unit: '%', validator: defaultStatValidator },
+  { id: 'vulnerable', label: 'Vulnerable', unit: '%', validator: defaultStatValidator },
+  { id: 'critDamage', label: 'Crit Damage', unit: '%', validator: defaultStatValidator },
+  { id: 'critChance', label: 'Crit Chance', unit: '%', validator: defaultStatValidator },
+] as const;
+
+export type StatName = typeof stats[number]['id'];
 
 export type Stats = Record<StatName, number>;
 
-type SetStats = { [K in keyof Stats as `set${Capitalize<K>}`]: (value: number) => void };
+type SetStats = { [K in keyof Stats as `set${Capitalize<K>}`]: (value: number) => void } & {
+  setAll: (stats: Stats) => void;
+};
 
-const statFactory = (name: string) =>
+const defaultBaseStats: Stats = {
+  weaponDps: 1,
+  mainStat: 1,
+  additive: 1,
+  vulnerable: 20,
+  critDamage: 50,
+  critChance: 5,
+};
+
+const defaultItemStats: Stats = {
+  weaponDps: 0,
+  mainStat: 0,
+  additive: 0,
+  vulnerable: 0,
+  critDamage: 0,
+  critChance: 0,
+};
+
+export function isDefaultStats(source: StatSource, stats: Stats & SetStats) {
+  const {
+    setAdditive,
+    setCritChance,
+    setCritDamage,
+    setMainStat,
+    setVulnerable,
+    setWeaponDps,
+    ...statValues
+  } = stats;
+  return isEqual(statValues, source === 'base' ? defaultBaseStats : defaultItemStats);
+}
+
+const statFactory = (name: string, base?: boolean) =>
   create<Stats & SetStats>()(
     persist(
       (set) => ({
-        weaponDps: 1,
-        mainStat: 1,
-        additive: 1,
-        vulnerable: 20,
-        critDamage: 50,
-        critChance: 5,
+        ...(base ? defaultBaseStats : defaultItemStats),
         setWeaponDps: (value) => set((state) => ({ ...state, weaponDps: value })),
         setMainStat: (value) => set((state) => ({ ...state, mainStat: value })),
         setAdditive: (value) => set((state) => ({ ...state, additive: value })),
         setVulnerable: (value) => set((state) => ({ ...state, vulnerable: value })),
         setCritDamage: (value) => set((state) => ({ ...state, critDamage: value })),
         setCritChance: (value) => set((state) => ({ ...state, critChance: value })),
+        setAll: (stats) => set((state) => ({ ...state, ...stats })),
       }),
       { name }
     )
   );
+
+export const sources = ['base', 'item1', 'item2'] as const;
+
+// export const useStats: Record<StatSource, ReturnType<typeof statFactory>> = Object.fromEntries(
+//   sources.map((source) => [source, statFactory(source, source === 'base')])
+// );
 
 export const useStats = {
   base: statFactory('base'),
@@ -40,7 +85,7 @@ export const useStats = {
   item2: statFactory('item2'),
 };
 
-export type StatSource = keyof typeof useStats;
+export type StatSource = typeof sources[number];
 
 export function useBuckets(name: StatSource) {
   const stats = useStats[name]();

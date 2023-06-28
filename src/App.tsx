@@ -1,23 +1,39 @@
-import { RelativeStatsVisualization } from './relative-stats-viz';
-import { DpsHeader, StatInput } from './stat-input';
-import { ItemComparison } from './item-comparison';
+import { RelativeStatsVisualization } from './stats/relative-stats-viz';
+import { StatInput } from './stats/stat-input';
+import { ItemComparison } from './stats/item-comparison';
+import { DpsComparison } from './stats/dps-comparison';
+import { useLoadStatsFromUrl } from './hooks/use-load-stats-from-url';
+import { CopyLinkButton } from './copy-link-button';
 
 export default function App() {
+  useLoadStatsFromUrl();
+
   return (
     <main className="flex flex-col items-center text-stone-300 bg-stone-900 min-h-screen px-16">
-      <h1 className="my-12 text-3xl font-bold text-stone-300">Diablo 4 Damage Calculator</h1>
-      <div className="flex gap-16">
-        <div className="flex flex-col">
-          <DpsHeader />
-          <div className="grid lg:grid-rows-[repeat(6,_auto)] lg:grid-cols-2 lg:grid-flow-col gap-x-12 gap-y-2 relative">
-            <StatInput name="base" />
-
-            <RelativeStatsVisualization name="base" />
+      <div className="my-12 text-stone-300 flex gap-4 items-center">
+        <h1 className="text-3xl font-bold">Diablo 4 Damage Calculator</h1>
+        <CopyLinkButton />
+      </div>
+      <div className="flex flex-col mb-36">
+        <DpsComparison />
+        <div className="flex flex-col lg:flex-row justify-center gap-x-8 gap-y-2">
+          <div className="flex flex-col">
+            <h2 className="mb-6 text-2xl font-bold">Character Stats</h2>
+            <div className="grid gap-x-12 gap-y-2 relative">
+              <h3 className="text-3xl invisible" aria-hidden>
+                &ensp;
+              </h3>
+              <StatInput source="base" />
+              <RelativeStatsVisualization name="base" />
+            </div>
+          </div>
+          <div className="divider lg:divider-horizontal" />
+          <div className="flex flex-col">
+            <h2 className="mb-6 text-2xl font-bold">Item Comparison</h2>
+            <ItemComparison />
           </div>
         </div>
       </div>
-      <h2 className="mt-12 mb-6 text-2xl font-bold">Item Comparison</h2>
-      <ItemComparison />
     </main>
   );
 }

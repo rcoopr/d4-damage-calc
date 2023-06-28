@@ -1,4 +1,4 @@
-import { StatSource, useBuckets, useStats } from './store';
+import { StatSource, useBuckets, useStats } from '../store';
 
 const calculateRelativeValue = (bucket1: number, bucket2: number) => {
   return (1 + bucket2) / (1 + bucket1);
@@ -25,9 +25,12 @@ export function RelativeStatsVisualization({ name }: { name: StatSource }) {
     (value) => `${(value * 100).toFixed(2)}%`
   );
 
+  const relativeCritDamage = (relativeValues[3] * 100) / stats.critChance;
+  const relativeCritChance = (relativeValues[3] * 100) / stats.critDamage;
+
   return (
     <>
-      <RelativeValue label="Relative Value" />
+      <h4 className="italic text-stone-400 text-xl mt-6">Relative Value</h4>
       <RelativeValue width={relativeElementWidths[0]} label="1 Mainstat Equals..." />
       <RelativeValue
         width={relativeElementWidths[1]}
@@ -40,10 +43,12 @@ export function RelativeStatsVisualization({ name }: { name: StatSource }) {
       <RelativeValue
         width={relativeElementWidths[3]}
         // label={`${relativeValues[3].toFixed(2)} Crit Mult`}
-        label={`${((relativeValues[3] * 100) / stats.critChance).toFixed(2)}% Crit Dmg / ${(
-          (relativeValues[3] * 100) /
-          stats.critDamage
-        ).toFixed(2)}% Crit Chance`}
+        label={() => (
+          <span>
+            {relativeCritDamage.toFixed(2)}% Crit Dmg <span className="text-xs">OR</span>{' '}
+            {relativeCritChance.toFixed(2)}% Crit Chance
+          </span>
+        )}
       />
       {/* <RelativeValue />
       <RelativeValue label="Damage Contribution" />
@@ -56,18 +61,26 @@ export function RelativeStatsVisualization({ name }: { name: StatSource }) {
   );
 }
 
-function RelativeValue({ width, label }: { width?: string; label?: string }) {
+function RelativeValue({
+  width,
+  label: Label,
+}: {
+  width?: string;
+  label?: string | (() => React.ReactNode);
+}) {
   return (
-    <div className="relative flex items-center h-[46px] justify-center">
+    <div className="relative flex items-center ">
       {width && (
         <div
           style={{ width }}
           className="bg-orange-500 will-change-transform rounded-r-md absolute inset-y-0 left-0"
         />
       )}
-      {(label || width) && (
-        <div className="absolute inset-0 flex items-center pl-5">
-          <span className="rounded bg-stone-800 px-2">{label || width}</span>
+      {(Label || width) && (
+        <div className="px-5 py-1.5 relative flex items-center">
+          <span className="rounded bg-stone-800 px-2">
+            {typeof Label === 'function' ? <Label /> : Label || width}
+          </span>
         </div>
       )}
     </div>
