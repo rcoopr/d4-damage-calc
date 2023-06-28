@@ -38,9 +38,9 @@ const defaultItemStats: Stats = {
 };
 
 export const statsAtoms = {
-  base: atomWithStorage('base', defaultBaseStats),
-  item1: atomWithStorage('item1', defaultItemStats),
-  item2: atomWithStorage('item2', defaultItemStats),
+  base: atomWithStorage('base-stats', defaultBaseStats),
+  item1: atomWithStorage('item1-stats', defaultItemStats),
+  item2: atomWithStorage('item2-stats', defaultItemStats),
 } satisfies Record<StatSource, unknown>;
 
 export function isDefaultStats(source: StatSource, stats: Stats) {
