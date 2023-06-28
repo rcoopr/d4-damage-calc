@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect } from 'react';
 import { getSearchParams } from '../utils';
 import { getDefaultStore } from 'jotai';
@@ -18,8 +17,6 @@ export function useLoadStatsFromUrl() {
           stats.map((stat, index) => [stat.id, stat.validator(paramStats[index])])
         ) as Stats;
 
-        // const setStats = statsAtoms[source].
-        // const setStats = useStats[source].getState().setAll;
         defaultStore.set(statsAtoms[source], parsedStats);
       }
     }
