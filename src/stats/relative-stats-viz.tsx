@@ -35,7 +35,10 @@ export function RelativeStatsVisualization({ source }: { source: StatSource }) {
 
   return (
     <>
-      <h4 className="italic text-stone-400 text-xl mt-6">Relative Values</h4>
+      <div className="flex items-center mt-6">
+        <h4 className="italic text-stone-400 text-xl pr-4">Relative Values</h4>
+        <span className="text-sm text-stone-400/80">(Prioritize the smallest bars)</span>
+      </div>
       <RelativeValue width={relativeElementWidths[0]} label="10 Mainstat Equals..." />
       <RelativeValue
         width={relativeElementWidths[1]}
@@ -54,7 +57,7 @@ export function RelativeStatsVisualization({ source }: { source: StatSource }) {
           </span>
         )}
       />
-      <RelativeValue label={`${weaponILevelRelativePower.toFixed(2)} Item Level`} />
+      <RelativeValue label={`${weaponILevelRelativePower.toFixed(2)} Item Levels`} />
     </>
   );
 }
