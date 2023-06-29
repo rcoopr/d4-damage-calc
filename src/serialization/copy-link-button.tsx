@@ -30,11 +30,11 @@ export function CopyLinkButton() {
         </div>
       </div>
       <button
-        className="btn btn-neutral items-center btn-sm rounded tracking-wide font-normal capitalize"
+        className="btn btn-neutral items-center md:btn-sm rounded tracking-wide font-normal capitalize"
         onClick={onClick}
       >
         <span>Share Comparison</span>
-        <span className="text-base">
+        <span className="text-base hidden sm:inline">
           <ClipboardIcon />
         </span>
       </button>

@@ -11,12 +11,12 @@ export default function App() {
   useLoadStatsFromUrl();
 
   return (
-    <div className="flex flex-col items-center text-stone-300 bg-stone-900 font-sans selection:bg-orange-500/50">
-      <main className="flex flex-col items-center min-h-screen px-24">
+    <div className="flex flex-col overflow-x-auto items-center text-stone-300 bg-stone-900 font-sans selection:bg-orange-500/50">
+      <main className="flex flex-col items-center min-h-screen px-8 md:px-16 lg:px-24">
         <div className="mt-12 mb-2 text-stone-300 flex items-center">
           <h1 className="text-3xl font-bold">Diablo 4 Damage Calculator</h1>
         </div>
-        <div className="flex my-4 gap-24 mb-8">
+        <div className="flex my-4 gap-6 md:gap-24 mb-8">
           <UsageHint />
           <CopyLinkButton />
         </div>
@@ -46,7 +46,7 @@ export default function App() {
           </div>
         </div>
       </main>
-      <footer className="px-24 pb-12">
+      <footer className="px-8 md:px-16 lg:px-24 pb-12">
         <p className="mb-8">
           Unfortunately, some in-game info is bugged, and may display extra damage on the character
           stats tab when they shouldn't. <br />

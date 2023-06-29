@@ -102,7 +102,7 @@ function DpsLabel({
         size === 'base' ? 'text-xl' : 'text-lg'
       )}
     >
-      <h2 className="pr-24">{label}</h2>
+      <h2 className="pr-8 md:pr-16 lg:pr-24">{label}</h2>
       {children}
       <div className="flex items-end ml-auto relative">
         <div

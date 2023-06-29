@@ -73,7 +73,7 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
         value={stats[id].toString()}
         onChange={onChange}
         className={clsx(
-          'border w-64 rounded-md block px-2.5 py-1.5 pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
+          'border w-32 md:w-64 rounded-md block px-2.5 py-1.5 pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
           error
             ? 'focus:ring-error focus:border-error border-error bg-error-content selection:bg-error/50'
             : 'focus:ring-orange-500 focus:border-orange-500 border-stone-600 bg-stone-700'
@@ -96,7 +96,7 @@ function Slider({ id, source, unit, ...inputProps }: InputProps) {
   const error = wornItem === source && baseValue < stats[id];
 
   return (
-    <div className="relative w-64 justify-between">
+    <div className="relative w-32 md:w-64 justify-between">
       <input
         id={`${source}-${id}`}
         type="range"

@@ -16,7 +16,7 @@ export function UsageHint() {
   return (
     <div>
       <button
-        className="btn btn-sm btn-secondary rounded tracking-wide font-medium capitalize"
+        className="btn md:btn-sm btn-secondary rounded tracking-wide font-medium capitalize"
         onClick={openModal}
       >
         How do I use this?
