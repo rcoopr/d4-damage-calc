@@ -55,8 +55,10 @@ export function UsageHint() {
           <p className="mb-4">
             If dual-wielding, Weapon DPS in the{' '}
             <span className="text-info italic">Character Stats</span> panel should be the{' '}
-            <span className="text-stone-100">sum of both weapons</span>, and individual Weapon DPS
-            goes in each <span className="text-info italic">Item</span>
+            <span className="text-stone-100">
+              sum of both weapons (or divide your sheet damage by weapon speed)
+            </span>
+            , and individual Weapon DPS goes in each <span className="text-info italic">Item</span>
           </p>
           <p className="mb-8">
             Addititve means all of the damage stats from{' '}
