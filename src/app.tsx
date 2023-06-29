@@ -26,7 +26,7 @@ export default function App() {
             <div className="flex flex-col">
               <h2 className="mb-6 text-2xl font-bold">Character Stats</h2>
               <div className="grid gap-x-12 gap-y-2 relative">
-                <h3 className="text-3xl invisible" aria-hidden>
+                <h3 className="text-3xl lg:invisible max-lg:hidden" aria-hidden>
                   &ensp;
                 </h3>
                 <StatInput source="base" />

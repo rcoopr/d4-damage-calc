@@ -37,6 +37,7 @@ export function DpsComparison({ item }: { item?: ItemSource }) {
         compareWith={item === 'item1' ? item2Dps : item1Dps}
         hide={wornItem === item ? false : item === 'item1' ? item1Dps === 0 : item2Dps === 0}
         prefix="+"
+        className="max-sm:mb-6"
       >
         <div className="flex items-center gap-3 h-full">
           <span className="text-sm text-stone-400">Worn?</span>
@@ -60,6 +61,7 @@ export function DpsComparison({ item }: { item?: ItemSource }) {
         dps={dpsWithItem1}
         compareWith={dpsWithItem2}
         hide={dpsWithItem1 === baseDps}
+        className={clsx(dpsWithItem2 && dpsWithItem1 > dpsWithItem2 && 'max-sm:mb-6')}
       />
       <DpsLabel
         label="With Item 2:"
@@ -79,6 +81,7 @@ function DpsLabel({
   size = 'base',
   prefix = '',
   children,
+  className,
 }: {
   label: string;
   dps: number;
@@ -87,6 +90,7 @@ function DpsLabel({
   size?: 'small' | 'base';
   prefix?: string;
   children?: React.ReactNode;
+  className?: string;
 }) {
   const percentIncrease = compareWith ? Math.max((100 * (dps - compareWith)) / compareWith, 0) : 0;
   const textSaturation = Math.min(
@@ -99,7 +103,8 @@ function DpsLabel({
       className={clsx(
         'font-medium text-stone-400 flex items-end transition-opacity',
         hide ? 'opacity-0' : 'opacity-100',
-        size === 'base' ? 'text-xl' : 'text-lg'
+        size === 'base' ? 'text-xl' : 'text-lg',
+        className
       )}
     >
       <h2 className="pr-8 md:pr-16 lg:pr-24">{label}</h2>
@@ -108,7 +113,9 @@ function DpsLabel({
         <div
           className={clsx(
             'transition-opacity text-base pl-2 text-success underline underline-offset-[3px]',
-            'absolute left-full h-full top-1/2 -translate-y-1/2 flex items-center',
+            'absolute flex items-center',
+            'max-sm:right-0 max-sm:top-full',
+            'sm:left-full sm:h-full sm:top-1/2 sm:-translate-y-1/2',
             compareWith && dps > compareWith ? 'opacity-100' : 'opacity-0',
             size === 'base' ? 'text-base' : 'text-sm'
           )}
