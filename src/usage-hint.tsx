@@ -27,6 +27,13 @@ export function UsageHint() {
           className="modal-box max-w-[75ch] px-16 leading-snug text-stone-300"
           onClick={stopPropagation}
         >
+          <div className="flex w-full justify-between mb-6 items-center">
+            <h2 className="font-bold text-2xl">Info</h2>
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn rounded btn-neutral tracking-wide font-normal capitalize">
+              Close
+            </button>
+          </div>
           <h3 className="font-bold text-lg py-2 bg-stone-800 -mx-16 mb-2">
             <span className="mx-10">Steps for comparing items</span>
           </h3>
@@ -94,13 +101,6 @@ export function UsageHint() {
             for, the highest DPS would come from balancing all{' '}
             <span className="text-stone-100">buckets</span>
           </p>
-
-          <div className="modal-action">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-neutral rounded tracking-wide font-normal capitalize">
-              Close
-            </button>
-          </div>
         </form>
       </dialog>
     </div>
