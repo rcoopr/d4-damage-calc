@@ -25,7 +25,7 @@ export function capitalize<T extends string>(string: T) {
 export function stringifyStats(source: StatSource) {
   const defaultStore = getDefaultStore();
 
-  const statValues = defaultStore.get(statsAtoms.base);
+  const statValues = defaultStore.get(statsAtoms[source]);
 
   return isDefaultStats(source, statValues)
     ? ''

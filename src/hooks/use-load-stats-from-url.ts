@@ -11,6 +11,7 @@ export function useLoadStatsFromUrl() {
 
     for (const source of sources) {
       const param = searchParams.get(source);
+
       if (param && typeof param === 'string') {
         const paramStats = param.split(',');
         const parsedStats = Object.fromEntries(
