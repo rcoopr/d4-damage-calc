@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { createShareLink } from './utils';
+import { exportComparison } from './export';
 
 export function CopyLinkButton() {
   const [open, setOpen] = useState(false);
@@ -7,7 +7,7 @@ export function CopyLinkButton() {
 
   const onClick = useCallback(() => {
     setOpen(true);
-    createShareLink();
+    exportComparison();
 
     if (timeout.current) {
       window.clearTimeout(timeout.current);

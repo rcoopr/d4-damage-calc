@@ -1,8 +1,8 @@
 import { StatInput } from './stats/stat-input';
 import { ItemComparison } from './stats/item-comparison';
 import { DpsComparison } from './stats/dps-comparison';
-import { useLoadStatsFromUrl } from './hooks/use-load-stats-from-url';
-import { CopyLinkButton } from './copy-link-button';
+import { useLoadStatsFromUrl } from './serialization/use-load-stats-from-url';
+import { CopyLinkButton } from './serialization/copy-link-button';
 import { StatsReferenceTable } from './stats/reference';
 import { RelativeStatsVisualization } from './stats/relative-stats-viz';
 import { UsageHint } from './usage-hint';
