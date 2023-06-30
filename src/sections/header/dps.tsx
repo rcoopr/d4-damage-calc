@@ -28,9 +28,6 @@ export function BuildDpsSummary() {
 }
 
 function DpsDiff() {
-  const wornItem = useAtomValue(wornItemAtom);
-
-  // const isItem2Empty = useAtomValue(isSourceUnused.item2);
   const isItem2Empty = useAtomValue(isSourceUnused.item2);
   const computedStats = useAtomValue(computedStatsAtom);
 
