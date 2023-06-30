@@ -17,7 +17,7 @@ export function BuildDpsSummary() {
   return (
     <div className="flex flex-col mb-12 gap-1 text-stone-400 font-medium text-xl">
       {sources.map((source) => (
-        <DpsLine source={source} label={labels[source]} />
+        <DpsLine key={source} source={source} label={labels[source]} />
       ))}
       <div className="self-end flex items-center">
         <span className="pr-4 text-sm">OVERALL DPS CHANGE: </span>
