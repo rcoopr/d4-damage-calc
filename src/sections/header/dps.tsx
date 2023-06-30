@@ -82,7 +82,7 @@ function DpsLine({ label, source }: { label: string; source: StatSource }) {
 
 function DpsValue({ dps, diff }: { dps: number; diff: number }) {
   return (
-    <div className={clsx('flex items-end ml-auto relative text-3xl', diff > 0 && 'max-sm:mb-6')}>
+    <div className="flex items-end ml-auto relative text-3xl">
       <DpsFormat dps={dps} diff={diff} />
     </div>
   );

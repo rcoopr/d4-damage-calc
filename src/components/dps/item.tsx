@@ -30,7 +30,7 @@ export function ItemDpsComparison({ item }: { item: ItemSource }) {
 
   return (
     <div className="flex flex-col">
-      <div className="font-medium text-stone-400 flex items-end transition-opacity text-lg max-sm:mb-6">
+      <div className="font-medium text-stone-400 flex items-end transition-opacity text-lg">
         <h2 className="pr-8 md:pr-16 lg:pr-24">{label}</h2>
         <div
           className={clsx(
