@@ -52,7 +52,11 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
   const wornItem = useAtomValue(wornItemAtom);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (ev) => setStats((s) => ({ ...s, [id]: Number(ev.currentTarget.value) })),
+    (ev) => {
+      if (!Number.isNaN(ev.currentTarget.valueAsNumber)) {
+        setStats((s) => ({ ...s, [id]: ev.currentTarget.valueAsNumber }));
+      }
+    },
     [setStats, id]
   );
 
@@ -69,6 +73,7 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
         id={`${source}-${id}`}
         type="number"
         min="0"
+        step="0.1"
         {...inputProps}
         value={stats[id].toString()}
         onChange={onChange}
@@ -89,7 +94,11 @@ function Slider({ id, source, unit, ...inputProps }: InputProps) {
   const wornItem = useAtomValue(wornItemAtom);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (ev) => setStats((s) => ({ ...s, [id]: Number(ev.currentTarget.value) })),
+    (ev) => {
+      if (!Number.isNaN(ev.currentTarget.valueAsNumber)) {
+        setStats((s) => ({ ...s, [id]: ev.currentTarget.valueAsNumber }));
+      }
+    },
     [setStats, id]
   );
 

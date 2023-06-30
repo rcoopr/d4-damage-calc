@@ -12,6 +12,16 @@ const config: Config = {
         sans: ['"Space Grotesk"', ...defaultTheme.fontFamily.sans],
         mono: ['"Space Mono", "Jetbrains Mono"', 'Menlo', ...defaultTheme.fontFamily.mono],
       },
+      gridTemplateColumns: ({ theme }) => {
+        const spacing = theme('spacing');
+
+        return Object.keys(spacing).reduce((accumulator, spacingKey) => {
+          return {
+            ...accumulator,
+            [`grid-fill-${spacingKey}`]: `repeat(auto-fill, minmax(${spacing[spacingKey]}, 1fr))`,
+          };
+        }, {});
+      },
     },
   },
   plugins: [DaisyUi, BackgroundPatterns, GradientMask],
