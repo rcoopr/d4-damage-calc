@@ -21,16 +21,21 @@ export function UsageHint() {
       >
         How do I use this?
       </button>
-      <dialog ref={ref} className="modal" onClick={closeModal}>
+      <dialog ref={ref} className="modal backdrop-blur" onClick={closeModal}>
         <form
           method="dialog"
-          className="modal-box max-w-[75ch] px-16 leading-snug text-stone-300"
+          className="modal-box max-w-[75ch] px-16 leading-snug shadow-xl shadow-stone-950/25 text-stone-300"
           onClick={stopPropagation}
         >
           <div className="flex w-full justify-between mb-6 items-center">
             <h2 className="font-bold text-2xl">Info</h2>
             {/* if there is a button in form, it will close the modal */}
-            <button className="btn rounded btn-neutral tracking-wide font-normal capitalize">
+            <button
+              // This was picking up focus when tabbing while the modal was closed. This is a bit of a hack
+              // Modal can still be closed with escape
+              tabIndex={-1}
+              className="btn rounded btn-neutral tracking-wide font-normal capitalize"
+            >
               Close
             </button>
           </div>
