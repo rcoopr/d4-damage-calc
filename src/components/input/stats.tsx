@@ -1,8 +1,8 @@
 import { useCallback, ChangeEventHandler } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import clsx from 'clsx';
-import { StatSource, wornItemAtom } from '../store/item-selection';
-import { Stats, stats, statsAtoms } from '../store/stats';
+import { StatSource, wornItemAtom } from '../../store/item-selection';
+import { Stats, stats, statsAtoms } from '../../store/stats';
 
 type InputProps = {
   id: keyof Stats;

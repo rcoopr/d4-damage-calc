@@ -1,13 +1,12 @@
 import { useAtomValue } from 'jotai';
-import { computedStatsAtom } from '../store/dps';
-import { StatSource } from '../store/item-selection';
+import { computedStatsAtom } from '../../../store/dps';
+import { StatSource } from '../../../store/item-selection';
 
 const calculateRelativeValue = (bucket1: number, bucket2: number) => {
   return (1 + bucket2) / (1 + bucket1);
 };
 
-export function RelativeStatsVisualization({ source }: { source: StatSource }) {
-  // const stats = useStats[source]();
+export function RelativeStatValues({ source }: { source: StatSource }) {
   const computedStats = useAtomValue(computedStatsAtom);
   const s = computedStats.statsTotal[source];
 
@@ -70,7 +69,7 @@ function RelativeValue({
   label?: string | (() => React.ReactNode);
 }) {
   return (
-    <div className="relative flex items-center ">
+    <div className="relative flex items-center">
       {width && (
         <div
           style={{ width }}

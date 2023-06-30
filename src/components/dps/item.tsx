@@ -1,17 +1,11 @@
 import clsx from 'clsx';
-import { dpsFormatter } from '../utils';
-import { ChangeEventHandler, useCallback } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
-import { computedStatsAtom } from '../store/dps';
-import { ItemSource, wornItemAtom } from '../store/item-selection';
+import { useCallback, ChangeEventHandler } from 'react';
+import { computedStatsAtom } from '../../store/dps';
+import { ItemSource, wornItemAtom } from '../../store/item-selection';
+import { MAX_SATURATION, MAX_SATURATION_AT, dpsFormatter } from '../../utils/misc';
 
-const MAX_SATURATION = 3;
-const MAX_SATURATION_AT = 10;
-
-// TODO - refactor labels into header / item-specific labels.
-// add background charts for dps comparison to header
-
-export function DpsComparison({ item }: { item?: ItemSource }) {
+export function ItemDpsComparison({ item }: { item: ItemSource }) {
   const [wornItem, setWornItem] = useAtom(wornItemAtom);
 
   const handleClick = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -21,55 +15,36 @@ export function DpsComparison({ item }: { item?: ItemSource }) {
     [setWornItem, item]
   );
 
-  const baseDps = useAtomValue(computedStatsAtom).dps.base;
-  const dpsWithItem1 = useAtomValue(computedStatsAtom).dps.item1;
-  const dpsWithItem2 = useAtomValue(computedStatsAtom).dps.item2;
+  const computedstats = useAtomValue(computedStatsAtom);
+
+  const baseDps = computedstats.dps.base;
+  const dpsWithItem1 = computedstats.dps.item1;
+  const dpsWithItem2 = computedstats.dps.item2;
 
   const item1Dps = dpsWithItem1 - baseDps;
   const item2Dps = dpsWithItem2 - baseDps;
 
-  if (item) {
-    return (
-      <DpsLabel
-        size="small"
-        label={`Item ${item.charAt(item.length - 1)}`}
-        dps={item === 'item1' ? item1Dps : item2Dps}
-        compareWith={item === 'item1' ? item2Dps : item1Dps}
-        hide={wornItem === item ? false : item === 'item1' ? item1Dps === 0 : item2Dps === 0}
-        prefix="+"
-        className="max-sm:mb-6"
-      >
-        <div className="flex items-center gap-3 h-full">
-          <span className="text-sm text-stone-400">Worn?</span>
-          <input
-            id={`worn-${item}`}
-            checked={wornItem === item}
-            onChange={handleClick}
-            className="checkbox checkbox-sm rounded"
-            type="checkbox"
-          />
-        </div>
-      </DpsLabel>
-    );
-  }
-
   return (
-    <div className="flex flex-col mb-12">
-      <DpsLabel label="Base DPS:" dps={baseDps} />
-      <DpsLabel
-        label="With Item 1:"
-        dps={dpsWithItem1}
-        compareWith={dpsWithItem2}
-        hide={dpsWithItem1 === baseDps}
-        className={clsx(dpsWithItem2 && dpsWithItem1 > dpsWithItem2 && 'max-sm:mb-6')}
-      />
-      <DpsLabel
-        label="With Item 2:"
-        dps={dpsWithItem2}
-        compareWith={dpsWithItem1}
-        hide={dpsWithItem2 === baseDps}
-      />
-    </div>
+    <DpsLabel
+      size="small"
+      label={`Item ${item.charAt(item.length - 1)}`}
+      dps={item === 'item1' ? item1Dps : item2Dps}
+      compareWith={item === 'item1' ? item2Dps : item1Dps}
+      hide={wornItem === item ? false : item === 'item1' ? item1Dps === 0 : item2Dps === 0}
+      prefix="+"
+      className="max-sm:mb-6"
+    >
+      <div className="flex items-center gap-3 h-full">
+        <span className="text-sm text-stone-400">Worn?</span>
+        <input
+          id={`worn-${item}`}
+          checked={wornItem === item}
+          onChange={handleClick}
+          className="checkbox checkbox-sm rounded"
+          type="checkbox"
+        />
+      </div>
+    </DpsLabel>
   );
 }
 
@@ -126,7 +101,7 @@ function DpsLabel({
 
         <span
           className={clsx(
-            'font-mono text-3xl transition-all',
+            'font-mono transition-all',
             size === 'base' ? 'text-3xl' : 'text-xl',
             compareWith
               ? dps < compareWith

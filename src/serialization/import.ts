@@ -1,7 +1,7 @@
 import { getDefaultStore } from 'jotai';
 import { ItemSource, sources, wornItemAtom } from '../store/item-selection';
 import { stats, Stats, statsAtoms } from '../store/stats';
-import { clamp } from '../utils';
+import { clamp } from '../utils/misc';
 import { searchParamKeys } from './export';
 
 export function importComparison() {

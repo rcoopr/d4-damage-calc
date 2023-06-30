@@ -1,10 +1,10 @@
 import { useAtomValue } from 'jotai';
-import { computedStatsAtom } from '../store/dps';
-import { StatSource } from '../store/item-selection';
-import { stats } from '../store/stats';
-import { compactFormatter } from '../utils';
+import { computedStatsAtom } from '../../store/dps';
+import { StatSource } from '../../store/item-selection';
+import { stats } from '../../store/stats';
+import { compactFormatter } from '../../utils/misc';
 
-export function StatsReferenceTable({ source }: { source: StatSource }) {
+export function BuildSummary({ source }: { source: StatSource }) {
   const computedStats = useAtomValue(computedStatsAtom);
   const header =
     source === 'base'
