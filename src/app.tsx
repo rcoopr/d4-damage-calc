@@ -1,6 +1,6 @@
 import { StatInput } from './components/input/stats';
 import { useLoadStatsFromUrl } from './serialization/use-load-stats-from-url';
-import { BuildSummary } from './sections/stats/build-summary';
+import { BuildSummary } from './sections/stats/summary/build-summary';
 import { RelativeStatValues } from './sections/stats/relative-values/section';
 import { BuildDpsSummary } from './sections/header/dps';
 import { Footer } from './sections/footer/footer';

@@ -60,13 +60,14 @@ function DpsLine({ label, source }: { label: string; source: StatSource }) {
   return (
     <div
       className={clsx(
-        'flex transition-opacity relative',
+        'flex transition-opacity items-center relative',
         build !== 'base' && buildDps === computedStats.dps.base ? 'opacity-0' : 'opacity-100'
       )}
     >
       <div
         className={clsx(
           'absolute inset-0 rounded-r-lg bg-gradient-to-l to-60%',
+          // 'after:absolute after:inset-0 after:pattern-diagonal-lines after:pattern-black after:pattern-bg-white after:pattern-size-4 after:pattern-opacity-50 after:mix-blend-multiply',
           source === 'base' ? 'from-primary/20' : diff > 0 ? 'from-success/20' : 'from-error/20'
         )}
         style={{ width: `${width.toFixed(2)}%` }}
