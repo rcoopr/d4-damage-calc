@@ -35,7 +35,7 @@ export function RelativeStatValues({ source }: { source: StatSource }) {
   return (
     <>
       <div className="flex items-center mt-6">
-        <h4 className="italic text-stone-400 text-xl pr-4">Relative Values</h4>
+        <h4 className="italic font-mono text-stone-400 text-xl pr-4">Relative Values</h4>
         <span className="text-sm text-stone-400/80">(Prioritize the smallest bars)</span>
       </div>
       <RelativeValue width={relativeElementWidths[0]} label="10 Mainstat Equals..." />

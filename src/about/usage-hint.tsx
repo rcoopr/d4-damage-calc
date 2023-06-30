@@ -44,28 +44,29 @@ export function UsageHint() {
               <span className="text-stone-100">item tooltip in-game</span>
             </li>
             <li>
-              Enter your <span className="text-info italic">Character Stats</span> as you see in the
-              stats tab in-game
+              Enter your <span className="text-info italic font-mono">Character Stats</span> as you
+              see in the stats tab in-game
             </li>
             <li>
               Add the stats of the item which you want to compare in{' '}
-              <span className="text-info italic">Item 1</span>
+              <span className="text-info italic font-mono">Item 1</span>
             </li>
             <li>
-              Tick <span className="text-secondary italic">Worn</span> on{' '}
-              <span className="text-info italic">Item 1</span>
+              Tick <span className="text-secondary italic font-mono">Worn</span> on{' '}
+              <span className="text-info italic font-mono">Item 1</span>
             </li>
             <li>
-              Add the new item stats in <span className="text-info italic">Item 2</span>
+              Add the new item stats in <span className="text-info italic font-mono">Item 2</span>
             </li>
           </ol>
           <p className="mb-4">
             If dual-wielding, Weapon DPS in the{' '}
-            <span className="text-info italic">Character Stats</span> panel should be the{' '}
+            <span className="text-info italic font-mono">Character Stats</span> panel should be the{' '}
             <span className="text-stone-100">
               sum of both weapons (or divide your sheet damage by weapon speed)
             </span>
-            , and individual Weapon DPS goes in each <span className="text-info italic">Item</span>
+            , and individual Weapon DPS goes in each{' '}
+            <span className="text-info italic font-mono">Item</span>
           </p>
           <p className="mb-8">
             Addititve means all of the damage stats from{' '}
@@ -78,7 +79,7 @@ export function UsageHint() {
           <p className="mb-4">
             The Relative Stats show how much each <span className="text-stone-100">bucket</span> is
             worth <span className="text-stone-100">relative</span> to 10 mainstat. Each{' '}
-            <span className="text-info italic">Character / Item stat</span> is a{' '}
+            <span className="text-info italic font-mono">Character / Item stat</span> is a{' '}
             <span className="text-stone-100">bucket</span>
           </p>
           <p className="mb-4">
@@ -91,7 +92,7 @@ export function UsageHint() {
             The bars behind each <span className="text-stone-100">bucket</span> show how much of
             your overall DPS is coming from that <span className="text-stone-100">bucket</span>,
             relative to the others. This means you should{' '}
-            <span className="text-primary italic">
+            <span className="text-primary italic font-mono">
               prioristise the bucket with the smallest bars
             </span>{' '}
             to get the most dps out of your items

@@ -10,14 +10,19 @@ export function Footer() {
         also doesn't display correctly in combination with{' '}
         <span className="font-bold text-stone-300"> +Non-Physical Damage </span>
       </p>
-      <p className="text-stone-200 text-sm">
+      <p className="text-stone-200 text-sm mb-8">
         Note: Because of how the game treats weapon speed and weapon DPS, the{' '}
-        <span className="italic">true</span> DPS may be innacurate, however for comparison purposes
-        it doesn't make any difference
+        <span className="italic font-mono">true</span> DPS may be innacurate, however for comparison
+        purposes it doesn't make any difference
       </p>
-      <div className="flex justify-end">
-        <a href="https://www.buymeacoffee.com/rcoopr">Buy me a coffee</a>
-      </div>
+      {/* <div className="flex justify-end">
+        <a
+          className="link rounded-lg bg-secondary hover:bg-secondary-focus text-secondary-content font-semibold items-center p-2.5"
+          href="https://www.buymeacoffee.com/rcoopr"
+        >
+          Buy me a coffee
+        </a>
+      </div> */}
     </footer>
   );
 }
