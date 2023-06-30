@@ -23,7 +23,6 @@ body {
 
 .copy-tip-right {
   --tooltip-tail: 0.375rem;
-  /* transform: scale(0); */
 
   position: absolute;
   height: 100%;

@@ -1,7 +1,7 @@
 import copy from 'copy-text-to-clipboard';
 import { getDefaultStore } from 'jotai';
 import { StatSource, sources, wornItemAtom } from '../store/item-selection';
-import { statsAtoms, isDefaultStats, stats } from '../store/stats';
+import { statsAtoms, stats, isSourceUnused } from '../store/stats';
 
 export const searchParamKeys = {
   wornItem: 'worn',
@@ -34,10 +34,9 @@ function serializeStats(source: StatSource) {
   const defaultStore = getDefaultStore();
 
   const statValues = defaultStore.get(statsAtoms[source]);
+  const isUnused = defaultStore.get(isSourceUnused[source]);
 
-  return isDefaultStats(source, statValues)
-    ? ''
-    : stats.map((stat) => formatForSearchParam(statValues[stat.id])).join(',');
+  return isUnused ? '' : stats.map((stat) => formatForSearchParam(statValues[stat.id])).join(',');
 }
 
 function formatForSearchParam(number: number) {

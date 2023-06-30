@@ -9,7 +9,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['"Space Grotesk"', ...defaultTheme.fontFamily.sans],
-        mono: ['"Jetbrains Mono"', 'Menlo', ...defaultTheme.fontFamily.mono],
+        mono: ['"Space Mono", "Jetbrains Mono"', 'Menlo', ...defaultTheme.fontFamily.mono],
       },
     },
   },

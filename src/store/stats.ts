@@ -1,6 +1,7 @@
 import { atomWithStorage } from 'jotai/utils';
 import isEqual from 'lodash.isequal';
 import { StatSource } from './item-selection';
+import { atom } from 'jotai';
 
 function defaultStatValidator(value?: string | number) {
   const asNumber = Number(value);
@@ -43,6 +44,12 @@ export const statsAtoms = {
   item2: atomWithStorage('item2-stats', defaultItemStats),
 } satisfies Record<StatSource, unknown>;
 
-export function isDefaultStats(source: StatSource, stats: Stats) {
+function isDefaultStats(source: StatSource, stats: Stats) {
   return isEqual(stats, source === 'base' ? defaultBaseStats : defaultItemStats);
 }
+
+export const isSourceUnused = {
+  base: atom((get) => isDefaultStats('base', get(statsAtoms.base))),
+  item1: atom((get) => isDefaultStats('item1', get(statsAtoms.item1))),
+  item2: atom((get) => isDefaultStats('item2', get(statsAtoms.item2))),
+};

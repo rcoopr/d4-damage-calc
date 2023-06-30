@@ -28,8 +28,14 @@ export const computedStatsAtom = atom<ComputedStats>((get) => {
   const item1Dps = build1Dps - baseDps;
   const item2Dps = build2Dps - baseDps;
 
-  const itemDpsDifference = (100 * (item1Dps - item2Dps)) / item2Dps;
-  const buildDpsDifference = (100 * (build1Dps - build2Dps)) / build2Dps;
+  const itemDpsDifference =
+    wornItem === 'item2'
+      ? (100 * (item2Dps - item1Dps)) / item1Dps
+      : (100 * (item1Dps - item2Dps)) / item2Dps;
+  const buildDpsDifference =
+    wornItem === 'item2'
+      ? (100 * (build2Dps - build1Dps)) / build1Dps
+      : (100 * (build1Dps - build2Dps)) / build2Dps;
 
   const build1DpsIncrease = (100 * item1Dps) / baseDps;
   const build2DpsIncrease = (100 * item2Dps) / baseDps;

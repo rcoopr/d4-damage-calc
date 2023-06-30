@@ -4,9 +4,11 @@ import { useCallback, ChangeEventHandler } from 'react';
 import { computedStatsAtom } from '../../store/dps';
 import { ItemSource, wornItemAtom } from '../../store/item-selection';
 import { DpsDesaturate, DpsFormat } from './value';
+import { isSourceUnused } from '../../store/stats';
 
 export function ItemDpsComparison({ item }: { item: ItemSource }) {
   const [wornItem, setWornItem] = useAtom(wornItemAtom);
+  const isUnused = useAtomValue(isSourceUnused[item]);
 
   const handleClick = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (ev) => {
@@ -21,7 +23,7 @@ export function ItemDpsComparison({ item }: { item: ItemSource }) {
   const itemDps = computedStats.dps[item];
   const compareWith = computedStats.dps[item === 'item1' ? 'item2' : 'item1'];
 
-  const hide = wornItem === item ? false : itemDps === 0;
+  const hide = wornItem === item ? false : isUnused;
 
   const dpsDiff =
     item === 'item1' ? computedStats.comparison.item : 0 - computedStats.comparison.item;
@@ -30,7 +32,12 @@ export function ItemDpsComparison({ item }: { item: ItemSource }) {
     <div className="flex flex-col">
       <div className="font-medium text-stone-400 flex items-end transition-opacity text-lg max-sm:mb-6">
         <h2 className="pr-8 md:pr-16 lg:pr-24">{label}</h2>
-        <div className={clsx(hide ? 'opacity-0' : 'opacity-100', 'flex items-center gap-3 h-full')}>
+        <div
+          className={clsx(
+            hide ? 'opacity-0' : 'opacity-100',
+            'transition-opacity flex items-center gap-3 h-full'
+          )}
+        >
           <span className="text-sm text-stone-400">Worn?</span>
           <input
             id={`worn-${item}`}
@@ -43,7 +50,7 @@ export function ItemDpsComparison({ item }: { item: ItemSource }) {
         <div
           className={clsx(
             hide ? 'opacity-0' : 'opacity-100',
-            'flex items-end ml-auto relative text-xl'
+            'transition-opacity flex items-end ml-auto relative text-xl'
           )}
         >
           <DpsFormat dps={itemDps} diff={itemDps - compareWith} />
