@@ -73,7 +73,7 @@ function RelativeValue({
       {width && (
         <div
           style={{ width }}
-          className="bg-orange-500 will-change-transform rounded-r-md absolute inset-y-0 left-0"
+          className="bg-primary will-change-transform rounded-r-md absolute inset-y-0 left-0"
         />
       )}
       {(Label || width) && (

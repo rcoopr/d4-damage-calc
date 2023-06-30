@@ -6,6 +6,7 @@ export type ComputedStats = {
   statsTotal: Record<StatSource, Stats>;
   dps: Record<StatSource | Build, number>;
   comparison: Record<'item' | 'build', number>;
+  increase: Record<Exclude<Build, 'base'>, number>;
 };
 
 export const computedStatsAtom = atom<ComputedStats>((get) => {
@@ -30,6 +31,9 @@ export const computedStatsAtom = atom<ComputedStats>((get) => {
   const itemDpsDifference = (100 * (item1Dps - item2Dps)) / item2Dps;
   const buildDpsDifference = (100 * (build1Dps - build2Dps)) / build2Dps;
 
+  const build1DpsIncrease = (100 * item1Dps) / baseDps;
+  const build2DpsIncrease = (100 * item2Dps) / baseDps;
+
   return {
     statsTotal: {
       base: statsWithoutItems,
@@ -46,6 +50,10 @@ export const computedStatsAtom = atom<ComputedStats>((get) => {
     comparison: {
       item: itemDpsDifference,
       build: buildDpsDifference,
+    },
+    increase: {
+      build1: build1DpsIncrease,
+      build2: build2DpsIncrease,
     },
   };
 });

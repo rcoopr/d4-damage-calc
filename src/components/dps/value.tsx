@@ -1,49 +1,54 @@
 import clsx from 'clsx';
-import { useAtomValue } from 'jotai';
-import { computedStatsAtom } from '../../store/dps';
-import { StatSource, Build } from '../../store/item-selection';
-import { MAX_SATURATION, MAX_SATURATION_AT, dpsFormatter } from '../../utils/misc';
-import { getDpsDiff } from './utils';
+import { DpsFormatOptions, formatDps } from '../../utils/dps';
+import { MAX_SATURATION, MAX_SATURATION_AT, clamp } from '../../utils/misc';
 
-export function DpsValue({ source }: { source: StatSource | Build }) {
-  const computedStats = useAtomValue(computedStatsAtom);
-  const dps = computedStats.dps[source];
-  const diff = getDpsDiff(computedStats.comparison, source);
+type Options = {
+  dps: number;
+  diff: number;
+  opts?: DpsFormatOptions;
+  className?: string;
+  clamp?: boolean;
+  children: React.ReactNode;
+};
 
-  const textSaturation = Math.min(
-    ((diff ?? 0) * MAX_SATURATION) / MAX_SATURATION_AT,
-    MAX_SATURATION
-  );
+export function DpsDesaturate({
+  diff,
+  clamp: clamped,
+  children,
+}: Pick<Options, 'diff' | 'clamp' | 'children'>) {
+  const value = clamped ? diff : Math.abs(diff);
+  const remappedValue = (value * MAX_SATURATION) / MAX_SATURATION_AT;
+  const saturation = clamp(remappedValue, 0, MAX_SATURATION);
 
+  return <span style={{ filter: `saturate(${saturation.toFixed(2)})` }}>{children}</span>;
+}
+
+export function DpsColor({
+  diff,
+  className,
+  children,
+}: Pick<Options, 'diff' | 'className' | 'children'>) {
   return (
-    <div className="flex items-end ml-auto relative">
-      {diff ? (
-        <div
-          className={clsx(
-            'transition-opacity text-base pl-2 text-success underline underline-offset-[3px]',
-            'absolute flex items-center',
-            'max-sm:right-0 max-sm:top-full',
-            'sm:left-full sm:h-full sm:top-1/2 sm:-translate-y-1/2',
-            diff > 0 ? 'opacity-100' : 'opacity-0'
-          )}
-          style={{ filter: `saturate(${textSaturation.toFixed(2)})` }}
-        >
-          +{diff.toFixed(2)}%
-        </div>
-      ) : null}
+    <span
+      className={clsx(
+        'transition-opacity font-mono',
+        diff === 0
+          ? 'text-primary'
+          : diff > 0
+          ? 'font-bold text-success'
+          : 'font-extralight text-error opacity-80',
+        className
+      )}
+    >
+      {children}
+    </span>
+  );
+}
 
-      <span
-        className={clsx(
-          'font-mono text-3xl transition-all',
-          diff
-            ? diff < 0
-              ? 'font-extralight text-error opacity-80'
-              : 'font-bold text-success'
-            : 'text-orange-500'
-        )}
-      >
-        {dpsFormatter.format(dps)}
-      </span>
-    </div>
+export function DpsFormat({ dps, diff, opts, className }: Omit<Options, 'children'>) {
+  return (
+    <DpsColor diff={diff} className={className}>
+      {formatDps(dps, opts)}
+    </DpsColor>
   );
 }

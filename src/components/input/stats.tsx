@@ -76,7 +76,7 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
           'border w-32 md:w-64 rounded-md block px-2.5 py-1.5 pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
           error
             ? 'focus:ring-error focus:border-error border-error bg-error-content selection:bg-error/50'
-            : 'focus:ring-orange-500 focus:border-orange-500 border-stone-600 bg-stone-700'
+            : 'focus:ring-primary focus:border-primary border-stone-600 bg-stone-700'
         )}
       />
     </div>

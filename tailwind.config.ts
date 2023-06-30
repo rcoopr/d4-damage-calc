@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import DaisyUi from 'daisyui';
+import BackgroundPatterns from 'tailwindcss-bg-patterns';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
 const config: Config = {
@@ -12,7 +13,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [DaisyUi],
+  plugins: [DaisyUi, BackgroundPatterns],
   daisyui: {
     themes: [
       {

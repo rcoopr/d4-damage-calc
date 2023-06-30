@@ -2,7 +2,7 @@ import { StatInput } from './components/input/stats';
 import { useLoadStatsFromUrl } from './serialization/use-load-stats-from-url';
 import { BuildSummary } from './sections/stats/build-summary';
 import { RelativeStatValues } from './sections/stats/relative-values/section';
-import { BuildDpsSummary } from './sections/header/build-dps';
+import { BuildDpsSummary } from './sections/header/dps';
 import { Footer } from './sections/footer/footer';
 import { Hero } from './sections/header/hero';
 import { ItemStatsSection } from './sections/stats/items/section';
@@ -11,7 +11,7 @@ export default function App() {
   useLoadStatsFromUrl();
 
   return (
-    <div className="flex flex-col overflow-x-auto items-center text-stone-300 bg-stone-900 font-sans selection:bg-orange-500/50">
+    <div className="flex flex-col overflow-x-auto items-center text-stone-300 bg-stone-900 font-sans selection:bg-primary/50">
       <main className="flex flex-col items-center min-h-screen px-8 md:px-16 lg:px-24">
         <Hero />
         <div className="flex flex-col mb-36">
@@ -33,7 +33,7 @@ export default function App() {
               <ItemStatsSection />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row flex-wrap justify-center gap-4">
+          <div className="flex flex-col md:flex-row flex-wrap justify-center items-start gap-4">
             <BuildSummary source="base" />
             <BuildSummary source="item1" />
             <BuildSummary source="item2" />
