@@ -13,7 +13,7 @@ export type DpsFormatOptions = { asPercent?: boolean; compact?: boolean; sign?: 
 export function formatDps(value: number, opts?: DpsFormatOptions) {
   const sign = opts?.sign ? (value > 0 ? '+' : '') : '';
   const formatted = opts?.compact ? compactFormatter.format(value) : dpsFormatter.format(value);
-  if (!opts?.asPercent) return `${sign}${formatted}`;
+  const percent = opts?.asPercent && formatted !== '∞' ? '%' : '';
 
-  return `${sign}${formatted}%`;
+  return `${sign}${formatted}${percent}`;
 }
