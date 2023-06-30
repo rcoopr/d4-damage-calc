@@ -21,6 +21,7 @@ specifiers:
   postcss: ^8.4.24
   react: ^18.2.0
   react-dom: ^18.2.0
+  tailwind-gradient-mask-image: ^1.0.0
   tailwindcss: ^3.3.2
   tailwindcss-bg-patterns: ^0.2.0
   typescript: ^5.0.2
@@ -34,6 +35,7 @@ dependencies:
   lodash.isequal: 4.5.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  tailwind-gradient-mask-image: 1.0.0
 
 devDependencies:
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.3.2
@@ -2046,6 +2048,10 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /tailwind-gradient-mask-image/1.0.0:
+    resolution: {integrity: sha512-eZJhn6wHZ0Irfpq5sm0ErewH6IC82gqjfVsDQ7MYrJcfTgepOoTI6EryLppNPoZds4EeD6/H0WrysT8HE90H5g==}
+    dev: false
 
   /tailwindcss-bg-patterns/0.2.0_fdsdqfhaoevdywfg3hmkkcav4a:
     resolution: {integrity: sha512-g5A+J/r0C5jcRkpAOoRetit60LmSpBId+WP2fyUdnp7iJnGonFggsFkvEhMfddzsosYisrnuYwfCb3IHjQ2NxQ==}

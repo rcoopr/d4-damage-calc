@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 import DaisyUi from 'daisyui';
 import BackgroundPatterns from 'tailwindcss-bg-patterns';
+import GradientMask from 'tailwind-gradient-mask-image';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
 const config: Config = {
@@ -13,7 +14,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [DaisyUi, BackgroundPatterns],
+  plugins: [DaisyUi, BackgroundPatterns, GradientMask],
   daisyui: {
     themes: [
       {
