@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai';
 import { getDpsDiff } from '../../components/dps/utils';
 import { DpsDesaturate, DpsFormat } from '../../components/dps/value';
 import { computedStatsAtom } from '../../store/dps';
-import { StatSource, sources, wornItemAtom } from '../../store/item-selection';
+import { StatSource, sources } from '../../store/item-selection';
 import clsx from 'clsx';
 import { mapSourceToBuilds } from '../../utils/misc';
 import { isSourceUnused } from '../../store/stats';

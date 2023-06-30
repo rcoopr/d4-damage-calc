@@ -15,6 +15,9 @@ export function Footer() {
         <span className="italic">true</span> DPS may be innacurate, however for comparison purposes
         it doesn't make any difference
       </p>
+      <div className="flex justify-end">
+        <a href="https://www.buymeacoffee.com/rcoopr">Buy me a coffee</a>
+      </div>
     </footer>
   );
 }
