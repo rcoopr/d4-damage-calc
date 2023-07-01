@@ -1,4 +1,4 @@
-import { useCallback, ChangeEventHandler } from 'react';
+import { useCallback, ChangeEventHandler, useState } from 'react';
 import { useAtom, useAtomValue } from 'jotai';
 import clsx from 'clsx';
 import { StatSource, wornItemAtom } from '../../store/item-selection';
@@ -48,13 +48,22 @@ function InputContainer({ id, label, source, children }: InputContainerProps) {
 
 function Input({ id, source, unit, ...inputProps }: InputProps) {
   const [stats, setStats] = useAtom(statsAtoms[source]);
+  const [input, setInput] = useState(stats[id].toString());
   const baseValue = useAtomValue(statsAtoms.base)[id];
   const wornItem = useAtomValue(wornItemAtom);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (ev) => {
-      if (!Number.isNaN(ev.currentTarget.valueAsNumber)) {
-        setStats((s) => ({ ...s, [id]: ev.currentTarget.valueAsNumber }));
+      const string = ev.currentTarget.value || '0';
+
+      const isRegexNum = string.match(/^([0-9]+([.][0-9]*)?|[.][0-9]+)$/);
+      if (isRegexNum) {
+        const withoutLeadingZeroes = string.replace(/^(0+)([0-9])/, '$2');
+        const asNum = Number(withoutLeadingZeroes);
+        const safeNum = Number.isNaN(asNum) ? 0 : asNum;
+
+        setInput(withoutLeadingZeroes);
+        setStats((s) => ({ ...s, [id]: safeNum }));
       }
     },
     [setStats, id]
@@ -71,11 +80,11 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
       )}
       <input
         id={`${source}-${id}`}
-        type="number"
+        type="text"
+        inputMode="numeric"
         min="0"
-        step="0.1"
         {...inputProps}
-        value={stats[id].toString()}
+        value={input}
         onChange={onChange}
         className={clsx(
           'border w-32 md:w-64 rounded-md block px-2.5 py-1.5 pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
@@ -94,11 +103,7 @@ function Slider({ id, source, unit, ...inputProps }: InputProps) {
   const wornItem = useAtomValue(wornItemAtom);
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (ev) => {
-      if (!Number.isNaN(ev.currentTarget.valueAsNumber)) {
-        setStats((s) => ({ ...s, [id]: ev.currentTarget.valueAsNumber }));
-      }
-    },
+    (ev) => setStats((s) => ({ ...s, [id]: Number(ev.currentTarget.value) })),
     [setStats, id]
   );
 
