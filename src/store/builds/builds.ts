@@ -1,4 +1,4 @@
-import { SetStateAction, atom, getDefaultStore } from 'jotai';
+import { SetStateAction, atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { noop } from '../../utils/misc';
 import { keys, reservedBuildNames } from './constants';
