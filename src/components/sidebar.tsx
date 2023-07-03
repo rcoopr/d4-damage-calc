@@ -1,19 +1,47 @@
 import clsx from 'clsx';
+import { createContext, useContext, useMemo } from 'react';
+
+type SidebarConfig = {
+  id: string;
+  side: 'left' | 'right';
+};
+const defaultSidebarConfig: SidebarConfig = {
+  id: 'sidebar',
+  side: 'right',
+};
+const SidebarContext = createContext(defaultSidebarConfig);
 
 export function LayoutWithSidebar({
-  content,
+  sidebar,
+  handle,
   children,
+  ...sidebarConfig
 }: {
-  content: React.ReactNode;
-  children?: React.ReactNode;
-}) {
+  sidebar: React.ReactNode;
+  handle: React.ReactNode;
+  children: React.ReactNode;
+} & Partial<SidebarConfig>) {
+  const config = useMemo(() => ({ ...defaultSidebarConfig, ...sidebarConfig }), [sidebarConfig]);
+
   return (
-    <div className="flex flex-col overflow-x-auto items-center bg-stone-900 text-stone-300 selection:bg-primary/50 font-sans">
-      {content}
-      <Checkbox />
-      <Backdrop />
-      <Drawer>{children}</Drawer>
-    </div>
+    <SidebarContext.Provider value={config}>
+      <div className="flex flex-col overflow-x-auto items-center bg-stone-900 text-stone-300 selection:bg-primary/50 font-sans">
+        <Checkbox />
+        <div
+          className={clsx(
+            'transition-transform z-0 ease-out-quart duration-500',
+            config.side === 'left' ? 'peer-checked:translate-x-20' : 'peer-checked:-translate-x-20'
+          )}
+        >
+          {children}
+        </div>
+        <Backdrop />
+        <Drawer>
+          {sidebar}
+          {handle}
+        </Drawer>
+      </div>
+    </SidebarContext.Provider>
   );
 }
 
@@ -26,33 +54,54 @@ export function SidebarHandle({ className }: { className?: string }) {
 }
 
 function Drawer({ children }: { children?: React.ReactNode }) {
+  const { side } = useContext(SidebarContext);
+
   return (
-    <aside className="fixed right-0 top-0 bottom-0 w-80 border-l border-stone-500 peer-checked:translate-x-0 translate-x-80 transition-transform ease-out-quart">
+    <aside
+      className={clsx(
+        'fixed top-0 bottom-0 w-80 border-stone-500 peer-checked:translate-x-0 transition-transform ease-out-quart duration-300',
+        side === 'left' ? 'left-0 -translate-x-80 border-r' : 'right-0 translate-x-80 border-l'
+      )}
+    >
       {children}
     </aside>
   );
 }
+
 function Handle({ className, children }: { className?: string; children?: React.ReactNode }) {
+  const { side } = useContext(SidebarContext);
+
   return (
-    <div className={clsx('absolute w-16 top-0 bottom-0 right-full', className)}>{children}</div>
+    <div
+      className={clsx(
+        'fixed w-16 top-0 bottom-0',
+        side === 'left' ? 'left-full' : 'right-full',
+        className
+      )}
+    >
+      {children}
+    </div>
   );
 }
 
 function Backdrop() {
-  return (
-    <label htmlFor="sidebar" className="fixed inset-0 bg-stone-950/30 hidden peer-checked:block" />
-  );
+  const { id } = useContext(SidebarContext);
+
+  return <label htmlFor={id} className="fixed inset-0 bg-stone-950/30 hidden peer-checked:block" />;
 }
+
 function Checkbox() {
-  return (
-    <input id="sidebar" type="checkbox" className="fixed h-0 w-0 appearance-none opacity-0 peer" />
-  );
+  const { id } = useContext(SidebarContext);
+
+  return <input id={id} type="checkbox" className="fixed h-0 w-0 appearance-none opacity-0 peer" />;
 }
 
 function Toggle() {
+  const { id } = useContext(SidebarContext);
+
   return (
     <label
-      htmlFor="sidebar"
+      htmlFor={id}
       className="cursor-pointer relative z-10 text-stone-500 hover:text-stone-300"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24">
