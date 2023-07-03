@@ -16,7 +16,7 @@ const labels: Record<StatSource, string> = {
 
 export function BuildDpsSummary() {
   return (
-    <div className="flex flex-col mb-12 gap-1 text-stone-400 font-medium text-xl animate-in fade-in fill-mode-both delay-150 duration-300">
+    <div className="flex flex-col mb-12 gap-1 text-stone-400 font-medium text-xl">
       {sources.map((source) => (
         <DpsLine key={source} source={source} label={labels[source]} />
       ))}
