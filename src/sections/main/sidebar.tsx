@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { SidebarHandle } from '../../components/sidebar';
-import { stats } from '../../store/stats';
+import { stats } from '../../store/builds/stats/labels';
 
 export function Sidebar() {
   return (

@@ -2,7 +2,7 @@ import { useCallback, ChangeEventHandler } from 'react';
 import { useAtom } from 'jotai';
 import clsx from 'clsx';
 import { activeBuildAtom } from '../../store/builds/builds';
-import { StatSource, stats } from '../../store/builds/stats/misc';
+import { StatSource, stats } from '../../store/builds/stats/labels';
 import { Stats } from '../../store/builds/schema';
 
 type InputProps = {

@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
-import { StatSource, BuildSource } from './builds/stats/misc';
-import { Stats } from './builds/schema';
-import { activeBuildAtom } from './builds/builds';
+import { StatSource, BuildSource } from './stats/labels';
+import { Stats } from './schema';
+import { activeBuildAtom } from './builds';
 
 export type ComputedStats = {
   statsTotal: Record<StatSource, Stats>;

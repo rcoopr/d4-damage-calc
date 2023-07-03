@@ -1,11 +1,12 @@
 import { useAtomValue } from 'jotai';
 import { getDpsDiff } from '../../components/dps/utils';
 import { DpsDesaturate, DpsFormat } from '../../components/dps/value';
-import { computedStatsAtom } from '../../store/dps';
+import { computedStatsAtom } from '../../store/builds/dps';
 import clsx from 'clsx';
 import { mapSourceToBuilds } from '../../utils/misc';
-import { StatSource, sources } from '../../store/builds/stats/misc';
-import { activeBuildAtom, isDefaultStats } from '../../store/builds/builds';
+import { StatSource, sources } from '../../store/builds/stats/labels';
+import { activeBuildAtom } from '../../store/builds/builds';
+import { isDefaultStats } from '../../store/builds/utils';
 
 const labels: Record<StatSource, string> = {
   char: 'Base DPS',

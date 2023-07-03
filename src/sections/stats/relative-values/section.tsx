@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
-import { computedStatsAtom } from '../../../store/dps';
-import { StatSource } from '../../../store/item-selection';
+import { computedStatsAtom } from '../../../store/builds/dps';
 import { formatDps } from '../../../utils/dps';
+import { StatSource } from '../../../store/builds/stats/labels';
 
 const calculateRelativeValue = (bucket1: number, bucket2: number) => {
   return (1 + bucket2) / (1 + bucket1);

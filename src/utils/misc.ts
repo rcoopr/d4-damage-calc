@@ -1,4 +1,4 @@
-import { StatSource, BuildSource } from '../store/builds/stats/misc';
+import { StatSource, BuildSource } from '../store/builds/stats/labels';
 
 export function clamp(number: number, min: number, max: number) {
   return Math.min(max, Math.max(min, number));

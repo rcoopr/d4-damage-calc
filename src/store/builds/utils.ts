@@ -1,8 +1,9 @@
+import isEqual from 'lodash.isequal';
 import { clamp } from '../../utils/misc';
 import { keys } from './constants';
-import { Build, BuildStorage, buildStorageSchema, statsSchema } from './schema';
-import { emptyBuild } from './stats/defaults';
-import { ItemSource, sources, stats } from './stats/misc';
+import { Build, BuildStorage, Stats, buildStorageSchema, statsSchema } from './schema';
+import { defaultBaseStats, defaultItemStats, emptyBuild } from './stats/defaults';
+import { ItemSource, StatSource, sources, stats } from './stats/labels';
 
 export function isWornItem(item: string | null): item is ItemSource | null {
   return item === null || item === 'item1' || item === 'item2';
@@ -50,4 +51,8 @@ export function getImportBuild(): Build {
   console.groupEnd();
 
   return Object.assign(emptyBuild, importedBuild);
+}
+
+export function isDefaultStats(source: StatSource, stats: Stats) {
+  return isEqual(stats, source === 'char' ? defaultBaseStats : defaultItemStats);
 }

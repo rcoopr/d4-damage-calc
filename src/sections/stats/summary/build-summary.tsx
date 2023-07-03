@@ -1,9 +1,9 @@
 import { useAtomValue } from 'jotai';
-import { computedStatsAtom } from '../../../store/dps';
+import { computedStatsAtom } from '../../../store/builds/dps';
 import { DpsColor } from '../../../components/dps/value';
 import { formatDps } from '../../../utils/dps';
 import { mapSourceToBuilds } from '../../../utils/misc';
-import { StatSource, stats } from '../../../store/builds/stats/misc';
+import { StatSource, stats } from '../../../store/builds/stats/labels';
 
 export function BuildSummary({ source }: { source: StatSource }) {
   const item = source === 'char' ? 0 : (Number(source.charAt(source.length - 1)) as 0 | 1 | 2);

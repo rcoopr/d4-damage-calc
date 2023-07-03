@@ -1,10 +1,11 @@
 import clsx from 'clsx';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, ChangeEventHandler } from 'react';
-import { computedStatsAtom } from '../../store/dps';
+import { computedStatsAtom } from '../../store/builds/dps';
 import { DpsDesaturate, DpsFormat } from './value';
-import { ItemSource } from '../../store/builds/stats/misc';
-import { activeBuildAtom, isDefaultStats } from '../../store/builds/builds';
+import { ItemSource } from '../../store/builds/stats/labels';
+import { activeBuildAtom } from '../../store/builds/builds';
+import { isDefaultStats } from '../../store/builds/utils';
 
 export function ItemDpsComparison({ item }: { item: ItemSource }) {
   const [build, setBuild] = useAtom(activeBuildAtom);

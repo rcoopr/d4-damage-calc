@@ -1,5 +1,5 @@
-import { ComputedStats } from '../../store/dps';
-import { StatSource, BuildSource } from '../../store/item-selection';
+import { ComputedStats } from '../../store/builds/dps';
+import { StatSource, BuildSource } from '../../store/builds/stats/labels';
 
 export function getDpsDiff(
   comparison: ComputedStats['comparison'],
