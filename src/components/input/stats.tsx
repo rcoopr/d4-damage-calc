@@ -1,8 +1,9 @@
-import { useCallback, ChangeEventHandler, useState } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useCallback, ChangeEventHandler } from 'react';
+import { useAtom } from 'jotai';
 import clsx from 'clsx';
-import { StatSource, wornItemAtom } from '../../store/item-selection';
-import { Stats, stats, statsAtoms } from '../../store/stats';
+import { activeBuildAtom } from '../../store/builds/builds';
+import { StatSource, stats } from '../../store/builds/stats/misc';
+import { Stats } from '../../store/builds/schema';
 
 type InputProps = {
   id: keyof Stats;
@@ -19,14 +20,12 @@ export function StatInput({ source }: { source: StatSource }) {
   return (
     <>
       {stats.map((stat) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { validator: _, ...passThroughStat } = stat;
         return (
           <InputContainer key={stat.id} id={stat.id} label={stat.label} source={source}>
             {stat.id === 'critChance' ? (
-              <Slider source={source} {...passThroughStat} max="100" step="0.1" />
+              <Slider source={source} {...stat} max="100" step="0.1" />
             ) : (
-              <Input source={source} {...passThroughStat} />
+              <Input source={source} {...stat} />
             )}
           </InputContainer>
         );
@@ -47,27 +46,35 @@ function InputContainer({ id, label, source, children }: InputContainerProps) {
 }
 
 function Input({ id, source, unit, ...inputProps }: InputProps) {
-  const [stats, setStats] = useAtom(statsAtoms[source]);
-  const [input, setInput] = useState(stats[id].toString());
-  const baseValue = useAtomValue(statsAtoms.base)[id];
-  const wornItem = useAtomValue(wornItemAtom);
+  const [build, setBuild] = useAtom(activeBuildAtom);
+  const stats = build[source];
+
+  const baseValue = build.char[id];
+  const wornItem = build.wornItem;
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (ev) => {
-      const string = ev.currentTarget.value || '0';
-
-      const isRegexNum = string.match(/^([0-9]+([.][0-9]*)?|[.][0-9]+)$/);
-      if (isRegexNum) {
-        const withoutLeadingZeroes = string.replace(/^(0+)([0-9])/, '$2');
-        const asNum = Number(withoutLeadingZeroes);
-        const safeNum = Number.isNaN(asNum) ? 0 : asNum;
-
-        setInput(withoutLeadingZeroes);
-        setStats((s) => ({ ...s, [id]: safeNum }));
-      }
-    },
-    [setStats, id]
+    (ev) => setBuild({ [source]: { [id]: Number(ev.currentTarget.value) } }),
+    [setBuild, source, id]
   );
+
+  // const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+  //   (ev) => {
+  //     const string = ev.currentTarget.value || '0';
+  //     // [+-]?((\d+\.?\d*)|(\.\d+))
+  //     // [+-]? - optional at start to capture sign too
+  //     // const isRegexNum = string.match(/^(\d+(\.\d*)?|\.\d+)$/);
+  //     const isRegexNum = string.match(/^([0-9]+([.][0-9]*)?|[.][0-9]+)$/);
+  //     if (isRegexNum) {
+  //       const withoutLeadingZeroes = string.replace(/^(0+)([0-9])/, '$2');
+  //       const asNum = Number(withoutLeadingZeroes);
+  //       const safeNum = Number.isNaN(asNum) ? 0 : asNum;
+
+  //       setInput(withoutLeadingZeroes);
+  //       setStats((s) => ({ ...s, [id]: safeNum }));
+  //     }
+  //   },
+  //   [setStats, id]
+  // );
 
   const error = wornItem === source && baseValue < stats[id];
 
@@ -80,11 +87,11 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
       )}
       <input
         id={`${source}-${id}`}
-        type="text"
-        inputMode="numeric"
+        type="number"
+        inputMode="decimal"
         min="0"
         {...inputProps}
-        value={input}
+        value={stats[id].toString()}
         onChange={onChange}
         className={clsx(
           'border w-32 md:w-64 rounded-md block px-2.5 py-1.5 pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
@@ -98,13 +105,14 @@ function Input({ id, source, unit, ...inputProps }: InputProps) {
 }
 
 function Slider({ id, source, unit, ...inputProps }: InputProps) {
-  const [stats, setStats] = useAtom(statsAtoms[source]);
-  const baseValue = useAtomValue(statsAtoms.base)[id];
-  const wornItem = useAtomValue(wornItemAtom);
+  const [build, setBuild] = useAtom(activeBuildAtom);
+  const stats = build[source];
+  const baseValue = build.char[id];
+  const wornItem = build.wornItem;
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (ev) => setStats((s) => ({ ...s, [id]: Number(ev.currentTarget.value) })),
-    [setStats, id]
+    (ev) => setBuild({ [source]: { [id]: Number(ev.currentTarget.value) } }),
+    [setBuild, source, id]
   );
 
   const error = wornItem === source && baseValue < stats[id];

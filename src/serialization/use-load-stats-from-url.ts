@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { importComparison } from './import';
+import { resetWindowLocationToOrigin } from '../utils/misc';
 
 export function useLoadStatsFromUrl() {
   useEffect(() => {
@@ -10,8 +11,4 @@ export function useLoadStatsFromUrl() {
       resetWindowLocationToOrigin();
     }
   }, []);
-}
-
-function resetWindowLocationToOrigin() {
-  window.history.replaceState(null, '', new URL(window.location.origin));
 }

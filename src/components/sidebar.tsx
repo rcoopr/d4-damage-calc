@@ -27,7 +27,7 @@ export function SidebarHandle({ className }: { className?: string }) {
 
 function Drawer({ children }: { children?: React.ReactNode }) {
   return (
-    <aside className="fixed right-0 top-0 bottom-0 w-80 border-l border-stone-500 peer-checked:translate-x-0 translate-x-80 transition-transform ease-[cubic-bezier(0.25,1,0.5,1)]">
+    <aside className="fixed right-0 top-0 bottom-0 w-80 border-l border-stone-500 peer-checked:translate-x-0 translate-x-80 transition-transform ease-out-quart">
       {children}
     </aside>
   );

@@ -2,20 +2,20 @@ import { useAtomValue } from 'jotai';
 import { getDpsDiff } from '../../components/dps/utils';
 import { DpsDesaturate, DpsFormat } from '../../components/dps/value';
 import { computedStatsAtom } from '../../store/dps';
-import { StatSource, sources } from '../../store/item-selection';
 import clsx from 'clsx';
 import { mapSourceToBuilds } from '../../utils/misc';
-import { isSourceUnused } from '../../store/stats';
+import { StatSource, sources } from '../../store/builds/stats/misc';
+import { activeBuildAtom, isDefaultStats } from '../../store/builds/builds';
 
 const labels: Record<StatSource, string> = {
-  base: 'Base DPS',
+  char: 'Base DPS',
   item1: 'With Item 1:',
   item2: 'With Item 2:',
 };
 
 export function BuildDpsSummary() {
   return (
-    <div className="flex flex-col mb-12 gap-1 text-stone-400 font-medium text-xl">
+    <div className="flex flex-col mb-12 gap-1 text-stone-400 font-medium text-xl animate-in fade-in fill-mode-both delay-150 duration-300">
       {sources.map((source) => (
         <DpsLine key={source} source={source} label={labels[source]} />
       ))}
@@ -28,7 +28,9 @@ export function BuildDpsSummary() {
 }
 
 function DpsDiff() {
-  const isItem2Empty = useAtomValue(isSourceUnused.item2);
+  const build = useAtomValue(activeBuildAtom);
+  const isItem2Empty = isDefaultStats('item2', build.item2);
+
   const computedStats = useAtomValue(computedStatsAtom);
 
   const diff = isItem2Empty ? computedStats.comparison.build : 0 - computedStats.comparison.build;
@@ -46,6 +48,9 @@ function DpsDiff() {
 }
 
 function DpsLine({ label, source }: { label: string; source: StatSource }) {
+  const activeBuild = useAtomValue(activeBuildAtom);
+  const isUnused = isDefaultStats('item2', activeBuild[source]);
+
   const computedStats = useAtomValue(computedStatsAtom);
   const build = mapSourceToBuilds[source];
 
@@ -55,21 +60,19 @@ function DpsLine({ label, source }: { label: string; source: StatSource }) {
   const maxDps = Math.max(computedStats.dps.build1, computedStats.dps.build2);
   const width = (buildDps / maxDps) * 100;
 
-  const isUnused = useAtomValue(isSourceUnused[source]);
-
   return (
     <div
       className={clsx(
         'flex transition-opacity items-center relative',
-        build !== 'base' && isUnused ? 'opacity-0' : 'opacity-100'
+        build !== 'char' && isUnused ? 'opacity-0' : 'opacity-100'
       )}
     >
-      <div className="absolute inset-y-0 left-0 -right-2">
+      <div className="absolute inset-y-0 left-0 -right-2 animate-in fade-in">
         <div
           className={clsx(
             'absolute inset-0 rounded-r-lg bg-gradient-to-l to-60%',
             // 'after:absolute after:inset-0 after:pattern-diagonal-lines after:pattern-black after:pattern-bg-white after:pattern-size-4 after:pattern-opacity-50 after:mix-blend-multiply',
-            source === 'base' ? 'from-primary/20' : diff > 0 ? 'from-success/20' : 'from-error/20'
+            source === 'char' ? 'from-primary/20' : diff > 0 ? 'from-success/20' : 'from-error/20'
           )}
           style={{ width: `${width.toFixed(2)}%` }}
         />

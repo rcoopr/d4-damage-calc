@@ -1,20 +1,21 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { exportComparison } from './export';
+import { useExportBuild } from './use-export-build';
 
 export function CopyLinkButton() {
   const [open, setOpen] = useState(false);
   const timeout = useRef<number>();
+  const exportBuild = useExportBuild();
 
   const onClick = useCallback(() => {
     setOpen(true);
-    exportComparison();
+    exportBuild();
 
     if (timeout.current) {
       window.clearTimeout(timeout.current);
     }
 
     timeout.current = window.setTimeout(() => setOpen(false), 1800);
-  }, []);
+  }, [exportBuild]);
 
   useEffect(() => {
     return () => {

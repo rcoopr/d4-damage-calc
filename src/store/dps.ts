@@ -1,21 +1,23 @@
 import { atom } from 'jotai';
-import { Build, StatSource, wornItemAtom } from './item-selection';
-import { statsAtoms, Stats } from './stats';
+import { StatSource, BuildSource } from './builds/stats/misc';
+import { Stats } from './builds/schema';
+import { activeBuildAtom } from './builds/builds';
 
 export type ComputedStats = {
   statsTotal: Record<StatSource, Stats>;
-  dps: Record<StatSource | Build, number>;
+  dps: Record<StatSource | BuildSource, number>;
   comparison: Record<'item' | 'build', number>;
-  increase: Record<Exclude<Build, 'base'>, number>;
+  increase: Record<Exclude<BuildSource, 'char'>, number>;
 };
 
 export const computedStatsAtom = atom<ComputedStats>((get) => {
-  const baseStats = get(statsAtoms.base);
-  const item1Stats = get(statsAtoms.item1);
-  const item2Stats = get(statsAtoms.item2);
+  const build = get(activeBuildAtom);
+  const baseStats = build.char;
+  const item1Stats = build.item1;
+  const item2Stats = build.item2;
 
-  const wornItem = get(wornItemAtom);
-  const wornStats = wornItem ? get(statsAtoms[wornItem]) : undefined;
+  const wornItem = build.wornItem;
+  const wornStats = wornItem ? build[wornItem] : undefined;
 
   const statsWithoutItems = adjustStats(baseStats, wornStats, wornItem ? -1 : 0);
   const statsWithItem1 = adjustStats(statsWithoutItems, item1Stats);
@@ -50,12 +52,12 @@ export const computedStatsAtom = atom<ComputedStats>((get) => {
 
   return {
     statsTotal: {
-      base: statsWithoutItems,
+      char: statsWithoutItems,
       item1: statsWithItem1,
       item2: statsWithItem2,
     },
     dps: {
-      base: baseDps,
+      char: baseDps,
       item1: item1Dps,
       item2: item2Dps,
       build1: build1Dps,

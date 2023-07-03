@@ -1,13 +1,12 @@
 import { useAtomValue } from 'jotai';
 import { computedStatsAtom } from '../../../store/dps';
-import { StatSource } from '../../../store/item-selection';
-import { stats } from '../../../store/stats';
 import { DpsColor } from '../../../components/dps/value';
 import { formatDps } from '../../../utils/dps';
 import { mapSourceToBuilds } from '../../../utils/misc';
+import { StatSource, stats } from '../../../store/builds/stats/misc';
 
 export function BuildSummary({ source }: { source: StatSource }) {
-  const item = source === 'base' ? 0 : (Number(source.charAt(source.length - 1)) as 0 | 1 | 2);
+  const item = source === 'char' ? 0 : (Number(source.charAt(source.length - 1)) as 0 | 1 | 2);
 
   return (
     <div className="rounded-lg border-stone-700 border flex flex-col overflow-hidden">

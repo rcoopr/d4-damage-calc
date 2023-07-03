@@ -1,12 +1,14 @@
 import { getDefaultStore } from 'jotai';
-import { ItemSource, sources, wornItemAtom } from '../store/item-selection';
+import { ItemSource, StatSource, sources, wornItemAtom } from '../store/item-selection';
 import { stats, Stats, statsAtoms } from '../store/stats';
 import { clamp } from '../utils/misc';
 import { searchParamKeys } from './export';
+import { importedBuild } from '../store/builds/builds';
 
 export function importComparison() {
-  const defaultStore = getDefaultStore();
+  const store = importedBuild;
   const searchParams = getSearchParams();
+  const log = {} as Record<StatSource | 'wornItem', unknown>;
 
   for (const source of sources) {
     const param = searchParams.get(source);
@@ -17,7 +19,8 @@ export function importComparison() {
         stats.map((stat, index) => [stat.id, stat.validator(paramStats[index])])
       ) as Stats;
 
-      defaultStore.set(statsAtoms[source], parsedStats);
+      store.set(statsAtoms[source], parsedStats);
+      log[source] = param;
     }
   }
 
@@ -25,7 +28,9 @@ export function importComparison() {
   const wornItemNumber = Number.isNaN(wornParam) ? 0 : clamp(wornParam, 0, 2);
   const wornItem = wornItemNumber === 0 ? null : (`item${wornItemNumber}` as ItemSource);
 
-  defaultStore.set(wornItemAtom, wornItem);
+  store.set(wornItemAtom, wornItem);
+  log.wornItem = wornItem;
+  console.table(log);
 }
 
 function getSearchParams() {

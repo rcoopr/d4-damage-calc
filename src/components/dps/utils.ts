@@ -1,7 +1,10 @@
 import { ComputedStats } from '../../store/dps';
-import { StatSource, Build } from '../../store/item-selection';
+import { StatSource, BuildSource } from '../../store/item-selection';
 
-export function getDpsDiff(comparison: ComputedStats['comparison'], source: StatSource | Build) {
+export function getDpsDiff(
+  comparison: ComputedStats['comparison'],
+  source: StatSource | BuildSource
+) {
   switch (source) {
     case 'build1':
       return comparison.build;

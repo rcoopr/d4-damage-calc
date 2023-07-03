@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 import DaisyUi from 'daisyui';
 import BackgroundPatterns from 'tailwindcss-bg-patterns';
 import GradientMask from 'tailwind-gradient-mask-image';
+import Animate from 'tailwindcss-animate';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
 const config: Config = {
@@ -22,9 +23,12 @@ const config: Config = {
           };
         }, {});
       },
+      transitionTimingFunction: {
+        'out-quart': 'cubic-bezier(0.25, 1, 0.5, 1)',
+      },
     },
   },
-  plugins: [DaisyUi, BackgroundPatterns, GradientMask],
+  plugins: [DaisyUi, BackgroundPatterns, GradientMask, Animate],
   daisyui: {
     themes: [
       {
