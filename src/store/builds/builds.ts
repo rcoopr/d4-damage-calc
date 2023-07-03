@@ -1,4 +1,4 @@
-import { SetStateAction, atom } from 'jotai';
+import { SetStateAction, atom, getDefaultStore } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { noop } from '../../utils/misc';
 import { keys, reservedBuildNames } from './constants';
@@ -44,6 +44,9 @@ function unwrapSetStateAction<T>(action: SetStateAction<T>, prev: T): T {
 
 type DeepPartial<T> = T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T;
 
+// TODO: Expand setter to encompass all updates to storage that require updates to activeBuild,
+// thus synchronizing state, once and for all!
+//      -- Lrrrrrr
 export const activeBuildAtom = atom<Build, [SetStateAction<DeepPartial<Build>>], void>(
   (get) => {
     const storage = get(buildStorageAtom);

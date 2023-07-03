@@ -1,9 +1,14 @@
 import clsx from 'clsx';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { buildNamesAtom } from '../../../../../store/builds/builds';
+import {
+  activeBuildNameAtom,
+  buildNamesAtom,
+  buildStorageAtom,
+} from '../../../../../store/builds/builds';
 import { getHumanReadableErrorMessage, isValidObjectKey } from './shared';
+import { emptyBuild } from '../../../../../store/builds/stats/defaults';
 
 type FormData = {
   buildName: string;
@@ -13,6 +18,10 @@ const defaultFormData: FormData = { buildName: 'My Build' };
 
 export function SaveBuildForm() {
   const buildNames = useAtomValue(buildNamesAtom);
+  const [activeBuildName, setActiveBuildName] = useAtom(activeBuildNameAtom);
+
+  const setStorage = useSetAtom(buildStorageAtom);
+
   const {
     register,
     handleSubmit,
@@ -24,7 +33,20 @@ export function SaveBuildForm() {
     [buildNames]
   );
 
-  const onSubmit = useCallback((data: unknown) => console.log({ data }), []);
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      // TODO / Warning: Validation on setStorage could fail, causing a mismatch in activeBuildName and buildStorage
+      setStorage((storage) => {
+        const newStorage = { ...storage };
+        const copiedBuild = Object.getOwnPropertyDescriptor(newStorage, activeBuildName);
+        Object.defineProperty(newStorage, data.buildName, copiedBuild ?? emptyBuild);
+        console.log({ newStorage, copiedBuild, name: data.buildName });
+        return newStorage;
+      });
+      setActiveBuildName(data.buildName);
+    },
+    [activeBuildName, setActiveBuildName, setStorage]
+  );
 
   return (
     <form method="dialog" onSubmit={handleSubmit(onSubmit)}>

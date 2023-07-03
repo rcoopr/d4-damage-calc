@@ -46,21 +46,22 @@ function Builds() {
     <div className="flex items-center flex-col gap-2">
       <h4 className="orientation-upright writing-vertical-rl font-bold my-2 text-sm">BUILDS</h4>
       {buildNames.map((name) => (
-        <button
-          key={name}
-          data-build={name}
-          onClick={onBuildIconClick}
-          className="p-2 btn btn-square hover:scale-110 btn-sm btn-ghost hover:text-stone-300 rounded-md grid place-content-center"
-        >
-          <div
-            className={clsx(
-              'rounded font-bold border-2 border-current w-8 h-8 grid place-content-center',
-              name === activeBuild && 'text-primary'
-            )}
+        <div className="tooltip tooltip-left" key={name} data-tip={name}>
+          <button
+            data-build={name}
+            onClick={onBuildIconClick}
+            className="p-2 btn btn-square hover:scale-110 btn-sm btn-ghost hover:text-stone-300 rounded-md grid place-content-center"
           >
-            {name.charAt(0)}
-          </div>
-        </button>
+            <div
+              className={clsx(
+                'rounded font-bold border-2 border-current w-8 h-8 grid place-content-center',
+                name === activeBuild && 'text-primary'
+              )}
+            >
+              {name.charAt(0)}
+            </div>
+          </button>
+        </div>
       ))}
       <div
         onClick={onNewBuildClick}
