@@ -37,7 +37,7 @@ export function StatInput({ source }: { source: StatSource }) {
 function InputContainer({ id, label, source, children }: InputContainerProps) {
   return (
     <div className="flex justify-between gap-12 items-center">
-      <label htmlFor={`${source}-${id}`} className="font-medium">
+      <label htmlFor={`${source}-${id}`} className="font-medium leading-none">
         {label}
       </label>
       {children}

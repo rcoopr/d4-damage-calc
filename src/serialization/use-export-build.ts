@@ -1,39 +1,53 @@
 import copyTextToClipboard from 'copy-text-to-clipboard';
 import { useAtomValue } from 'jotai';
 import { StatSource, stats, sources } from '../store/builds/stats/labels';
-import { buildStorageAtom } from '../store/builds/builds';
-import { Build } from '../store/builds/schema';
-import { keys, reservedBuildNames } from '../store/builds/constants';
+import { activeBuildAtom, buildStorageAtom } from '../store/builds/builds';
+import { Build, Stats } from '../store/builds/schema';
+import { keys } from '../store/builds/constants';
 import { isDefaultStats } from '../store/builds/utils';
 
-export function useExportBuild(buildName?: string) {
+export function useExportBuild(
+  buildName?: string
+): { success: true; copy: () => void } | { success: false } {
+  const activeBuild = useAtomValue(activeBuildAtom);
   const builds = useAtomValue(buildStorageAtom);
-  const build = builds[buildName ?? reservedBuildNames.default];
+
+  if (buildName && !(buildName in builds)) {
+    return { success: false };
+  }
+
+  const build = buildName ? builds[buildName] : activeBuild;
 
   const url = new URL(window.location.origin);
-  const log = {} as Record<StatSource | 'wornItem', string>;
+  const log = {} as Record<StatSource | 'wornItem', Stats | string>;
 
-  return () => {
-    for (const source of sources) {
-      const serializedStats = serializeStats(build, source);
-      if (serializedStats) {
-        url.searchParams.set(source, serializedStats);
-        log[source] = serializedStats;
+  return {
+    success: true,
+    copy: () => {
+      for (const source of sources) {
+        const serializedStats = serializeStats(build, source);
+        if (serializedStats) {
+          url.searchParams.set(source, serializedStats);
+          log[source] = build[source];
+        }
       }
-    }
 
-    if (build.wornItem) {
-      url.searchParams.set(keys.wornItem, build.wornItem);
-      log['wornItem'] = build.wornItem;
-    }
+      if (build.wornItem) {
+        url.searchParams.set(keys.wornItem, build.wornItem);
+        log['wornItem'] = build.wornItem;
+      }
 
-    console.table(log);
-    copyTextToClipboard(url.toString());
+      console.group('export');
+      console.table(log);
+      console.groupEnd();
+      copyTextToClipboard(url.toString());
+    },
   };
 }
 
 function serializeStats(build: Build, source: StatSource) {
   const isUnused = isDefaultStats(source, build[source]);
+
   return isUnused
     ? ''
     : stats.map((stat) => formatForSearchParam(build[source][stat.id])).join(',');

@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@iconify-json/solar': ^1.1.1
   '@swc-jotai/react-refresh': ^0.0.8
   '@types/lodash.isequal': ^4.5.6
   '@types/lodash.merge': ^4.6.7
@@ -13,6 +14,7 @@ specifiers:
   autoprefixer: ^10.4.14
   clsx: ^1.2.1
   copy-text-to-clipboard: ^3.1.0
+  csstype: ^3.1.2
   daisyui: ^3.1.6
   eslint: ^8.38.0
   eslint-plugin-react-hooks: ^4.6.0
@@ -23,7 +25,10 @@ specifiers:
   postcss: ^8.4.24
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-hook-form: ^7.45.1
+  react-hot-toast: ^2.4.1
   tailwindcss: ^3.3.2
+  tailwindcss-plugin-icons: ^2.1.1
   typescript: ^5.0.2
   vite: ^4.3.9
   zod: ^3.21.4
@@ -37,9 +42,12 @@ dependencies:
   lodash.merge: 4.6.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.45.1_react@18.2.0
+  react-hot-toast: 2.4.1_s7mghcr6idhb4d5ook54gl4n44
   zod: 3.21.4
 
 devDependencies:
+  '@iconify-json/solar': 1.1.1
   '@swc-jotai/react-refresh': 0.0.8
   '@types/lodash.isequal': 4.5.6
   '@types/lodash.merge': 4.6.7
@@ -49,12 +57,14 @@ devDependencies:
   '@typescript-eslint/parser': 5.60.1_7yfldhli4vs6yywnkyiujhawka
   '@vitejs/plugin-react-swc': 3.3.2_vite@4.3.9
   autoprefixer: 10.4.14_postcss@8.4.24
+  csstype: 3.1.2
   daisyui: 3.1.6_postcss@8.4.24
   eslint: 8.43.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.43.0
   eslint-plugin-react-refresh: 0.3.5_eslint@8.43.0
   postcss: 8.4.24
   tailwindcss: 3.3.2
+  tailwindcss-plugin-icons: 2.1.1_tailwindcss@3.3.2
   typescript: 5.1.3
   vite: 4.3.9
 
@@ -318,6 +328,16 @@ packages:
 
   /@humanwhocodes/object-schema/1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
+    dev: true
+
+  /@iconify-json/solar/1.1.1:
+    resolution: {integrity: sha512-VN7vPHaUW5cASnm2iN986bwTMGans5zAk1cVYB6nAGDhWjqaBMS6bmYmlpAYpuLk08uMAp2YtLkC23XFQd1zhg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify/types/2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: true
 
   /@jridgewell/gen-mapping/0.3.3:
@@ -887,7 +907,6 @@ packages:
 
   /csstype/3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
-    dev: true
 
   /daisyui/3.1.6_postcss@8.4.24:
     resolution: {integrity: sha512-P/2WUn4ZImEc2IfPSYw3qPCUnnJNju0P6ii0fUqtTURUj0oda6L0tm4EzrUmB2EbqB6grZ9nKHPTSniKaPYp1w==}
@@ -1251,6 +1270,14 @@ packages:
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
+
+  /goober/2.1.13_csstype@3.1.2:
+    resolution: {integrity: sha512-jFj3BQeleOoy7t93E9rZ2de+ScC4lQICLwiAQmKMg9F6roKGaLSHoCDYKkWlSafg138jejvq/mTdvmnwDQgqoQ==}
+    peerDependencies:
+      csstype: ^3.0.10
+    dependencies:
+      csstype: 3.1.2
+    dev: false
 
   /grapheme-splitter/1.0.4:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
@@ -1666,6 +1693,29 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-hook-form/7.45.1_react@18.2.0:
+    resolution: {integrity: sha512-6dWoFJwycbuFfw/iKMcl+RdAOAOHDiF11KWYhNDRN/OkUt+Di5qsZHwA0OwsVnu9y135gkHpTw9DJA+WzCeR9w==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-hot-toast/2.4.1_s7mghcr6idhb4d5ook54gl4n44:
+    resolution: {integrity: sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      goober: 2.1.13_csstype@3.1.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - csstype
+    dev: false
+
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
@@ -1798,6 +1848,14 @@ packages:
   /supports-preserve-symlinks-flag/1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+    dev: true
+
+  /tailwindcss-plugin-icons/2.1.1_tailwindcss@3.3.2:
+    resolution: {integrity: sha512-9WTcvyBhAt1/PzMbTdv4ez+46qZp7qUMcC5aI9iq17GU95rcDbfnar0mV2kqkvfJcpyW8njbxtquBY1y0LBZiw==}
+    peerDependencies:
+      tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.3.2
     dev: true
 
   /tailwindcss/3.3.2:

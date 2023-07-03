@@ -24,7 +24,7 @@ export function UsageHint() {
       <dialog ref={ref} className="modal backdrop-blur" onClick={closeModal}>
         <form
           method="dialog"
-          className="modal-box max-w-[75ch] px-16 leading-snug shadow-xl shadow-stone-950/25 text-stone-300"
+          className="modal-box border-2 border-secondary max-w-[75ch] px-16 leading-snug shadow-xl shadow-stone-950/25 text-stone-300"
           onClick={stopPropagation}
         >
           <div className="flex w-full justify-between mb-6 items-center">

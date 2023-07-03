@@ -12,6 +12,7 @@ export type ComputedStats = {
 
 export const computedStatsAtom = atom<ComputedStats>((get) => {
   const build = get(activeBuildAtom);
+
   const baseStats = build.char;
   const item1Stats = build.item1;
   const item2Stats = build.item2;

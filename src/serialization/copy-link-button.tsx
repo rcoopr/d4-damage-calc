@@ -1,5 +1,10 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useExportBuild } from './use-export-build';
+import toast from 'react-hot-toast';
+
+// const notifySuccess = () => toast.success("Build URL copied to clipboard!")
+const notifyErrorInvalidBuild = () =>
+  toast.error('Build could not be exported. Invalid build name');
 
 export function CopyLinkButton() {
   const [open, setOpen] = useState(false);
@@ -8,7 +13,13 @@ export function CopyLinkButton() {
 
   const onClick = useCallback(() => {
     setOpen(true);
-    exportBuild();
+
+    if (!exportBuild.success) {
+      notifyErrorInvalidBuild();
+      return;
+    }
+
+    exportBuild.copy();
 
     if (timeout.current) {
       window.clearTimeout(timeout.current);

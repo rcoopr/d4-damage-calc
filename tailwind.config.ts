@@ -1,6 +1,19 @@
 import type { Config } from 'tailwindcss';
 import DaisyUi from 'daisyui';
 import defaultTheme from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
+import { Icons, type Options } from 'tailwindcss-plugin-icons';
+
+const options: Options = () => ({
+  solar: {
+    icons: {
+      'settings-minimalistic-outline': {},
+    },
+    includeAll: true,
+    scale: 1.5,
+    location: '@iconify-json/solar/icons.json',
+  },
+});
 
 const config: Config = {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
@@ -25,7 +38,47 @@ const config: Config = {
       },
     },
   },
-  plugins: [DaisyUi],
+  plugins: [
+    Icons(options),
+    DaisyUi,
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        // https://developer.mozilla.org/en-US/docs/Web/CSS/writing-mode
+        '.writing-horizontal': { writingMode: 'horizontal-tb' },
+        '.writing-vertical-rl': { writingMode: 'vertical-rl' },
+        '.writing-vertical-lr': { writingMode: 'vertical-lr' },
+        '.writing-initial': { writingMode: 'initial' },
+        // https://developer.mozilla.org/en-US/docs/Web/CSS/text-orientation
+        '.orientation-mixed': { textOrientation: 'mixed' },
+        '.orientation-upright': { textOrientation: 'upright' },
+        '.orientation-sideways-right': { textOrientation: 'sideways-right' },
+        '.orientation-sideways': { textOrientation: 'sideways' },
+        '.orientation-glyph': { textOrientation: 'use-glyph-orientation' },
+        '.orientation-initial': { textOrientation: 'initial' },
+
+        '.auto-height': {
+          display: 'grid',
+          gridTemplateRows: '0fr',
+          transitionProperty: 'grid-template-rows',
+          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          transitionDuration: '150ms',
+          '& > *': {
+            minHeight: '0',
+            visibility: 'hidden',
+            overflow: 'hidden',
+            transitionProperty: 'visibility',
+            transitionDuration: '150ms',
+          },
+        },
+        '.auto-height-open': {
+          gridTemplateRows: '1fr',
+          '& > *': {
+            visibility: 'visible',
+          },
+        },
+      });
+    }),
+  ],
   daisyui: {
     themes: [
       {

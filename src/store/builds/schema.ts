@@ -36,7 +36,10 @@ export const buildSchema = z.object({
   char: statsSchema,
   item1: statsSchema,
   item2: statsSchema,
-  wornItem: z.string().transform((s) => (isWornItem(s) ? s : null)),
+  wornItem: z
+    .string()
+    .nullable()
+    .transform((s) => (isWornItem(s) ? s : null)),
 });
 
 export const buildStorageSchema = z.record(z.string(), buildSchema);

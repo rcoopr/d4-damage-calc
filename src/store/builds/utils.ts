@@ -1,6 +1,6 @@
 import isEqual from 'lodash.isequal';
 import { clamp } from '../../utils/misc';
-import { keys } from './constants';
+import { keys, reservedBuildNames } from './constants';
 import { Build, BuildStorage, Stats, buildStorageSchema, statsSchema } from './schema';
 import { defaultBaseStats, defaultItemStats, emptyBuild } from './stats/defaults';
 import { ItemSource, StatSource, sources, stats } from './stats/labels';
@@ -9,12 +9,31 @@ export function isWornItem(item: string | null): item is ItemSource | null {
   return item === null || item === 'item1' || item === 'item2';
 }
 
-export function getBuildsFromLocalStorage(key: string, initialValue: BuildStorage) {
+export function getInitialBuilds(key: string, fallback: BuildStorage) {
+  const localBuilds = getLocalBuilds(key, fallback);
+
+  if (!(reservedBuildNames.default in localBuilds)) {
+    localBuilds[reservedBuildNames.default] = emptyBuild;
+  }
+
+  if (window.location.search !== '') {
+    const importedBuild = getImportBuild();
+    localBuilds[reservedBuildNames.import] = importedBuild;
+  }
+
+  // localStorage.setItem(key, JSON.stringify(localBuilds));
+
+  return localBuilds;
+}
+
+export function getLocalBuilds(key: string, fallback: BuildStorage) {
   const storedValue = localStorage.getItem(key);
+
   try {
     return buildStorageSchema.parse(JSON.parse(storedValue ?? ''));
-  } catch {
-    return initialValue;
+  } catch (e) {
+    if (import.meta.env.DEV) console.log(e);
+    return fallback;
   }
 }
 
@@ -45,12 +64,13 @@ export function getImportBuild(): Build {
     importedBuild.wornItem = wornItem;
   }
 
-  console.group('import');
-  console.log('Imported partial build');
+  const build = Object.assign({}, emptyBuild, importedBuild);
+
+  console.groupCollapsed('import');
   console.table(importedBuild);
   console.groupEnd();
 
-  return Object.assign(emptyBuild, importedBuild);
+  return build;
 }
 
 export function isDefaultStats(source: StatSource, stats: Stats) {
