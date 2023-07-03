@@ -2,11 +2,9 @@ import { SetStateAction, atom, getDefaultStore } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { noop } from '../../utils/misc';
 import { keys, reservedBuildNames } from './constants';
-import { Build, Stats, buildStorageSchema } from './schema';
+import { Build, buildStorageSchema } from './schema';
 import { getBuildsFromLocalStorage, getImportBuild } from './utils';
-import { defaultBaseStats, defaultItemStats, emptyStorage } from './stats/defaults';
-import isEqual from 'lodash.isequal';
-import { StatSource } from './stats/labels';
+import { emptyStorage } from './stats/defaults';
 import merge from 'lodash.merge';
 
 export const activeBuildNameAtom = atom(
