@@ -1,7 +1,20 @@
+'use client'
+
 import './globals.css'
 
 import { Space_Grotesk, Space_Mono } from 'next/font/google'
+import { ToastOptions, Toaster } from 'react-hot-toast'
 import { DevTools } from '@/components/devtools'
+
+type FullToastOptions = ToastOptions &
+	Partial<Record<'success' | 'error' | 'loading' | 'custom', ToastOptions>>
+
+const toastOptions: FullToastOptions = {
+	className: 'px-8',
+	success: {
+		className: 'py-8',
+	},
+}
 
 const spaceGrotesk = Space_Grotesk({
 	subsets: ['latin'],
@@ -33,8 +46,16 @@ export default function RootLayout({
 			className={`${spaceGrotesk.variable} ${spaceMono.variable}`}
 		>
 			<body>
-				<DevTools />
 				{children}
+				<Toaster
+					position='bottom-left'
+					reverseOrder={false}
+					gutter={8}
+					toastOptions={toastOptions}
+				/>
+				<div className='fixed bottom-2.5 left-2.5 h-16 w-16'>
+					<DevTools />
+				</div>
 			</body>
 		</html>
 	)
