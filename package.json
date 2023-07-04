@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
@@ -19,6 +20,7 @@
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.8",
     "jotai": "^2.2.1",
+    "jotai-devtools": "^0.6.0",
     "lodash.isequal": "^4.5.0",
     "lodash.merge": "^4.6.2",
     "next": "13.4.8",
@@ -34,11 +36,17 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.7",
     "@iconify-json/solar": "^1.1.1",
+    "@swc-jotai/debug-label": "^0.0.10",
     "@swc-jotai/react-refresh": "^0.0.8",
     "@types/lodash.isequal": "^4.5.6",
     "@types/lodash.merge": "^4.6.7",
     "csstype": "^3.1.2",
     "daisyui": "^3.1.7",
     "tailwindcss-plugin-icons": "^2.1.1"
+  },
+  "pnpm": {
+  "peerDependencyRules": {
+      "ignoreMissing": ["redux"]
+    }
   }
 }
