@@ -1,10 +1,7 @@
-'use client'
-
 import './globals.css'
 
-import { DevTools } from 'jotai-devtools'
-
 import { Space_Grotesk, Space_Mono } from 'next/font/google'
+import { DevTools } from '@/components/devtools'
 
 const spaceGrotesk = Space_Grotesk({
 	subsets: ['latin'],
