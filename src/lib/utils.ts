@@ -13,3 +13,7 @@ export const mapSourceToBuilds: Record<StatSource, BuildSource> = {
 export function noop() {
 	void 0
 }
+
+export function isSSR() {
+	return typeof window === 'undefined'
+}

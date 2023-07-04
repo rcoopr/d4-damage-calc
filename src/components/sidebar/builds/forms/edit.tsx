@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { MouseEventHandler, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import { getHumanReadableErrorMessage, isValidObjectKey } from './shared'
 import {
 	buildStorageAtom,
@@ -9,6 +10,11 @@ import {
 	buildNamesAtom,
 } from '@/lib/store/builds/builds'
 import { reservedBuildNames } from '@/lib/store/builds/constants'
+import { useExportBuild } from '@/components/hero/use-export-build'
+
+const notifySuccess = () => toast.success('Build URL copied to clipboard!')
+const notifyErrorInvalidBuild = () =>
+	toast.error('Build could not be exported. Invalid build name')
 
 type FormData = {
 	name: string
@@ -20,6 +26,8 @@ export function BuildNameInputForm({ name }: { name: string }) {
 	const setStorage = useSetAtom(buildStorageAtom)
 	const [activeBuidName, setActiveBuildName] = useAtom(activeBuildNameAtom)
 	const buildNames = useAtomValue(buildNamesAtom)
+
+	const exportBuild = useExportBuild()
 
 	const DO_NOT_TOUCH =
 		name === reservedBuildNames.default || name === reservedBuildNames.import
@@ -105,6 +113,20 @@ export function BuildNameInputForm({ name }: { name: string }) {
 		[setStorage, name, setActiveBuildName],
 	)
 
+	const shareBuild = useCallback<MouseEventHandler>(
+		(ev) => {
+			ev.preventDefault()
+			if (!exportBuild.success) {
+				notifyErrorInvalidBuild()
+				return
+			}
+
+			exportBuild.copy()
+			notifySuccess()
+		},
+		[exportBuild],
+	)
+
 	return (
 		<form method='dialog' onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex flex-col py-1'>
@@ -137,7 +159,6 @@ export function BuildNameInputForm({ name }: { name: string }) {
 						/>
 
 						<button
-							disabled={DO_NOT_TOUCH}
 							onClick={toggleEdit}
 							className={clsx(
 								'join-item relative grid w-12 place-content-center border bg-stone-700 enabled:cursor-pointer disabled:bg-stone-900',
@@ -163,6 +184,7 @@ export function BuildNameInputForm({ name }: { name: string }) {
 					<div>
 						<button
 							disabled={DO_NOT_TOUCH}
+							onClick={shareBuild}
 							className='relative grid h-8 w-8 shrink-0 cursor-pointer place-content-center rounded hover:text-primary focus:ring-2 focus:ring-stone-300'
 						>
 							<span className='i-solar-link-round-angle-line-duotone inline-block' />

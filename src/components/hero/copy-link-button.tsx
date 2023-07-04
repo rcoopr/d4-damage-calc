@@ -8,7 +8,7 @@ const notifyErrorInvalidBuild = () =>
 
 export function CopyLinkButton() {
 	const [open, setOpen] = useState(false)
-	const timeout = useRef<number>()
+	const timeout = useRef<NodeJS.Timeout>()
 	const exportBuild = useExportBuild()
 
 	const onClick = useCallback(() => {
@@ -22,15 +22,15 @@ export function CopyLinkButton() {
 		exportBuild.copy()
 
 		if (timeout.current) {
-			window.clearTimeout(timeout.current)
+			clearTimeout(timeout.current)
 		}
 
-		timeout.current = window.setTimeout(() => setOpen(false), 1800)
+		timeout.current = setTimeout(() => setOpen(false), 1800)
 	}, [exportBuild])
 
 	useEffect(() => {
 		return () => {
-			if (timeout.current) window.clearTimeout(timeout.current)
+			if (timeout.current) clearTimeout(timeout.current)
 		}
 	}, [])
 

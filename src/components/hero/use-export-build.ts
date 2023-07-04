@@ -10,6 +10,7 @@ import {
 	DpsStats,
 } from '@/lib/store/builds/schema'
 import { isDefaultStats } from '@/lib/store/builds/utils'
+import { isSSR } from '@/lib/utils'
 
 export function useExportBuild(
 	buildName?: string,
@@ -17,7 +18,7 @@ export function useExportBuild(
 	const activeBuild = useAtomValue(activeBuildAtom)
 	const builds = useAtomValue(buildStorageAtom)
 
-	if (buildName && !(buildName in builds)) {
+	if (isSSR() || (buildName && !(buildName in builds))) {
 		return { success: false }
 	}
 

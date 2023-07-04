@@ -26,7 +26,7 @@ export function getInitialBuilds(key: string, fallback: BuildStorage) {
 		localBuilds[reservedBuildNames.default] = emptyBuild
 	}
 
-	if (window.location.search !== '') {
+	if (typeof window !== 'undefined' && window.location.search !== '') {
 		const importedBuild = getImportBuild()
 		localBuilds[reservedBuildNames.import] = importedBuild
 	}
@@ -35,6 +35,7 @@ export function getInitialBuilds(key: string, fallback: BuildStorage) {
 }
 
 export function getLocalBuilds(key: string, fallback: BuildStorage) {
+	if (typeof window === 'undefined') return fallback
 	const storedValue = localStorage.getItem(key)
 
 	try {

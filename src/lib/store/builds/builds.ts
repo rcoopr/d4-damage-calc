@@ -4,27 +4,30 @@ import merge from 'lodash.merge'
 import { keys, reservedBuildNames } from './constants'
 import { Build, buildStorageSchema } from './schema'
 import { emptyBuild, emptyStorage } from './defaults'
-import { noop } from '@/lib/utils'
+import { isSSR, noop } from '@/lib/utils'
 import { getInitialBuilds, getLocalBuilds } from '@/lib/store/builds/utils'
 
 export const activeBuildNameAtom = atom(
-	window.location.search === ''
+	isSSR() || window.location.search === ''
 		? reservedBuildNames.default
 		: reservedBuildNames.import,
 )
 
 const initialBuilds = getInitialBuilds(keys.builds, emptyStorage)
-window.localStorage.setItem(keys.builds, JSON.stringify(initialBuilds))
+if (!isSSR()) {
+	localStorage.setItem(keys.builds, JSON.stringify(initialBuilds))
+}
 
 export const buildStorageAtom = atomWithStorage(keys.builds, initialBuilds, {
 	getItem: (key, initialValue) => getLocalBuilds(key, initialValue),
-	setItem: (key, value) => localStorage.setItem(key, JSON.stringify(value)),
-	removeItem: (key) => localStorage.removeItem(key),
+	setItem: (key, value) => {
+		if (!isSSR()) localStorage.setItem(key, JSON.stringify(value))
+	},
+	removeItem: (key) => {
+		if (!isSSR()) localStorage.removeItem(key)
+	},
 	subscribe: (key, callback, initialValue) => {
-		if (
-			typeof window === 'undefined' ||
-			typeof window.addEventListener === 'undefined'
-		) {
+		if (isSSR() || typeof window.addEventListener === 'undefined') {
 			return noop
 		}
 		const listener = (ev: StorageEvent) => {

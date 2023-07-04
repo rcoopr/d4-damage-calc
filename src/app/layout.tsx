@@ -1,5 +1,3 @@
-'use client'
-
 import './globals.css'
 
 import { Space_Grotesk, Space_Mono } from 'next/font/google'
@@ -18,13 +16,13 @@ const toastOptions: FullToastOptions = {
 
 const spaceGrotesk = Space_Grotesk({
 	subsets: ['latin'],
-	display: 'swap',
+	display: 'auto',
 	variable: '--font-space-grotesk',
 })
 
 const spaceMono = Space_Mono({
 	subsets: ['latin'],
-	display: 'swap',
+	display: 'auto',
 	weight: ['400', '700'],
 	style: ['normal', 'italic'],
 	variable: '--font-space-mono',

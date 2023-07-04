@@ -2,6 +2,7 @@
 
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
+import { useEffect, useState } from 'react'
 import { mapSourceToBuilds } from '@/lib/utils'
 import { activeBuildAtom } from '@/lib/store/builds/builds'
 import { DpsDesaturate, DpsFormat } from '@/components/text/heatmap'
@@ -52,6 +53,8 @@ function DpsDiff() {
 }
 
 function DpsLine({ label, source }: { label: string; source: StatSource }) {
+	const [width, setWidth] = useState(100)
+
 	const activeBuild = useAtomValue(activeBuildAtom)
 	const isUnused = isDefaultStats('item2', activeBuild[source])
 
@@ -62,7 +65,11 @@ function DpsLine({ label, source }: { label: string; source: StatSource }) {
 	const diff = getDpsDiff(computedStats.comparison, source)
 
 	const maxDps = Math.max(computedStats.dps.build1, computedStats.dps.build2)
-	const width = (buildDps / maxDps) * 100
+	const widthPercent = (buildDps / maxDps) * 100
+
+	useEffect(() => {
+		setWidth(widthPercent)
+	}, [widthPercent, setWidth])
 
 	return (
 		<div
