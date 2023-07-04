@@ -1,9 +1,10 @@
 import clsx from 'clsx'
+import { SidebarCheckbox } from '@/components/sidebar/shared-client'
 
 export const Sidebar = {
 	Handle,
 	Drawer,
-	Checkbox,
+	Checkbox: SidebarCheckbox,
 	Backdrop,
 	Toggle,
 }
@@ -16,7 +17,7 @@ function Handle({
 	children?: React.ReactNode
 }) {
 	return (
-		<div className={clsx('fixed w-16 top-0 bottom-0 right-full', className)}>
+		<div className={clsx('fixed bottom-0 right-full top-0 w-16', className)}>
 			{children}
 		</div>
 	)
@@ -24,19 +25,9 @@ function Handle({
 
 function Drawer({ children }: { children?: React.ReactNode }) {
 	return (
-		<aside className='fixed top-0 bottom-0 w-80 border-stone-500 peer-checked:translate-x-0 transition-transform ease-out-quart duration-300 right-0 translate-x-80 border-l'>
+		<aside className='fixed bottom-0 right-0 top-0 w-80 translate-x-80 border-l border-stone-500 transition-transform duration-300 ease-out-quart peer-checked:translate-x-0'>
 			{children}
 		</aside>
-	)
-}
-
-function Checkbox() {
-	return (
-		<input
-			id='settings'
-			type='checkbox'
-			className='fixed h-0 w-0 appearance-none opacity-0 peer'
-		/>
 	)
 }
 
@@ -44,7 +35,7 @@ function Backdrop() {
 	return (
 		<label
 			htmlFor='settings'
-			className='fixed inset-0 bg-stone-950/30 hidden peer-checked:block'
+			className='fixed inset-0 hidden bg-stone-950/30 peer-checked:block'
 		/>
 	)
 }
@@ -60,7 +51,7 @@ function Toggle({
 		<label
 			htmlFor='settings'
 			className={clsx(
-				'cursor-pointer relative z-10 text-stone-500 hover:text-stone-300',
+				'relative z-10 cursor-pointer text-stone-500 hover:text-stone-300',
 				className,
 			)}
 		>

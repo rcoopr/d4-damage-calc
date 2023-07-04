@@ -1,8 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import DaisyUi from 'daisyui'
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import plugin from 'tailwindcss/plugin'
+import Scrollbar from 'tailwind-scrollbar'
+import MaskImage from 'tailwind-gradient-mask-image'
 import { type Options as IconOptions, Icons } from 'tailwindcss-plugin-icons'
+import { PluginCreator } from 'tailwindcss/types/config'
 
 const iconOptions: IconOptions = () => ({
 	solar: {
@@ -47,6 +51,8 @@ const config: Config = {
 		},
 	},
 	plugins: [
+		Scrollbar,
+		MaskImage as PluginCreator,
 		Icons(iconOptions),
 		DaisyUi,
 		plugin(({ addUtilities }) => {

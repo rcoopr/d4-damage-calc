@@ -1,9 +1,9 @@
 export const keys = {
-  wornItem: 'worn',
-  builds: 'builds',
-};
+	wornItem: 'worn',
+	builds: 'd4calc-builds',
+}
 
 export const reservedBuildNames = {
-  default: 'Default',
-  import: 'Last Import',
-};
+	default: 'Default',
+	import: 'Last Import',
+}

@@ -41,6 +41,10 @@ body {
 	min-height: 100vh;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 .tooltip {
 	--tooltip-tail: 0.375rem;
 }

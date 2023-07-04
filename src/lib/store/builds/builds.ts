@@ -67,7 +67,7 @@ export const activeBuildAtom = atom<
 		const active = get(activeBuildNameAtom)
 
 		if (!(active in storage)) {
-			console.log({ active, storage })
+			// console.log({ active, storage })
 			console.warn(`${active} not found in storage`)
 			if (!(reservedBuildNames.default in storage)) {
 				console.error(`${reservedBuildNames.default} not found in storage`)

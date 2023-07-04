@@ -19,7 +19,7 @@ export function isWornItem(item: string | null): item is ItemSource | null {
 }
 
 export function getInitialBuilds(key: string, fallback: BuildStorage) {
-	const localBuilds = getLocalBuilds(key, fallback, true)
+	const localBuilds = getLocalBuilds(key, fallback)
 
 	// Ensure default build exists
 	if (!(reservedBuildNames.default in localBuilds)) {
@@ -34,12 +34,7 @@ export function getInitialBuilds(key: string, fallback: BuildStorage) {
 	return localBuilds
 }
 
-export function getLocalBuilds(
-	key: string,
-	fallback: BuildStorage,
-	internal?: boolean,
-) {
-	console.log({ internal })
+export function getLocalBuilds(key: string, fallback: BuildStorage) {
 	const storedValue = localStorage.getItem(key)
 
 	try {

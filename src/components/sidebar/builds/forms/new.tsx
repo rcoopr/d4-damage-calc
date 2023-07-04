@@ -52,7 +52,7 @@ export function SaveBuildForm() {
 					data.buildName,
 					copiedBuild ?? emptyBuild,
 				)
-				console.log({ newStorage, copiedBuild, name: data.buildName })
+				// console.log({ newStorage, copiedBuild, name: data.buildName })
 				return newStorage
 			})
 			setActiveBuildName(data.buildName)

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useState } from 'react'
+import { MouseEventHandler, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { getHumanReadableErrorMessage, isValidObjectKey } from './shared'
 import {
@@ -21,7 +21,8 @@ export function BuildNameInputForm({ name }: { name: string }) {
 	const [activeBuidName, setActiveBuildName] = useAtom(activeBuildNameAtom)
 	const buildNames = useAtomValue(buildNamesAtom)
 
-	const DO_NOT_TOUCH = name === reservedBuildNames.default
+	const DO_NOT_TOUCH =
+		name === reservedBuildNames.default || name === reservedBuildNames.import
 
 	const {
 		register,
@@ -90,11 +91,32 @@ export function BuildNameInputForm({ name }: { name: string }) {
 		],
 	)
 
+	const deleteBuild = useCallback<MouseEventHandler>(
+		(ev) => {
+			ev.preventDefault()
+			setStorage((storage) => {
+				const clone = { ...storage }
+				delete clone[name]
+
+				return clone
+			})
+			setActiveBuildName(reservedBuildNames.default)
+		},
+		[setStorage, name, setActiveBuildName],
+	)
+
 	return (
 		<form method='dialog' onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex flex-col py-1'>
 				<div className='flex items-center gap-1'>
-					<div className='join flex'>
+					<div
+						className={clsx(
+							'join relative flex',
+							name === activeBuidName &&
+								!editing &&
+								'after:pointer-events-none after:absolute after:inset-0 after:rounded-md after:border after:border-primary after:gradient-mask-r-0',
+						)}
+					>
 						<input
 							type='text'
 							disabled={DO_NOT_TOUCH || !editing}
@@ -130,33 +152,21 @@ export function BuildNameInputForm({ name }: { name: string }) {
 					</div>
 
 					<div>
-						<input
-							id={`trash-${name}`}
+						<button
 							disabled={DO_NOT_TOUCH}
-							type='submit'
-							value='t'
-							className='peer fixed h-0 w-0 appearance-none opacity-0'
-						/>
-						<label
-							htmlFor={`trash-${name}`}
-							className='relative grid h-8 w-8 shrink-0 place-content-center rounded peer-focus:ring-2 peer-focus:ring-stone-300 peer-enabled:cursor-pointer peer-enabled:hover:text-primary peer-disabled:opacity-30'
+							onClick={deleteBuild}
+							className='relative grid h-8 w-8 shrink-0 place-content-center rounded focus:ring-2 focus:ring-stone-300 enabled:cursor-pointer enabled:hover:text-primary disabled:opacity-30'
 						>
 							<span className='i-solar-trash-bin-2-outline inline-block' />
-						</label>
+						</button>
 					</div>
 					<div>
-						<input
-							id={`share-${name}`}
-							type='submit'
-							value='s'
-							className='peer fixed h-0 w-0 appearance-none opacity-0'
-						/>
-						<label
-							htmlFor={`share-${name}`}
-							className='relative grid h-8 w-8 shrink-0 cursor-pointer place-content-center rounded hover:text-primary peer-focus:ring-2 peer-focus:ring-stone-300'
+						<button
+							disabled={DO_NOT_TOUCH}
+							className='relative grid h-8 w-8 shrink-0 cursor-pointer place-content-center rounded hover:text-primary focus:ring-2 focus:ring-stone-300'
 						>
 							<span className='i-solar-link-round-angle-line-duotone inline-block' />
-						</label>
+						</button>
 					</div>
 				</div>
 				<div

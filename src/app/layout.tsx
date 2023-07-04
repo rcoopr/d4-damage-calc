@@ -4,7 +4,7 @@ import './globals.css'
 
 import { Space_Grotesk, Space_Mono } from 'next/font/google'
 import { ToastOptions, Toaster } from 'react-hot-toast'
-import { DevTools } from '@/components/devtools'
+import { DevTools } from '@/components/utils/devtools'
 
 type FullToastOptions = ToastOptions &
 	Partial<Record<'success' | 'error' | 'loading' | 'custom', ToastOptions>>

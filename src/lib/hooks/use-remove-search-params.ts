@@ -1,12 +1,26 @@
 'use client'
 
-import { useRouter } from 'next/router'
-import { usePathname } from 'next/navigation'
+import {
+	useRouter,
+	usePathname,
+	useSearchParams,
+	ReadonlyURLSearchParams,
+} from 'next/navigation'
+import { useEffect } from 'react'
 
-export const useHideSearchParams = (url?: string) => {
+type RouterCondition = (args: {
+	pathname: string
+	searchParams: ReadonlyURLSearchParams
+}) => boolean
+
+export const useHideSearchParams = (condition: RouterCondition) => {
 	const router = useRouter()
 	const pathname = usePathname()
+	const searchParams = useSearchParams()
 
-	console.log({ pathname })
-	// router.replace(url, )
+	useEffect(() => {
+		if (condition({ pathname, searchParams })) {
+			router.replace(pathname)
+		}
+	}, [pathname, searchParams, router, condition])
 }
