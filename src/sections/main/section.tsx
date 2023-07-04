@@ -31,7 +31,7 @@ export function Homepage() {
               <ItemStatsSection />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row flex-wrap justify-center items-start gap-4">
+          <div className="flex flex-col items-center md:flex-row flex-wrap justify-center md:items-start gap-4">
             <BuildSummary source="char" />
             <BuildSummary source="item1" />
             <BuildSummary source="item2" />
