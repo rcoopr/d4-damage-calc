@@ -3,13 +3,13 @@
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
 import { useCallback, ChangeEventHandler } from 'react'
-import { StatSource, Stats, stats } from '@/store/builds/schema'
-import { activeBuildAtom } from '@/store/builds/builds'
+import { activeBuildAtom } from '@/lib/store/builds/builds'
 import {
 	InputExtraProps,
 	NumberInput,
 	SliderInput,
 } from '@/components/input/shared'
+import { StatSource, DpsStats, stats } from '@/lib/store/builds/schema'
 
 type HTMLInputProps = React.DetailedHTMLProps<
 	React.InputHTMLAttributes<HTMLInputElement>,
@@ -17,7 +17,7 @@ type HTMLInputProps = React.DetailedHTMLProps<
 >
 
 type InputProps = {
-	id: keyof Stats
+	id: keyof DpsStats
 	source: StatSource
 	label: string
 	kind: 'slider' | 'number'

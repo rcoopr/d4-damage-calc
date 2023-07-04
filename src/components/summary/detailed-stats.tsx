@@ -4,8 +4,8 @@ import { useAtomValue } from 'jotai'
 import { DpsColor } from '@/components/text/heatmap'
 import { formatDps } from '@/lib/format'
 import { mapSourceToBuilds } from '@/lib/utils'
-import { computedStatsAtom } from '@/store/builds/computed'
-import { StatSource, stats } from '@/store/builds/schema'
+import { computedStatsAtom } from '@/lib/store/builds/computed'
+import { StatSource, stats } from '@/lib/store/builds/schema'
 
 export function DetailedStatsSummary() {
 	return (
@@ -24,7 +24,7 @@ function BuildSummary({ source }: { source: StatSource }) {
 			: (Number(source.charAt(source.length - 1)) as 0 | 1 | 2)
 
 	return (
-		<div className='rounded-lg border-stone-700 border flex flex-col overflow-hidden'>
+		<div className='flex flex-col overflow-hidden rounded-lg border border-stone-700'>
 			<Heading item={item} />
 			<Stats source={source} />
 			<Footer source={source} item={item} />
@@ -51,10 +51,10 @@ function Stats({ source }: { source: StatSource }) {
 		return (
 			<div
 				key={stat.id}
-				className='border-t px-4 py-1 gap-8 flex items-center justify-between border-stone-700 bg-stone-800 text-stone-400'
+				className='flex items-center justify-between gap-8 border-t border-stone-700 bg-stone-800 px-4 py-1 text-stone-400'
 			>
 				<div>{stat.label}</div>
-				<div className='font-mono min-w-[4rem] shrink-0 text-right'>
+				<div className='min-w-[4rem] shrink-0 text-right font-mono'>
 					{statDisplay}
 				</div>
 			</div>
@@ -68,7 +68,7 @@ function Footer({ source, item }: { source: StatSource; item: 0 | 1 | 2 }) {
 
 	return (
 		<>
-			<div className='flex items-center justify-between px-4 py-2 border-t border-stone-700'>
+			<div className='flex items-center justify-between border-t border-stone-700 px-4 py-2'>
 				<div className='font-bold'>DPS</div>
 				<div>{formatDps(computedStats.dps[build])}</div>
 			</div>
@@ -82,7 +82,7 @@ function BuildDiff({ item }: { item: 1 | 2 }) {
 	const diff = computedStats.increase[`build${item}`]
 
 	return (
-		<div className='flex items-center justify-end px-4 -mt-2 mb-2'>
+		<div className='-mt-2 mb-2 flex items-center justify-end px-4'>
 			<DpsColor diff={diff}>
 				{formatDps(diff, { asPercent: true, compact: true })}
 			</DpsColor>

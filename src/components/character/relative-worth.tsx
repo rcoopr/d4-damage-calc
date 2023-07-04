@@ -2,8 +2,8 @@
 
 import { useAtomValue } from 'jotai'
 import { formatDps } from '@/lib/format'
-import { computedStatsAtom } from '@/store/builds/computed'
-import { StatSource } from '@/store/builds/schema'
+import { computedStatsAtom } from '@/lib/store/builds/computed'
+import { StatSource } from '@/lib/store/builds/schema'
 
 const calculateRelativeValue = (bucket1: number, bucket2: number) => {
 	return (1 + bucket2) / (1 + bucket1)
@@ -49,8 +49,8 @@ export function RelativeStatValues({ source }: { source: StatSource }) {
 
 	return (
 		<>
-			<div className='flex items-center mt-6'>
-				<h2 className='text-2xl font-bold pr-4'>Relative Values</h2>
+			<div className='mt-6 flex items-center'>
+				<h2 className='pr-4 text-2xl font-bold'>Relative Values</h2>
 				<span className='text-sm text-stone-400/80'>
 					(Prioritize the smallest bars)
 				</span>
@@ -96,11 +96,11 @@ function RelativeValue({
 			{width && (
 				<div
 					style={{ width }}
-					className='bg-primary will-change-transform rounded-r-md absolute inset-y-0 left-0'
+					className='absolute inset-y-0 left-0 rounded-r-md bg-primary will-change-transform'
 				/>
 			)}
 			{(Label || width) && (
-				<div className='px-5 py-1.5 relative flex items-center'>
+				<div className='relative flex items-center px-5 py-1.5'>
 					<span className='rounded bg-stone-800 px-2'>
 						{typeof Label === 'function' ? <Label /> : Label || width}
 					</span>

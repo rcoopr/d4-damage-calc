@@ -3,7 +3,7 @@
 import clsx from 'clsx'
 import { useAtomValue, useAtom } from 'jotai'
 import { useCallback, MouseEventHandler } from 'react'
-import { buildNamesAtom, activeBuildNameAtom } from '@/store/builds/builds'
+import { buildNamesAtom, activeBuildNameAtom } from '@/lib/store/builds/builds'
 
 export function BuildsQuickAccess() {
 	const buildNames = useAtomValue(buildNamesAtom)

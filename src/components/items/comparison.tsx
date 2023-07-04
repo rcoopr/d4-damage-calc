@@ -4,10 +4,10 @@ import clsx from 'clsx'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, ChangeEventHandler } from 'react'
 import { DpsFormat, DpsDesaturate } from '@/components/text/heatmap'
-import { activeBuildAtom } from '@/store/builds/builds'
-import { computedStatsAtom } from '@/store/builds/computed'
-import { ItemSource } from '@/store/builds/schema'
-import { isDefaultStats } from '@/store/builds/utils'
+import { activeBuildAtom } from '@/lib/store/builds/builds'
+import { computedStatsAtom } from '@/lib/store/builds/computed'
+import { ItemSource } from '@/lib/store/builds/schema'
+import { isDefaultStats } from '@/lib/store/builds/utils'
 
 export function ItemComparison({ item }: { item: ItemSource }) {
 	const [build, setBuild] = useAtom(activeBuildAtom)
@@ -16,7 +16,6 @@ export function ItemComparison({ item }: { item: ItemSource }) {
 	const handleClick = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(ev) => {
 			setBuild({ wornItem: ev.currentTarget.checked && item ? item : null })
-			// setBuild((b) => ({ ...b, wornItem: ev.currentTarget.checked && item ? item : null }));
 		},
 		[setBuild, item],
 	)
@@ -36,11 +35,11 @@ export function ItemComparison({ item }: { item: ItemSource }) {
 
 	return (
 		<div className='flex flex-col'>
-			<div className='font-medium text-stone-400 flex items-end transition-opacity text-lg'>
+			<div className='flex items-end text-lg font-medium text-stone-400 transition-opacity'>
 				<h2 className='pr-8 md:pr-16 lg:pr-24'>{label}</h2>
 				<div
 					aria-hidden={hide}
-					className='transition-opacity flex items-center gap-3 h-full aria-hidden:opacity-0 opacity-100 aria-hidden:select-none'
+					className='flex h-full items-center gap-3 opacity-100 transition-opacity aria-hidden:select-none aria-hidden:opacity-0'
 				>
 					<span className='text-sm text-stone-400'>Worn?</span>
 					<input
@@ -54,14 +53,14 @@ export function ItemComparison({ item }: { item: ItemSource }) {
 				</div>
 				<div
 					aria-hidden={hide}
-					className='transition-opacity flex items-end ml-auto relative text-xl aria-hidden:opacity-0 opacity-100 aria-hidden:select-none'
+					className='relative ml-auto flex items-end text-xl opacity-100 transition-opacity aria-hidden:select-none aria-hidden:opacity-0'
 				>
 					<DpsFormat dps={itemDps} diff={itemDps - compareWith} />
 					<div
 						className={clsx(
-							'transition-opacity text-sm pl-2',
+							'pl-2 text-sm transition-opacity',
 							'absolute flex items-center',
-							'right-0 bottom-full',
+							'bottom-full right-0',
 							compareWith && itemDps > compareWith
 								? 'opacity-100'
 								: 'opacity-0',

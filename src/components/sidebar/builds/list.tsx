@@ -1,7 +1,7 @@
 'use client'
 
 import { useAtomValue } from 'jotai'
-import { buildNamesAtom } from '@/store/builds/builds'
+import { buildNamesAtom } from '@/lib/store/builds/builds'
 import { BuildNameInputForm } from '@/components/sidebar/builds/forms/rename'
 
 export function BuildList() {

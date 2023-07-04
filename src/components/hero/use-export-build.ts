@@ -1,9 +1,15 @@
 import copyTextToClipboard from 'copy-text-to-clipboard'
 import { useAtomValue } from 'jotai'
-import { activeBuildAtom, buildStorageAtom } from '@/store/builds/builds'
-import { keys } from '@/store/builds/constants'
-import { Build, StatSource, Stats, sources, stats } from '@/store/builds/schema'
-import { isDefaultStats } from '@/store/builds/utils'
+import { activeBuildAtom, buildStorageAtom } from '@/lib/store/builds/builds'
+import { keys } from '@/lib/store/builds/constants'
+import {
+	StatSource,
+	sources,
+	Build,
+	stats,
+	DpsStats,
+} from '@/lib/store/builds/schema'
+import { isDefaultStats } from '@/lib/store/builds/utils'
 
 export function useExportBuild(
 	buildName?: string,
@@ -18,7 +24,7 @@ export function useExportBuild(
 	const build = buildName ? builds[buildName] : activeBuild
 
 	const url = new URL(window.location.origin)
-	const log = {} as Record<StatSource | 'wornItem', Stats | string>
+	const log = {} as Record<StatSource | 'wornItem', DpsStats | string>
 
 	return {
 		success: true,

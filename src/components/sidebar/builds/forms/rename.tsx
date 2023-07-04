@@ -7,8 +7,8 @@ import {
 	buildStorageAtom,
 	activeBuildNameAtom,
 	buildNamesAtom,
-} from '@/store/builds/builds'
-import { reservedBuildNames } from '@/store/builds/constants'
+} from '@/lib/store/builds/builds'
+import { reservedBuildNames } from '@/lib/store/builds/constants'
 
 type FormData = {
 	name: string
@@ -93,7 +93,7 @@ export function BuildNameInputForm({ name }: { name: string }) {
 	return (
 		<form method='dialog' onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex flex-col py-1'>
-				<div className='flex gap-1 items-center'>
+				<div className='flex items-center gap-1'>
 					<div className='join flex'>
 						<input
 							type='text'
@@ -107,10 +107,10 @@ export function BuildNameInputForm({ name }: { name: string }) {
 							aria-invalid={!!errorMessage}
 							aria-errormessage={errorMessage}
 							className={clsx(
-								'peer w-full join-item border rounded-md px-2.5 py-1 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
+								'peer join-item w-full rounded-md border px-2.5 py-1 text-stone-100 placeholder-stone-400 outline-none focus:ring-2',
 								errorMessage
-									? 'focus:ring-error focus:border-error border-error selection:bg-error/50'
-									: 'focus:ring-success focus:border-success border-stone-600 selection:bg-success/50',
+									? 'border-error selection:bg-error/50 focus:border-error focus:ring-error'
+									: 'border-stone-600 selection:bg-success/50 focus:border-success focus:ring-success',
 							)}
 						/>
 
@@ -118,14 +118,14 @@ export function BuildNameInputForm({ name }: { name: string }) {
 							disabled={DO_NOT_TOUCH}
 							onClick={toggleEdit}
 							className={clsx(
-								'relative enabled:cursor-pointer w-12 join-item bg-stone-700 disabled:bg-stone-900 border grid place-content-center',
+								'join-item relative grid w-12 place-content-center border bg-stone-700 enabled:cursor-pointer disabled:bg-stone-900',
 								'peer-disabled:[&>span]:i-solar-pen-line-duotone [&>span]:disabled:text-stone-600',
 								errorMessage
-									? '[&>span]:i-solar-close-circle-bold [&>span]:text-stone-900 border-error bg-error'
+									? 'border-error bg-error [&>span]:i-solar-close-circle-bold [&>span]:text-stone-900'
 									: 'border-stone-600',
 							)}
 						>
-							<span className='i-solar-check-circle-linear text-success inline-block text-sm' />
+							<span className='i-solar-check-circle-linear inline-block text-sm text-success' />
 						</button>
 					</div>
 
@@ -139,7 +139,7 @@ export function BuildNameInputForm({ name }: { name: string }) {
 						/>
 						<label
 							htmlFor={`trash-${name}`}
-							className='relative peer-disabled:opacity-30 peer-enabled:cursor-pointer rounded peer-focus:ring-2 peer-focus:ring-stone-300 shrink-0 w-8 h-8 grid place-content-center peer-enabled:hover:text-primary'
+							className='relative grid h-8 w-8 shrink-0 place-content-center rounded peer-focus:ring-2 peer-focus:ring-stone-300 peer-enabled:cursor-pointer peer-enabled:hover:text-primary peer-disabled:opacity-30'
 						>
 							<span className='i-solar-trash-bin-2-outline inline-block' />
 						</label>
@@ -153,7 +153,7 @@ export function BuildNameInputForm({ name }: { name: string }) {
 						/>
 						<label
 							htmlFor={`share-${name}`}
-							className='relative rounded peer-focus:ring-2 peer-focus:ring-stone-300 cursor-pointer shrink-0 w-8 h-8 grid place-content-center hover:text-primary'
+							className='relative grid h-8 w-8 shrink-0 cursor-pointer place-content-center rounded hover:text-primary peer-focus:ring-2 peer-focus:ring-stone-300'
 						>
 							<span className='i-solar-link-round-angle-line-duotone inline-block' />
 						</label>
@@ -162,7 +162,7 @@ export function BuildNameInputForm({ name }: { name: string }) {
 				<div
 					className={clsx(
 						errorMessage && 'auto-height-open',
-						'auto-height text-sm text-error pt-1 mb-1',
+						'mb-1 pt-1 text-sm text-error auto-height',
 					)}
 				>
 					<div>{getHumanReadableErrorMessage(errors.name)}</div>

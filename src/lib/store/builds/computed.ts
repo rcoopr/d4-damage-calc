@@ -1,9 +1,9 @@
 import { atom } from 'jotai'
-import { BuildSource, StatSource, Stats } from './schema'
+import { BuildSource, StatSource, DpsStats } from './schema'
 import { activeBuildAtom } from './builds'
 
 export type ComputedStats = {
-	statsTotal: Record<StatSource, Stats>
+	statsTotal: Record<StatSource, DpsStats>
 	dps: Record<StatSource | BuildSource, number>
 	comparison: Record<'item' | 'build', number>
 	increase: Record<Exclude<BuildSource, 'char'>, number>
@@ -78,7 +78,7 @@ export const computedStatsAtom = atom<ComputedStats>((get) => {
 	}
 })
 
-function calculateDps(stats: Stats) {
+function calculateDps(stats: DpsStats) {
 	const buckets = [
 		stats.mainStat / 10,
 		stats.additive,
@@ -93,15 +93,20 @@ function calculateDps(stats: Stats) {
 	return stats.weaponDps * damageMultiplier
 }
 
-function adjustStats(stats: Stats, adjustment?: Stats, sign = 1): Stats {
+function adjustStats(
+	stats: DpsStats,
+	adjustment?: DpsStats,
+	sign = 1,
+): DpsStats {
 	if (!adjustment) return stats
 	return Object.fromEntries(
 		Object.keys(stats).map((key) => [
 			key,
 			Math.max(
 				0,
-				stats[key as keyof Stats] + sign * adjustment[key as keyof Stats],
+				stats[key as keyof DpsStats] +
+					sign * adjustment[key as keyof DpsStats],
 			),
 		]),
-	) as Stats
+	) as DpsStats
 }

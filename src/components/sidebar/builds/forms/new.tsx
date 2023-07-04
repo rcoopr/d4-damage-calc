@@ -4,16 +4,16 @@ import clsx from 'clsx'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
-import { emptyBuild } from '@/store/builds/defaults'
 import {
 	buildNamesAtom,
 	activeBuildNameAtom,
 	buildStorageAtom,
-} from '@/store/builds/builds'
+} from '@/lib/store/builds/builds'
 import {
 	getHumanReadableErrorMessage,
 	isValidObjectKey,
 } from '@/components/sidebar/builds/forms/shared'
+import { emptyBuild } from '@/lib/store/builds/defaults'
 
 type FormData = {
 	buildName: string
@@ -63,7 +63,7 @@ export function SaveBuildForm() {
 	return (
 		<form method='dialog' onSubmit={handleSubmit(onSubmit)}>
 			<div className='flex flex-col'>
-				<div className='flex justify-between items-end mb-2'>
+				<div className='mb-2 flex items-end justify-between'>
 					<label htmlFor='save-build-name' className='mb-0.5'>
 						Create a Build
 					</label>
@@ -71,7 +71,7 @@ export function SaveBuildForm() {
 						disabled={!!errorMessage}
 						type='submit'
 						value='Save'
-						className='btn btn-sm btn-success rounded'
+						className='btn-success btn-sm btn rounded'
 					/>
 				</div>
 				<input
@@ -86,13 +86,13 @@ export function SaveBuildForm() {
 					aria-invalid={errorMessage ? 'true' : 'false'}
 					aria-errormessage={errorMessage}
 					className={clsx(
-						'peer border rounded-md block px-2.5 py-1.5 mb-1 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
+						'peer mb-1 block rounded-md border px-2.5 py-1.5 text-stone-100 placeholder-stone-400 outline-none focus:ring-2',
 						errorMessage
-							? 'focus:ring-error focus:border-error border-error bg-error-content selection:bg-error/50'
-							: 'focus:ring-success focus:border-success border-stone-600 focus:bg-success/10 bg-stone-700 selection:bg-success/50',
+							? 'border-error bg-error-content selection:bg-error/50 focus:border-error focus:ring-error'
+							: 'border-stone-600 bg-stone-700 selection:bg-success/50 focus:border-success focus:bg-success/10 focus:ring-success',
 					)}
 				/>
-				<div className='peer-aria-[invalid="true"]:auto-height-open auto-height text-sm text-error'>
+				<div className='text-sm text-error auto-height peer-aria-[invalid="true"]:auto-height-open'>
 					<div>{getHumanReadableErrorMessage(errors.buildName)}</div>
 				</div>
 			</div>

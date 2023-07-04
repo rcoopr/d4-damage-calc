@@ -3,9 +3,9 @@ import { atomWithStorage } from 'jotai/utils'
 import merge from 'lodash.merge'
 import { keys, reservedBuildNames } from './constants'
 import { Build, buildStorageSchema } from './schema'
-import { getInitialBuilds, getLocalBuilds } from './utils'
 import { emptyBuild, emptyStorage } from './defaults'
 import { noop } from '@/lib/utils'
+import { getInitialBuilds, getLocalBuilds } from '@/lib/store/builds/utils'
 
 export const activeBuildNameAtom = atom(
 	window.location.search === ''
@@ -14,6 +14,7 @@ export const activeBuildNameAtom = atom(
 )
 
 const initialBuilds = getInitialBuilds(keys.builds, emptyStorage)
+window.localStorage.setItem(keys.builds, JSON.stringify(initialBuilds))
 
 export const buildStorageAtom = atomWithStorage(keys.builds, initialBuilds, {
 	getItem: (key, initialValue) => getLocalBuilds(key, initialValue),
@@ -66,6 +67,7 @@ export const activeBuildAtom = atom<
 		const active = get(activeBuildNameAtom)
 
 		if (!(active in storage)) {
+			console.log({ active, storage })
 			console.warn(`${active} not found in storage`)
 			if (!(reservedBuildNames.default in storage)) {
 				console.error(`${reservedBuildNames.default} not found in storage`)

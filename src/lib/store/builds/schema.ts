@@ -21,7 +21,7 @@ export const stats = [
 
 export type StatName = (typeof stats)[number]['id']
 
-export type Stats = z.infer<typeof statsSchema>
+export type DpsStats = z.infer<typeof statsSchema>
 export type Build = z.infer<typeof buildSchema>
 export type BuildStorage = z.infer<typeof buildStorageSchema>
 

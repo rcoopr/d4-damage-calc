@@ -3,11 +3,11 @@
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { mapSourceToBuilds } from '@/lib/utils'
-import { activeBuildAtom } from '@/store/builds/builds'
-import { ComputedStats, computedStatsAtom } from '@/store/builds/computed'
-import { BuildSource, StatSource, sources } from '@/store/builds/schema'
-import { isDefaultStats } from '@/store/builds/utils'
+import { activeBuildAtom } from '@/lib/store/builds/builds'
 import { DpsDesaturate, DpsFormat } from '@/components/text/heatmap'
+import { computedStatsAtom, ComputedStats } from '@/lib/store/builds/computed'
+import { StatSource, sources, BuildSource } from '@/lib/store/builds/schema'
+import { isDefaultStats } from '@/lib/store/builds/utils'
 
 const labels: Record<StatSource, string> = {
 	char: 'Base DPS',
@@ -17,11 +17,11 @@ const labels: Record<StatSource, string> = {
 
 export function BuildSummary() {
 	return (
-		<div className='flex flex-col mb-12 gap-1 text-stone-400 font-medium text-xl'>
+		<div className='mb-12 flex flex-col gap-1 text-xl font-medium text-stone-400'>
 			{sources.map((source) => (
 				<DpsLine key={source} source={source} label={labels[source]} />
 			))}
-			<div className='self-end flex items-center'>
+			<div className='flex items-center self-end'>
 				<span className='pr-4 text-sm'>OVERALL DPS CHANGE: </span>
 				<DpsDiff />
 			</div>
@@ -45,7 +45,7 @@ function DpsDiff() {
 				dps={diff}
 				diff={diff}
 				opts={{ asPercent: true, sign: true }}
-				className='underline underline-offset-[5px] min-w-[6rem] inline-block text-right'
+				className='inline-block min-w-[6rem] text-right underline underline-offset-[5px]'
 			/>
 		</DpsDesaturate>
 	)
@@ -67,11 +67,11 @@ function DpsLine({ label, source }: { label: string; source: StatSource }) {
 	return (
 		<div
 			className={clsx(
-				'flex transition-opacity items-center relative',
+				'relative flex items-center transition-opacity',
 				build !== 'char' && isUnused ? 'opacity-0' : 'opacity-100',
 			)}
 		>
-			<div className='absolute inset-y-0 left-0 -right-2 animate-in fade-in'>
+			<div className='animate-in fade-in absolute inset-y-0 -right-2 left-0'>
 				<div
 					className={clsx(
 						'absolute inset-0 rounded-r-lg bg-gradient-to-l to-60%',
@@ -93,7 +93,7 @@ function DpsLine({ label, source }: { label: string; source: StatSource }) {
 
 function DpsValue({ dps, diff }: { dps: number; diff: number }) {
 	return (
-		<div className='flex items-end ml-auto relative text-3xl'>
+		<div className='relative ml-auto flex items-end text-3xl'>
 			<DpsFormat dps={dps} diff={diff} />
 		</div>
 	)

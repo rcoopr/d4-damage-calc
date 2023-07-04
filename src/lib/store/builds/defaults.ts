@@ -1,8 +1,8 @@
 import { reservedBuildNames } from './constants'
-import { Stats, Build, BuildStorage } from './schema'
+import { DpsStats, Build, BuildStorage } from './schema'
 
 // Define values for very first page load
-export const defaultBaseStats: Stats = {
+export const defaultBaseStats: DpsStats = {
 	weaponDps: 1000,
 	mainStat: 0,
 	additive: 0,
@@ -11,7 +11,7 @@ export const defaultBaseStats: Stats = {
 	critChance: 5,
 }
 
-export const defaultItemStats: Stats = {
+export const defaultItemStats: DpsStats = {
 	weaponDps: 0,
 	mainStat: 0,
 	additive: 0,

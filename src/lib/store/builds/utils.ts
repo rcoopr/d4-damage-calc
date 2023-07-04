@@ -5,7 +5,7 @@ import {
 	BuildStorage,
 	ItemSource,
 	StatSource,
-	Stats,
+	DpsStats,
 	buildStorageSchema,
 	sources,
 	stats,
@@ -19,7 +19,7 @@ export function isWornItem(item: string | null): item is ItemSource | null {
 }
 
 export function getInitialBuilds(key: string, fallback: BuildStorage) {
-	const localBuilds = getLocalBuilds(key, fallback)
+	const localBuilds = getLocalBuilds(key, fallback, true)
 
 	// Ensure default build exists
 	if (!(reservedBuildNames.default in localBuilds)) {
@@ -34,7 +34,12 @@ export function getInitialBuilds(key: string, fallback: BuildStorage) {
 	return localBuilds
 }
 
-export function getLocalBuilds(key: string, fallback: BuildStorage) {
+export function getLocalBuilds(
+	key: string,
+	fallback: BuildStorage,
+	internal?: boolean,
+) {
+	console.log({ internal })
 	const storedValue = localStorage.getItem(key)
 
 	try {
@@ -81,7 +86,7 @@ export function getImportBuild(): Build {
 	return build
 }
 
-export function isDefaultStats(source: StatSource, stats: Stats) {
+export function isDefaultStats(source: StatSource, stats: DpsStats) {
 	return isEqual(
 		stats,
 		source === 'char' ? defaultBaseStats : defaultItemStats,
