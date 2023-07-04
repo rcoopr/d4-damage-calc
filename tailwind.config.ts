@@ -20,9 +20,13 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['"Space Grotesk"', ...defaultTheme.fontFamily.sans],
+				sans: [
+					'var(--font-space-grotesk)',
+					...defaultTheme.fontFamily.sans,
+				],
 				mono: [
-					'"Space Mono", "Jetbrains Mono"',
+					'var(--font-space-mono)',
+					'"Jetbrains Mono"',
 					'Menlo',
 					...defaultTheme.fontFamily.mono,
 				],

@@ -2,26 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer utilities {
+	.italic {
+		@apply font-mono;
+		font-size-adjust: 0.5;
+	}
+
+	.fade-in {
+		animation: fade-in 300ms 150ms both;
+	}
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+:root {
+	line-height: 1.5;
+	font-weight: 400;
+
+	color-scheme: dark;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+	margin: 0;
+	place-items: center;
+	min-height: 100vh;
+}
+
+.tooltip {
+	--tooltip-tail: 0.375rem;
+}
+
+.copy-tip-right {
+	--tooltip-tail: 0.375rem;
+
+	position: absolute;
+	height: 100%;
+	left: 100%;
+	margin-left: 0.5rem;
+	display: grid;
+	place-content: center;
+	color: theme('colors.accent-content');
+}
+
+.copy-tail-right {
+	border-radius: theme('borderRadius.DEFAULT');
+	background: theme('colors.accent');
+	padding: 0.25rem 0.5rem;
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+.copy-tail-right::after {
+	content: '';
+	border-style: solid;
+	border-width: var(--tooltip-tail, 0);
+	width: 0;
+	height: 0;
+	display: block;
+	position: absolute;
+
+	transform: translateY(-50%);
+	border-color: transparent theme('colors.accent') transparent transparent;
+	top: 50%;
+	left: auto;
+	right: calc(100% - (var(--tooltip-tail) / 2) + var(--tooltip-tail) / 4);
+	bottom: auto;
+}
+
+.copy-tip-scale {
+	transform-origin: left;
+	transition: transform 200ms ease-out;
+}
+
+[data-open='true'].copy-tip-scale {
+	transform: scale(1);
+}
+
+[data-open='false'].copy-tip-scale {
+	transform: scale(0);
+}
+
+[data-open='true'].copy-tip-rotate {
+	animation: wiggle 300ms forwards;
+}
+[data-open='false'].copy-tip-rotate {
+	animation: none;
+}
+
+@keyframes wiggle {
+	0%,
+	20%,
+	100% {
+		transform: rotate(0deg);
+	}
+	30% {
+		transform: rotate(3deg);
+	}
+	50% {
+		transform: rotate(-3deg);
+	}
+	85% {
+		transform: rotate(3deg);
+	}
 }
