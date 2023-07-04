@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="px-8 md:px-16 lg:px-24 pb-12">
+    <footer className="px-8 md:px-16 lg:px-24 pb-12 mr-16">
       <p className="mb-8">
         Unfortunately, some in-game info is bugged, and may display extra damage on the character
         stats tab when they shouldn't. <br />
