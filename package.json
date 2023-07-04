@@ -32,6 +32,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^0.39.7",
     "@iconify-json/solar": "^1.1.1",
     "@swc-jotai/react-refresh": "^0.0.8",
     "@types/lodash.isequal": "^4.5.6",
