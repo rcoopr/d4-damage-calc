@@ -21,6 +21,7 @@ export function isWornItem(item: string | null): item is ItemSource | null {
 export function getInitialBuilds(key: string, fallback: BuildStorage) {
 	const localBuilds = getLocalBuilds(key, fallback)
 
+	// Ensure default build exists
 	if (!(reservedBuildNames.default in localBuilds)) {
 		localBuilds[reservedBuildNames.default] = emptyBuild
 	}
@@ -29,8 +30,6 @@ export function getInitialBuilds(key: string, fallback: BuildStorage) {
 		const importedBuild = getImportBuild()
 		localBuilds[reservedBuildNames.import] = importedBuild
 	}
-
-	// localStorage.setItem(key, JSON.stringify(localBuilds));
 
 	return localBuilds
 }

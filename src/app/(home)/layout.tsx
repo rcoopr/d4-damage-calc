@@ -1,7 +1,8 @@
 'use client'
 
-import { SidebarContent, SidebarHandle } from '@/app/(home)/sidebar'
-import { Sidebar } from '@/components/sidebar'
+import { Sidebar } from '@/components/sidebar/shared'
+import { SidebarContent } from '@/components/sidebar/content'
+import { SidebarHandle } from '@/components/sidebar/handle'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (

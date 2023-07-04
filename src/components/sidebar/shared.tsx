@@ -33,7 +33,7 @@ function Drawer({ children }: { children?: React.ReactNode }) {
 function Checkbox() {
 	return (
 		<input
-			id='sidebar'
+			id='settings'
 			type='checkbox'
 			className='fixed h-0 w-0 appearance-none opacity-0 peer'
 		/>
@@ -43,7 +43,7 @@ function Checkbox() {
 function Backdrop() {
 	return (
 		<label
-			htmlFor='sidebar'
+			htmlFor='settings'
 			className='fixed inset-0 bg-stone-950/30 hidden peer-checked:block'
 		/>
 	)
@@ -58,7 +58,7 @@ function Toggle({
 }) {
 	return (
 		<label
-			htmlFor='sidebar'
+			htmlFor='settings'
 			className={clsx(
 				'cursor-pointer relative z-10 text-stone-500 hover:text-stone-300',
 				className,

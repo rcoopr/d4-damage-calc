@@ -1,5 +1,8 @@
+import { CharacterSection } from '@/components/character/character'
 import { Hero } from '@/components/hero/hero'
-import { BuildSummary } from '@/components/hero/summary'
+import { BuildSummary } from '@/components/summary/build-dps'
+import { ItemsSection } from '@/components/items/items'
+import { DetailedStatsSummary } from '@/components/summary/detailed-stats'
 
 export default function Home() {
 	return (
@@ -9,30 +12,11 @@ export default function Home() {
 			<div className='mb-36 flex flex-col'>
 				<BuildSummary />
 				<div className='mb-16 flex flex-col justify-center gap-x-8 gap-y-2 lg:flex-row'>
-					<div className='flex flex-col'>
-						<h2 className='mb-6 text-2xl font-bold'>Character Stats</h2>
-						<div className='relative grid gap-x-12 gap-y-2'>
-							<h3
-								className='text-3xl max-lg:hidden lg:invisible'
-								aria-hidden
-							>
-								&ensp;
-							</h3>
-							{/* <StatInput source="char" />
-        <RelativeStatValues source="char" /> */}
-						</div>
-					</div>
+					<CharacterSection />
 					<div className='divider lg:divider-horizontal' />
-					<div className='flex flex-col'>
-						<h2 className='mb-6 text-2xl font-bold'>Item Comparison</h2>
-						{/* <ItemStatsSection /> */}
-					</div>
+					<ItemsSection />
 				</div>
-				<div className='flex flex-col flex-wrap items-center justify-center gap-4 md:flex-row md:items-start'>
-					{/* <BuildSummary source="char" />
-      <BuildSummary source="item1" />
-      <BuildSummary source="item2" /> */}
-				</div>
+				<DetailedStatsSummary />
 			</div>
 		</div>
 	)

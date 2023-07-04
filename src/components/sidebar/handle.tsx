@@ -1,21 +1,10 @@
-import { useState, useCallback, MouseEventHandler } from 'react'
-import { Sidebar } from '@/components/sidebar'
-
-export function SidebarContent() {
-	return (
-		<aside className='absolute inset-0 flex flex-col bg-stone-950/90 p-8 pt-5'>
-			<SidebarSection title='Builds' startOpen>
-				<BuildList />
-				{/* <SaveBuildForm /> */}
-			</SidebarSection>
-		</aside>
-	)
-}
+import { Sidebar } from '@/components/sidebar/shared'
+import { BuildsQuickAccess } from '@/components/sidebar/builds/quick-access'
 
 export function SidebarHandle() {
 	return (
 		<Sidebar.Handle className='flex flex-col items-stretch justify-between border-l border-stone-800 bg-stone-950/80 p-2 text-stone-500'>
-			<Builds />
+			<BuildsQuickAccess />
 			<Sidebar.Toggle className='p-1'>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
@@ -29,112 +18,5 @@ export function SidebarHandle() {
 				</svg>
 			</Sidebar.Toggle>
 		</Sidebar.Handle>
-	)
-}
-
-function SidebarSection({
-	title,
-	children,
-	startOpen,
-}: {
-	title: string
-	children: React.ReactNode
-	startOpen?: boolean
-}) {
-	const [open, setOpen] = useState(startOpen ?? false)
-	const toggle = useCallback(() => setOpen((o) => !o), [setOpen])
-
-	return (
-		<>
-			<section className='group' data-open={open}>
-				<div
-					role='button'
-					onClick={toggle}
-					className='-mx-3 my-1.5 flex items-center justify-between rounded-md px-3 py-1.5 text-lg hover:bg-stone-900'
-				>
-					<h3 className='font-bold uppercase tracking-widest text-stone-400'>
-						{title}
-					</h3>
-					<div className='i-solar-alt-arrow-down-linear -rotate-90 transition-transform group-data-[open="true"]:rotate-0'></div>
-				</div>
-				<div className='-mx-1 auto-height group-data-[open="true"]:auto-height-open'>
-					<div className='px-1'>{children}</div>
-				</div>
-			</section>
-			<div className='divider my-0 last:hidden' />
-		</>
-	)
-}
-
-function BuildList() {
-	// const names = useAtomValue(buildNamesAtom);
-
-	return (
-		<ul className='mb-4 flex flex-col'>
-			{/* {names.map((name) => (
-        <li key={name}>
-          <BuildNameInputForm name={name} />
-        </li>
-      ))} */}
-		</ul>
-	)
-}
-
-function Builds() {
-	// const buildNames = useAtomValue(buildNamesAtom)
-	// const [activeBuild, setActiveBuild] = useAtom(activeBuildNameAtom)
-
-	// const onBuildIconClick = useCallback<MouseEventHandler<HTMLElement>>(
-	// 	(ev) => {
-	// 		if (ev.currentTarget.dataset.build)
-	// 			setActiveBuild(ev.currentTarget.dataset.build)
-	// 	},
-	// 	[setActiveBuild],
-	// )
-
-	const onNewBuildClick = useCallback<MouseEventHandler<HTMLElement>>(() => {
-		// TOOD: do this in a more reacty-way?
-		const sidebarCheckbox =
-			document.querySelector<HTMLInputElement>('input#settings')
-		const buildNameInput = document.querySelector<HTMLInputElement>(
-			'input#save-build-name',
-		)
-
-		if (sidebarCheckbox) sidebarCheckbox.checked = true
-		if (buildNameInput) buildNameInput.focus()
-	}, [])
-
-	return (
-		<div className='flex flex-col items-center gap-2'>
-			<h4 className='my-2 text-sm font-bold writing-vertical-rl orientation-upright'>
-				BUILDS
-			</h4>
-			{/* {buildNames.map((name) => (
-				<div className='tooltip tooltip-left' key={name} data-tip={name}>
-					<button
-						data-build={name}
-						onClick={onBuildIconClick}
-						className='btn-ghost btn-square btn-sm btn grid place-content-center rounded-md p-2 hover:scale-110 hover:text-stone-300'
-					>
-						<div
-							className={clsx(
-								'grid h-8 w-8 place-content-center rounded border-2 border-current font-bold',
-								name === activeBuild && 'text-primary',
-							)}
-						>
-							{name.charAt(0)}
-						</div>
-					</button>
-				</div>
-			))} */}
-			<div
-				onClick={onNewBuildClick}
-				className='btn-ghost btn-square btn-sm btn grid place-content-center rounded-md p-2 hover:scale-110 hover:text-stone-300'
-			>
-				<div className='grid h-8 w-8 place-content-center rounded border-2 border-current font-bold'>
-					+
-				</div>
-			</div>
-		</div>
 	)
 }

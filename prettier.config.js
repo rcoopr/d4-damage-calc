@@ -1,7 +1,7 @@
 /** @type {import('prettier').Config} */
 module.exports = {
-	// plugins: ['prettier-plugin-tailwindcss'],
-	// tailwindFunctions: ['clsx'],
+	plugins: ['prettier-plugin-tailwindcss'],
+	tailwindFunctions: ['clsx'],
 
 	trailingComma: 'all',
 	semi: false,
