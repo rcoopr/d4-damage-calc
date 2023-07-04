@@ -15,14 +15,14 @@ export function Footer() {
         <span className="italic font-mono">true</span> DPS may be innacurate, however for comparison
         purposes it doesn't make any difference
       </p>
-      {/* <div className="flex justify-end">
+      <div className="flex justify-end">
         <a
           className="link rounded-lg bg-secondary hover:bg-secondary-focus text-secondary-content font-semibold items-center p-2.5"
           href="https://www.buymeacoffee.com/rcoopr"
         >
-          Buy me a coffee
+          Support my work
         </a>
-      </div> */}
+      </div>
     </footer>
   );
 }

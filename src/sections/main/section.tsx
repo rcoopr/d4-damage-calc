@@ -9,7 +9,7 @@ import { BuildSummary } from '../stats/summary/build-summary';
 export function Homepage() {
   return (
     <>
-      <main className="flex flex-col items-center min-h-screen px-8 md:px-16 lg:px-24">
+      <main className="flex flex-col items-center min-h-screen px-8 md:px-16 lg:px-24 mr-16">
         <Hero />
 
         <div className="flex flex-col mb-36">
