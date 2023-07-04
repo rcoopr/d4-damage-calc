@@ -1,47 +1,50 @@
 {
-  "extends": ["next/core-web-vitals", "@antfu"],
-  "rules": {
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1,
-        "VariableDeclarator": 1,
-        "outerIIFEBody": 1,
-        "MemberExpression": 1,
-        "FunctionDeclaration": { "parameters": 1, "body": 1 },
-        "FunctionExpression": { "parameters": 1, "body": 1 },
-        "CallExpression": { "arguments": 1 },
-        "ArrayExpression": 1,
-        "ObjectExpression": 1,
-        "ImportDeclaration": 1,
-        "flatTernaryExpressions": false,
-        "ignoreComments": false,
-        "ignoredNodes": [
-          // "TemplateLiteral *",
-          // "JSXElement",
-          // "JSXElement > *",
-          // "JSXAttribute",
-          // "JSXIdentifier",
-          // "JSXNamespacedName",
-          // "JSXMemberExpression",
-          // "JSXSpreadAttribute",
-          // "JSXExpressionContainer",
-          // "JSXOpeningElement",
-          // "JSXClosingElement",
-          // "JSXFragment",
-          // "JSXOpeningFragment",
-          // "JSXClosingFragment",
-          // "JSXText",
-          // "JSXEmptyExpression",
-          // "JSXSpreadChild",
-          "TSTypeParameterInstantiation",
-          "FunctionExpression > .params[decorators.length > 0]",
-          "FunctionExpression > .params > :matches(Decorator, :not(:first-child))",
-          "ClassBody.body > PropertyDefinition[decorators.length > 0] > .key"
-        ],
-        "offsetTernaryExpressions": true
-      }
-    ]
-  }
+	"plugins": ["import"],
+	"extends": [
+		"next/core-web-vitals",
+		"plugin:import/recommended",
+		"plugin:import/typescript",
+		"plugin:@typescript-eslint/recommended",
+		"prettier"
+	],
+	"settings": {
+		"import/resolver": {
+			"typescript": true,
+			"node": true
+		}
+	},
+	"rules": {
+		"prefer-const": "error",
+		"import/no-extraneous-dependencies": 1,
+		"import/no-unresolved": [2, { "commonjs": true, "amd": true }],
+		"import/named": 2,
+		"import/namespace": 2,
+		"import/default": 2,
+		"import/export": 2,
+		"import/order": [
+			1,
+			{
+				"groups": [
+					"external",
+					"builtin",
+					"internal",
+					"sibling",
+					"parent",
+					"index"
+				],
+				"pathGroups": [
+					{
+						"pattern": "@/**",
+						"group": "internal",
+						"position": "after"
+					}
+				],
+				"pathGroupsExcludedImportTypes": ["internal"],
+				"alphabetize": {
+					"order": "asc",
+					"caseInsensitive": true
+				}
+			}
+		]
+	}
 }

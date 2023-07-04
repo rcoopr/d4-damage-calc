@@ -34,19 +34,27 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.7",
     "@iconify-json/solar": "^1.1.1",
     "@swc-jotai/debug-label": "^0.0.10",
     "@swc-jotai/react-refresh": "^0.0.8",
     "@types/lodash.isequal": "^4.5.6",
     "@types/lodash.merge": "^4.6.7",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
     "csstype": "^3.1.2",
     "daisyui": "^3.1.7",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
     "tailwindcss-plugin-icons": "^2.1.1"
   },
   "pnpm": {
-  "peerDependencyRules": {
-      "ignoreMissing": ["redux"]
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "redux"
+      ]
     }
   }
 }
