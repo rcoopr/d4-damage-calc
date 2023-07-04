@@ -1,4 +1,5 @@
 import { Hero } from '@/components/hero/hero'
+import { BuildSummary } from '@/components/hero/summary'
 
 export default function Home() {
 	return (
@@ -6,7 +7,7 @@ export default function Home() {
 			<Hero />
 
 			<div className='mb-36 flex flex-col'>
-				{/* <BuildDpsSummary /> */}
+				<BuildSummary />
 				<div className='mb-16 flex flex-col justify-center gap-x-8 gap-y-2 lg:flex-row'>
 					<div className='flex flex-col'>
 						<h2 className='mb-6 text-2xl font-bold'>Character Stats</h2>
