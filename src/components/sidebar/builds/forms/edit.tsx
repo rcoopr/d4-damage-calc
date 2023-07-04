@@ -183,7 +183,6 @@ export function BuildNameInputForm({ name }: { name: string }) {
 					</div>
 					<div>
 						<button
-							disabled={DO_NOT_TOUCH}
 							onClick={shareBuild}
 							className='relative grid h-8 w-8 shrink-0 cursor-pointer place-content-center rounded hover:text-primary focus:ring-2 focus:ring-stone-300'
 						>
