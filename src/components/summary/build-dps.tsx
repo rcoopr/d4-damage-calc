@@ -1,14 +1,14 @@
 'use client'
 
-import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
 import { mapSourceToBuilds } from '@/lib/utils'
 import { activeBuildAtom } from '@/lib/store/builds/builds'
 import { DpsDesaturate, DpsFormat } from '@/components/text/heatmap'
-import { computedStatsAtom, ComputedStats } from '@/lib/store/builds/computed'
-import { StatSource, sources, BuildSource } from '@/lib/store/builds/schema'
-import { isDefaultStats } from '@/lib/store/builds/utils'
+import { computedStatsAtom } from '@/lib/store/builds/computed/atom'
+import { StatSource, sources } from '@/lib/store/builds/schema'
+import { getDpsDiff, isDefaultStats } from '@/lib/store/builds/utils'
+import { DpsLine } from '@/components/summary/components/dps-line'
 
 const labels: Record<StatSource, string> = {
 	char: 'Base DPS',
@@ -20,7 +20,11 @@ export function BuildSummary() {
 	return (
 		<div className='mb-12 flex flex-col gap-1 text-xl font-medium text-stone-400'>
 			{sources.map((source) => (
-				<DpsLine key={source} source={source} label={labels[source]} />
+				<DpsLineBuilder
+					key={source}
+					source={source}
+					label={labels[source]}
+				/>
 			))}
 			<div className='flex items-center self-end'>
 				<span className='pr-4 text-sm'>OVERALL DPS CHANGE: </span>
@@ -52,7 +56,13 @@ function DpsDiff() {
 	)
 }
 
-function DpsLine({ label, source }: { label: string; source: StatSource }) {
+function DpsLineBuilder({
+	label,
+	source,
+}: {
+	label: string
+	source: StatSource
+}) {
 	const [width, setWidth] = useState(100)
 
 	const activeBuild = useAtomValue(activeBuildAtom)
@@ -72,54 +82,13 @@ function DpsLine({ label, source }: { label: string; source: StatSource }) {
 	}, [widthPercent, setWidth])
 
 	return (
-		<div
-			className={clsx(
-				'relative flex items-center transition-opacity',
-				build !== 'char' && isUnused ? 'opacity-0' : 'opacity-100',
-			)}
-		>
-			<div className='animate-in fade-in absolute inset-y-0 -right-2 left-0'>
-				<div
-					className={clsx(
-						'absolute inset-0 rounded-r-lg bg-gradient-to-l to-60%',
-						// 'after:absolute after:inset-0 after:pattern-diagonal-lines after:pattern-black after:pattern-bg-white after:pattern-size-4 after:pattern-opacity-50 after:mix-blend-multiply',
-						source === 'char'
-							? 'from-primary/20'
-							: diff > 0
-							? 'from-success/20'
-							: 'from-error/20',
-					)}
-					style={{ width: `${width.toFixed(2)}%` }}
-				/>
-			</div>
-			<h2 className='pr-8 md:pr-16 lg:pr-24'>{label}</h2>
-			<DpsValue dps={buildDps} diff={diff} />
-		</div>
+		<DpsLine
+			hide={build !== 'char' && isUnused}
+			source={source}
+			diff={diff}
+			buildDps={buildDps}
+			width={width}
+			label={label}
+		/>
 	)
-}
-
-function DpsValue({ dps, diff }: { dps: number; diff: number }) {
-	return (
-		<div className='relative ml-auto flex items-end text-3xl'>
-			<DpsFormat dps={dps} diff={diff} />
-		</div>
-	)
-}
-
-function getDpsDiff(
-	comparison: ComputedStats['comparison'],
-	source: StatSource | BuildSource,
-) {
-	switch (source) {
-		case 'build1':
-			return comparison.build
-		case 'build2':
-			return 0 - comparison.build
-		case 'item1':
-			return comparison.item
-		case 'item2':
-			return 0 - comparison.item
-		default:
-			return 0
-	}
 }

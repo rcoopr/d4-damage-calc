@@ -10,9 +10,11 @@ import {
 	sources,
 	stats,
 	statsSchema,
+	BuildSource,
 } from './schema'
 import { defaultBaseStats, defaultItemStats, emptyBuild } from './defaults'
 import { clamp, isSSR } from '@/lib/utils'
+import { ComputedStats } from '@/lib/store/builds/computed/atom'
 
 export function isWornItem(item: string | null): item is ItemSource | null {
 	return item === null || item === 'item1' || item === 'item2'
@@ -78,11 +80,36 @@ export function getImportBuild(decodedBuild?: string): Build {
 
 	const build = Object.assign({}, emptyBuild, importedBuild)
 
-	console.groupCollapsed('import')
-	console.table(importedBuild)
-	console.groupEnd()
+	// console.groupCollapsed('import')
+	// console.table(importedBuild)
+	// console.groupEnd()
 
 	return build
+}
+
+export function isDefaultStats(source: StatSource, stats: DpsStats) {
+	return isEqual(
+		stats,
+		source === 'char' ? defaultBaseStats : defaultItemStats,
+	)
+}
+
+export function getDpsDiff(
+	comparison: ComputedStats['comparison'],
+	source: StatSource | BuildSource,
+) {
+	switch (source) {
+		case 'build1':
+			return comparison.build
+		case 'build2':
+			return 0 - comparison.build
+		case 'item1':
+			return comparison.item
+		case 'item2':
+			return 0 - comparison.item
+		default:
+			return 0
+	}
 }
 
 // function getImportBuildUsingParams(params: string): Build {
@@ -117,10 +144,3 @@ export function getImportBuild(decodedBuild?: string): Build {
 
 // 	return importedBuild
 // }
-
-export function isDefaultStats(source: StatSource, stats: DpsStats) {
-	return isEqual(
-		stats,
-		source === 'char' ? defaultBaseStats : defaultItemStats,
-	)
-}

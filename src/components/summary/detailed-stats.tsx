@@ -4,8 +4,8 @@ import { useAtomValue } from 'jotai'
 import { DpsColor } from '@/components/text/heatmap'
 import { formatDps } from '@/lib/format'
 import { mapSourceToBuilds } from '@/lib/utils'
-import { computedStatsAtom } from '@/lib/store/builds/computed'
 import { StatSource, stats } from '@/lib/store/builds/schema'
+import { computedStatsAtom } from '@/lib/store/builds/computed/atom'
 
 export function DetailedStatsSummary() {
 	return (

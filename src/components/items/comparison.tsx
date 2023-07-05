@@ -5,7 +5,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, ChangeEventHandler } from 'react'
 import { DpsFormat, DpsDesaturate } from '@/components/text/heatmap'
 import { activeBuildAtom } from '@/lib/store/builds/builds'
-import { computedStatsAtom } from '@/lib/store/builds/computed'
+import { computedStatsAtom } from '@/lib/store/builds/computed/atom'
 import { ItemSource } from '@/lib/store/builds/schema'
 import { isDefaultStats } from '@/lib/store/builds/utils'
 

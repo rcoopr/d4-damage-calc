@@ -1,17 +1,7 @@
-import { atom } from 'jotai'
-import { BuildSource, StatSource, DpsStats } from './schema'
-import { activeBuildAtom } from './builds'
+import { ComputedStats } from '@/lib/store/builds/computed/atom'
+import { Build, DpsStats } from '@/lib/store/builds/schema'
 
-export type ComputedStats = {
-	statsTotal: Record<StatSource, DpsStats>
-	dps: Record<StatSource | BuildSource, number>
-	comparison: Record<'item' | 'build', number>
-	increase: Record<Exclude<BuildSource, 'char'>, number>
-}
-
-export const computedStatsAtom = atom<ComputedStats>((get) => {
-	const build = get(activeBuildAtom)
-
+export function computeStats(build: Build): ComputedStats {
 	const baseStats = build.char
 	const item1Stats = build.item1
 	const item2Stats = build.item2
@@ -76,7 +66,7 @@ export const computedStatsAtom = atom<ComputedStats>((get) => {
 			build2: build2DpsIncrease,
 		},
 	}
-})
+}
 
 function calculateDps(stats: DpsStats) {
 	const buckets = [

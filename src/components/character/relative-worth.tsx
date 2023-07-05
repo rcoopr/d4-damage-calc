@@ -2,7 +2,7 @@
 
 import { useAtomValue } from 'jotai'
 import { formatDps } from '@/lib/format'
-import { computedStatsAtom } from '@/lib/store/builds/computed'
+import { computedStatsAtom } from '@/lib/store/builds/computed/atom'
 import { StatSource } from '@/lib/store/builds/schema'
 
 const calculateRelativeValue = (bucket1: number, bucket2: number) => {

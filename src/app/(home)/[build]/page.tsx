@@ -6,13 +6,19 @@ import { BuildSummary } from '@/components/summary/build-dps'
 import { DetailedStatsSummary } from '@/components/summary/detailed-stats'
 import { Hydrate } from '@/components/utils/atoms'
 
-type PageParams = { build?: string[] }
+export const metadata = {
+	twitter: {
+		card: 'summary_large_image',
+	},
+}
+
+type PageParams = { build?: string }
 
 function getDecodedBuild(params: PageParams) {
-	if (!params.build || params.build.length === 0) {
+	if (!params.build || typeof params.build !== 'string') {
 		return undefined
 	}
-	return decodeURIComponent(params.build[0])
+	return decodeURIComponent(params.build)
 }
 
 export default function HomePage({ params }: { params: PageParams }) {

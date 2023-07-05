@@ -30,10 +30,13 @@ const spaceMono = Space_Mono({
 })
 
 export const metadata = {
+	// metadataBase: new URL('http://d4calc.info'),
+	alternates: {
+		canonical: '/',
+	},
 	title: 'D4 Calc',
 	description: 'Diablo 4 Item Comparison & Dps Evaluation Tool',
 	themeColor: '#00ffff',
-	siteName: 'Site Name',
 }
 
 export default function RootLayout({
@@ -56,7 +59,7 @@ export default function RootLayout({
 						toastOptions={toastOptions}
 					/>
 					<div className='fixed bottom-2.5 left-2.5 h-16 w-16'>
-						<DevTools />
+						{/* <DevTools /> */}
 					</div>
 				</AtomProvider>
 			</body>
