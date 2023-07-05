@@ -20,7 +20,7 @@ type FormData = {
 	name: string
 }
 
-export function BuildNameInputForm({ name }: { name: string }) {
+export async function BuildNameInputForm({ name }: { name: string }) {
 	const [editing, setEditing] = useState(false)
 
 	const setStorage = useSetAtom(buildStorageAtom)

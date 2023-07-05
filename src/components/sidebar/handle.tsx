@@ -1,10 +1,13 @@
+import { Suspense } from 'react'
 import { Sidebar } from '@/components/sidebar/shared'
 import { BuildsQuickAccess } from '@/components/sidebar/builds/quick-access'
 
 export function SidebarHandle() {
 	return (
 		<Sidebar.Handle className='flex flex-col items-stretch justify-between overflow-y-auto border-l border-stone-800 bg-stone-950/80 pt-2 text-stone-500 scrollbar-none'>
-			<BuildsQuickAccess />
+			<Suspense fallback={null}>
+				<BuildsQuickAccess />
+			</Suspense>
 			<Sidebar.Toggle className='sticky bottom-0 mt-auto pr-px'>
 				<div className='h-4 bg-gradient-to-t from-stone-950' />
 				<div className='bg-stone-950 p-3'>

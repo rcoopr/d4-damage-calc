@@ -4,11 +4,24 @@ import { Hero } from '@/components/hero/hero'
 import { ItemsSection } from '@/components/items/items'
 import { BuildSummary } from '@/components/summary/build-dps'
 import { DetailedStatsSummary } from '@/components/summary/detailed-stats'
+import { Hydrate } from '@/components/utils/atoms'
 
-export default function HomePage() {
+type PageParams = { build?: string[] }
+
+function getDecodedBuild(params: PageParams) {
+	if (!params.build || params.build.length === 0) {
+		return undefined
+	}
+	return decodeURIComponent(params.build[0])
+}
+
+export default function HomePage({ params }: { params: PageParams }) {
+	const decodedBuild = getDecodedBuild(params)
+
 	return (
 		<div className='mr-16 flex min-h-screen flex-col items-center px-8 md:px-16 lg:px-24'>
 			<Suspense fallback={null}>
+				<Hydrate decodedBuild={decodedBuild} />
 				<Hero />
 
 				<div className='mb-36 flex flex-col'>

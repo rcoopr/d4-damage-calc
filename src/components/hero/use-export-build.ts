@@ -58,7 +58,7 @@ function serializeStats(build: Build, source: StatSource) {
 		? ''
 		: stats
 				.map((stat) => formatForSearchParam(build[source][stat.id]))
-				.join(',')
+				.join('-')
 }
 
 function formatForSearchParam(number: number) {

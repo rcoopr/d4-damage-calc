@@ -12,22 +12,25 @@ import {
 	statsSchema,
 } from './schema'
 import { defaultBaseStats, defaultItemStats, emptyBuild } from './defaults'
-import { clamp } from '@/lib/utils'
+import { clamp, isSSR } from '@/lib/utils'
 
 export function isWornItem(item: string | null): item is ItemSource | null {
 	return item === null || item === 'item1' || item === 'item2'
 }
 
-export function getInitialBuilds(key: string, fallback: BuildStorage) {
-	const localBuilds = getLocalBuilds(key, fallback)
+export function getInitialBuilds(
+	key: string,
+	opts: { fallback: BuildStorage; decodedBuild?: string },
+) {
+	const localBuilds = getLocalBuilds(key, opts.fallback)
 
 	// Ensure default build exists
 	if (!(reservedBuildNames.default in localBuilds)) {
 		localBuilds[reservedBuildNames.default] = emptyBuild
 	}
 
-	if (typeof window !== 'undefined' && window.location.search !== '') {
-		const importedBuild = getImportBuild()
+	if (opts.decodedBuild) {
+		const importedBuild = getImportBuild(opts.decodedBuild)
 		localBuilds[reservedBuildNames.import] = importedBuild
 	}
 
@@ -35,7 +38,7 @@ export function getInitialBuilds(key: string, fallback: BuildStorage) {
 }
 
 export function getLocalBuilds(key: string, fallback: BuildStorage) {
-	if (typeof window === 'undefined') return fallback
+	if (isSSR()) return fallback
 	const storedValue = localStorage.getItem(key)
 
 	try {
@@ -46,15 +49,15 @@ export function getLocalBuilds(key: string, fallback: BuildStorage) {
 	}
 }
 
-export function getImportBuild(): Build {
-	const searchParams = new URLSearchParams(window.location.search)
+export function getImportBuild(decodedBuild?: string): Build {
+	const url = new URL(`https://base/?${decodedBuild}`)
 	const importedBuild: Partial<Build> = {}
 
 	for (const source of sources) {
-		const param = searchParams.get(source)
+		const param = url.searchParams.get(source)
 
 		if (param && typeof param === 'string') {
-			const paramStats = param.split(',')
+			const paramStats = param.split('-')
 			const statsObject = Object.fromEntries(
 				stats.map((stat, index) => [stat.id, paramStats[index]]),
 			)
@@ -66,7 +69,7 @@ export function getImportBuild(): Build {
 		}
 	}
 
-	const wornParam = Number(searchParams.get(keys.wornItem))
+	const wornParam = Number(url.searchParams.get(keys.wornItem))
 	const wornItemNumber = Number.isNaN(wornParam) ? 0 : clamp(wornParam, 0, 2)
 	const wornItem = wornItemNumber === 0 ? null : `item${wornItemNumber}`
 	if (isWornItem(wornItem)) {
@@ -81,6 +84,39 @@ export function getImportBuild(): Build {
 
 	return build
 }
+
+// function getImportBuildUsingParams(params: string): Build {
+// 	const importedBuild = {...emptyBuild}
+
+//   for (const source of params.split("&")) {
+//     const sourceParts = source.split("=")
+//     if (sourceParts.length === 2 && sourceParts[1] in importedBuild) {
+//       if (sourceParts[1] === keys.wornItem) {
+//         const wornParam = Number(sourceParts[2])
+//         const wornItemNumber = Number.isNaN(wornParam) ? 0 : clamp(wornParam, 0, 2)
+//         const wornItem = wornItemNumber === 0 ? null : `item${wornItemNumber}`
+//         if (isWornItem(wornItem)) {
+//           importedBuild.wornItem = wornItem
+//         }
+//       } else {
+
+//         sourceParts[2].split("-").forEach((value, index) => {
+//           const valueAsNum = Number(value)
+//           if (index < stats.length && !Number.isNaN(valueAsNum)) {
+//             importedBuild[source as StatSource][stats[index].id] = valueAsNum
+//           }
+//         })
+//       }
+
+//       }
+//     }
+
+// 	console.groupCollapsed('import')
+// 	console.table(importedBuild)
+// 	console.groupEnd()
+
+// 	return importedBuild
+// }
 
 export function isDefaultStats(source: StatSource, stats: DpsStats) {
 	return isEqual(

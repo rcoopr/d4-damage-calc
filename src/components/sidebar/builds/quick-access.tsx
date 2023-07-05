@@ -1,8 +1,7 @@
 'use client'
 
-import clsx from 'clsx'
 import { useAtomValue, useAtom } from 'jotai'
-import { useCallback, MouseEventHandler } from 'react'
+import { useCallback, MouseEventHandler, useEffect, useState } from 'react'
 import { buildNamesAtom, activeBuildNameAtom } from '@/lib/store/builds/builds'
 import { reservedBuildNames } from '@/lib/store/builds/constants'
 
@@ -69,20 +68,26 @@ function BuildButton({ name }: { name: string }) {
 		[setActiveBuild],
 	)
 
+	const [hasMounted, setHasMounted] = useState(false)
+
+	useEffect(() => {
+		setHasMounted(true)
+	}, [])
+
+	if (!hasMounted) {
+		return null
+	}
+
 	return (
 		<div>
 			{/* <div className='tooltip tooltip-left' data-tip={name} >  */}
 			<button
 				data-build={name}
+				data-active={name === activeBuild}
 				onClick={onClick}
 				className='btn-ghost btn-square btn-sm btn grid place-content-center rounded-md p-2 hover:scale-110 hover:text-stone-300'
 			>
-				<div
-					className={clsx(
-						'grid h-8 w-8 place-content-center rounded border-2 border-current font-bold',
-						name === activeBuild && 'text-primary',
-					)}
-				>
+				<div className='grid h-8 w-8 place-content-center rounded border-2 border-current font-bold data-[active="true"]:text-primary'>
 					{name.charAt(0)}
 				</div>
 			</button>

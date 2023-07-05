@@ -5,20 +5,20 @@ import { keys, reservedBuildNames } from './constants'
 import { Build, buildStorageSchema } from './schema'
 import { emptyBuild, emptyStorage } from './defaults'
 import { isSSR, noop } from '@/lib/utils'
-import { getInitialBuilds, getLocalBuilds } from '@/lib/store/builds/utils'
+import { getLocalBuilds } from '@/lib/store/builds/utils'
 
 export const activeBuildNameAtom = atom(
-	isSSR() || window.location.search === ''
+	isSSR() || window.location.pathname === '/'
 		? reservedBuildNames.default
 		: reservedBuildNames.import,
 )
 
-const initialBuilds = getInitialBuilds(keys.builds, emptyStorage)
-if (!isSSR()) {
-	localStorage.setItem(keys.builds, JSON.stringify(initialBuilds))
-}
+// const initialBuilds = getInitialBuilds(keys.builds, emptyStorage)
+// if (!isSSR()) {
+// 	localStorage.setItem(keys.builds, JSON.stringify(initialBuilds))
+// }
 
-export const buildStorageAtom = atomWithStorage(keys.builds, initialBuilds, {
+export const buildStorageAtom = atomWithStorage(keys.builds, emptyStorage, {
 	getItem: (key, initialValue) => getLocalBuilds(key, initialValue),
 	setItem: (key, value) => {
 		if (!isSSR()) localStorage.setItem(key, JSON.stringify(value))
@@ -70,7 +70,6 @@ export const activeBuildAtom = atom<
 		const active = get(activeBuildNameAtom)
 
 		if (!(active in storage)) {
-			// console.log({ active, storage })
 			console.warn(`${active} not found in storage`)
 			if (!(reservedBuildNames.default in storage)) {
 				console.error(`${reservedBuildNames.default} not found in storage`)
@@ -96,7 +95,7 @@ export const activeBuildAtom = atom<
 	},
 )
 
-export const buildNamesAtom = atom((get) => {
+export const buildNamesAtom = atom(async (get) => {
 	const storage = get(buildStorageAtom)
 	return Object.keys(storage)
 })

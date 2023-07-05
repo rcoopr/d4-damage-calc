@@ -12,8 +12,8 @@ export function SidebarContent() {
 					<SidebarSection id='settings-builds' title='Builds' startOpen>
 						<Suspense fallback={null}>
 							<BuildList />
+							<SaveBuildForm />
 						</Suspense>
-						<SaveBuildForm />
 					</SidebarSection>
 				</div>
 				<div className='sticky bottom-0 mt-auto z-20'>
