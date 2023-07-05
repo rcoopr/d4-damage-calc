@@ -2,7 +2,6 @@ import './globals.css'
 
 import { Space_Grotesk, Space_Mono } from 'next/font/google'
 import { ToastOptions, Toaster } from 'react-hot-toast'
-import { Provider } from 'jotai'
 import { DevTools } from '@/components/utils/devtools'
 import { AtomProvider } from '@/components/utils/atoms'
 
@@ -33,6 +32,8 @@ const spaceMono = Space_Mono({
 export const metadata = {
 	title: 'D4 Calc',
 	description: 'Diablo 4 Item Comparison & Dps Evaluation Tool',
+	themeColor: '#00ffff',
+	siteName: 'Site Name',
 }
 
 export default function RootLayout({
