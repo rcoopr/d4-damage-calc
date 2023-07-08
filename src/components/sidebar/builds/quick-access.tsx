@@ -78,6 +78,12 @@ function BuildButton({ name }: { name: string }) {
 		return null
 	}
 
+	const words = name.split(' ')
+	const initials =
+		words.length > 1
+			? `${words[0].charAt(0)}${words[1].charAt(0)}`
+			: name.charAt(0)
+
 	return (
 		<div>
 			{/* <div className='tooltip tooltip-left' data-tip={name} >  */}
@@ -88,7 +94,11 @@ function BuildButton({ name }: { name: string }) {
 				className='btn-ghost btn-square btn-sm btn grid place-content-center rounded-md p-2 hover:scale-110 hover:text-stone-300 data-[active="true"]:text-primary'
 			>
 				<div className='grid h-8 w-8 place-content-center rounded border-2 border-current font-bold'>
-					{name.charAt(0)}
+					{name === reservedBuildNames.import ? (
+						<span className='h-6 w-6 inline-block i-solar-import-linear' />
+					) : (
+						<span>{initials}</span>
+					)}
 				</div>
 			</button>
 		</div>
