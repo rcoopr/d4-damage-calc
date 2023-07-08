@@ -8,6 +8,7 @@ export type ComputedStats = {
 	dps: Record<StatSource | BuildSource, number>
 	comparison: Record<'item' | 'build', number>
 	increase: Record<Exclude<BuildSource, 'char'>, number>
+	multipliers: Record<BuildSource, number[]>
 }
 
 export const computedStatsAtom = atom<ComputedStats>((get) => {

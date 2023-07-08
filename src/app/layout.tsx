@@ -58,9 +58,7 @@ export default function RootLayout({
 						gutter={8}
 						toastOptions={toastOptions}
 					/>
-					<div className='fixed bottom-2.5 left-2.5 h-16 w-16'>
-						<DevTools />
-					</div>
+					{/* <DevTools /> */}
 				</AtomProvider>
 			</body>
 		</html>

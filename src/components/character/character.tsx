@@ -10,7 +10,7 @@ export function CharacterSection() {
 					&ensp;
 				</h3>
 				<StatInput source='char' />
-				<RelativeStatValues source='char' />
+				<RelativeStatValues />
 			</div>
 		</div>
 	)

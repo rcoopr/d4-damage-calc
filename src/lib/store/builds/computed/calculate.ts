@@ -17,9 +17,12 @@ export function computeStats(build: Build): ComputedStats {
 	const statsWithItem1 = adjustStats(statsWithoutItems, item1Stats)
 	const statsWithItem2 = adjustStats(statsWithoutItems, item2Stats)
 
-	const baseDps = calculateDps(statsWithoutItems)
-	const build1Dps = calculateDps(statsWithItem1)
-	const build2Dps = calculateDps(statsWithItem2)
+	const { dps: baseDps, multipliers: baseMultipliers } =
+		calculateDps(statsWithoutItems)
+	const { dps: build1Dps, multipliers: build1Multipliers } =
+		calculateDps(statsWithItem1)
+	const { dps: build2Dps, multipliers: build2Multipliers } =
+		calculateDps(statsWithItem2)
 
 	const item1Dps = build1Dps - baseDps
 	const item2Dps = build2Dps - baseDps
@@ -65,6 +68,11 @@ export function computeStats(build: Build): ComputedStats {
 			build1: build1DpsIncrease,
 			build2: build2DpsIncrease,
 		},
+		multipliers: {
+			char: baseMultipliers,
+			build1: build1Multipliers,
+			build2: build2Multipliers,
+		},
 	}
 }
 
@@ -75,12 +83,14 @@ function calculateDps(stats: DpsStats) {
 		stats.vulnerable,
 		(stats.critDamage * Math.min(stats.critChance, 100)) / 100,
 	]
-	const damageMultiplier = buckets.reduce(
-		(product, bucket) => product * (1 + bucket / 100),
+
+	const multipliers = buckets.map((bucket) => 1 + bucket / 100)
+	const damageMultiplier = multipliers.reduce(
+		(product, multiplier) => product * multiplier,
 		1,
 	)
 
-	return stats.weaponDps * damageMultiplier
+	return { dps: stats.weaponDps * damageMultiplier, multipliers }
 }
 
 function adjustStats(

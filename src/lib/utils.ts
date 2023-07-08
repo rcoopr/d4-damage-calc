@@ -10,6 +10,12 @@ export const mapSourceToBuilds: Record<StatSource, BuildSource> = {
 	item2: 'build2',
 }
 
+export const mapSourcesToLabels: Record<StatSource, string> = {
+	char: 'Base',
+	item1: 'Item 1',
+	item2: 'Item 2',
+}
+
 export function noop() {
 	void 0
 }

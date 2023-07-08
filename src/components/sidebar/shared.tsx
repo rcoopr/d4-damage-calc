@@ -25,7 +25,7 @@ function Handle({
 
 function Drawer({ children }: { children?: React.ReactNode }) {
 	return (
-		<aside className='fixed bottom-0 right-0 top-0 w-80 translate-x-80 border-l border-stone-500 transition-transform duration-300 ease-out-quart peer-checked:translate-x-0'>
+		<aside className='fixed bottom-0 right-0 top-0 w-[calc(100vw-64px)] translate-x-[calc(100vw-64px)] md:w-80 md:translate-x-80 border-l border-stone-500 transition-transform duration-300 ease-out-quart peer-checked:translate-x-0'>
 			{children}
 		</aside>
 	)

@@ -13,8 +13,14 @@ import {
 	BuildSource,
 } from './schema'
 import { defaultBaseStats, defaultItemStats, emptyBuild } from './defaults'
-import { clamp, isSSR } from '@/lib/utils'
+import { isSSR } from '@/lib/utils'
 import { ComputedStats } from '@/lib/store/builds/computed/atom'
+
+export function isStatSource(
+	potentialSource: string,
+): potentialSource is StatSource {
+	return sources.includes(potentialSource as StatSource)
+}
 
 export function isWornItem(item: string | null): item is ItemSource | null {
 	return item === null || item === 'item1' || item === 'item2'

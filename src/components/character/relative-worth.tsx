@@ -1,16 +1,27 @@
 'use client'
 
-import { useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { ChangeEventHandler, useCallback } from 'react'
 import { formatDps } from '@/lib/format'
 import { computedStatsAtom } from '@/lib/store/builds/computed/atom'
-import { StatSource } from '@/lib/store/builds/schema'
+import { StatSource, sources } from '@/lib/store/builds/schema'
+import { mapSourceToBuilds, mapSourcesToLabels } from '@/lib/utils'
+import { isStatSource } from '@/lib/store/builds/utils'
+
+const target = 1.01
+const iLevelPerPercentInc = (5 * Math.log(target)) / Math.log(1.02)
 
 const calculateRelativeValue = (bucket1: number, bucket2: number) => {
 	return (1 + bucket2) / (1 + bucket1)
 }
 
-export function RelativeStatValues({ source }: { source: StatSource }) {
+const statSourceAtom = atom<StatSource>(sources[0])
+
+export function RelativeStatValues() {
 	const computedStats = useAtomValue(computedStatsAtom)
+	const [source, setSource] = useAtom(statSourceAtom)
+	const build = mapSourceToBuilds[source]
+
 	const s = computedStats.statsTotal[source]
 
 	const buckets = [
@@ -20,23 +31,31 @@ export function RelativeStatValues({ source }: { source: StatSource }) {
 		(s.critDamage * Math.min(s.critChance, 100)) / 100,
 	]
 
-	const weaponILevelRelativePower =
-		1 / calculateRelativeValue(buckets[0] / 5, 10)
+	const logMultipliers = computedStats.multipliers[build].map((mult) =>
+		Math.log(mult),
+	)
+	const logTotalMultiplier = logMultipliers.reduce((a, b) => a + b, 0)
 
-	const relativeValues = buckets.map((bucket) =>
-		calculateRelativeValue(s.mainStat / 10, bucket),
+	const contributions = logMultipliers.map(
+		(logMult) => logMult / logTotalMultiplier,
 	)
 
-	const largestRelativeValue = Math.max(...relativeValues)
-	const normalizedRelativeValues = relativeValues.map(
-		(value) => value / largestRelativeValue ?? 0.001,
+	const maxContribution = Math.max(...contributions)
+	const normalizedContributions = contributions.map(
+		(value) => value / maxContribution,
 	)
-	const relativeElementWidths = normalizedRelativeValues.map(
+
+	const relativeElementWidths = normalizedContributions.map(
 		(value) => `${(value * 100).toFixed(2)}%`,
 	)
 
-	const relativeCritDamage = (relativeValues[3] * 100) / s.critChance
-	const relativeCritChance = (relativeValues[3] * 100) / s.critDamage
+	const target = 1.01
+	const incToReachTarget = buckets.map(
+		(bucket) => 100 * ((1 + bucket / 100) * target - 1) - bucket,
+	)
+
+	const relativeCritDamage = (incToReachTarget[3] * 100) / s.critChance
+	const relativeCritChance = (incToReachTarget[3] * 100) / s.critDamage
 
 	const fmtRelativeCritDamage = formatDps(relativeCritDamage, {
 		asPercent: true,
@@ -47,25 +66,50 @@ export function RelativeStatValues({ source }: { source: StatSource }) {
 		compact: true,
 	})
 
+	const onSelectChange = useCallback<ChangeEventHandler<HTMLSelectElement>>(
+		(ev) => {
+			if (isStatSource(ev.currentTarget.value))
+				setSource(ev.currentTarget.value)
+		},
+		[setSource],
+	)
+
 	return (
 		<>
-			<div className='mt-6 flex items-center'>
-				<h2 className='pr-4 text-2xl font-bold'>Relative Values</h2>
-				<span className='text-sm text-stone-400/80'>
-					(Prioritize the smallest bars)
-				</span>
+			<div className='mt-6 flex items-center justify-between'>
+				<h2 className='pr-4 text-2xl font-bold whitespace-nowrap'>
+					Relative Values
+				</h2>
+				<select
+					value={source}
+					onChange={onSelectChange}
+					className='select select-bordered bg-stone-800 select-sm rounded'
+				>
+					{sources.map((source) => (
+						<option key={source} value={source}>
+							{mapSourcesToLabels[source]}
+						</option>
+					))}
+				</select>
+			</div>
+			<div>Amount needed for 1% DPS increase</div>
+			<div>Bars display contribution of each stat to overall DPS</div>
+			<div className='text-sm text-stone-400/80 -mt-3'>
+				(Prioritize the smallest bars)
 			</div>
 			<RelativeValue
 				width={relativeElementWidths[0]}
-				label='10 Mainstat Equals...'
+				// label='10 Mainstat Equals...'
+				label={`${(incToReachTarget[0] * 10).toFixed(2)} Main Stat`}
 			/>
 			<RelativeValue
 				width={relativeElementWidths[1]}
-				label={`${relativeValues[1].toFixed(2)} Additive`}
+				// label={`${relativeValues[1].toFixed(2)} Additive`}
+				label={`${incToReachTarget[1].toFixed(2)} Additive`}
 			/>
 			<RelativeValue
 				width={relativeElementWidths[2]}
-				label={`${relativeValues[2].toFixed(2)} Vulnerable`}
+				label={`${incToReachTarget[2].toFixed(2)} Vulnerable`}
 			/>
 			<RelativeValue
 				width={relativeElementWidths[3]}
@@ -77,9 +121,14 @@ export function RelativeStatValues({ source }: { source: StatSource }) {
 					</span>
 				)}
 			/>
-			<RelativeValue
-				label={`${weaponILevelRelativePower.toFixed(2)} Item Levels`}
-			/>
+			<div
+				className='tooltip tooltip-bottom'
+				data-tip='Calculated at 1.02x DPS per 5 iLevels'
+			>
+				<RelativeValue
+					label={`${iLevelPerPercentInc.toFixed(2)} Item Levels`}
+				/>
+			</div>
 		</>
 	)
 }
@@ -109,18 +158,3 @@ function RelativeValue({
 		</div>
 	)
 }
-
-// const damageMultiplier = buckets.reduce((product, bucket) => product * (1 + bucket / 100), 1);
-// const contributions = buckets.map((bucket) => bucket / 100 / damageMultiplier);
-// const contributionSum = contributions.reduce((a, b) => a + b, 0);
-// const proportions = contributions.map((value) => value / contributionSum ?? 1);
-// const proportionsElementWidths = proportions.map((value) => `${(value * 100).toFixed(2)}%`);
-// {
-/* <RelativeValue />
-      <RelativeValue label="Damage Contribution" />
-      <RelativeValue width={proportionsElementWidths[0]} />
-      <RelativeValue width={proportionsElementWidths[1]} />
-      <RelativeValue width={proportionsElementWidths[2]} />
-      <RelativeValue width={proportionsElementWidths[3]} />
-      <RelativeValue /> */
-// }

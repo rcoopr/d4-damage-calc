@@ -1,12 +1,14 @@
 'use client'
 
-import { useAtomValue, useAtom } from 'jotai'
+import { useAtomValue, useAtom, useSetAtom } from 'jotai'
 import { useCallback, MouseEventHandler, useEffect, useState } from 'react'
 import { buildNamesAtom, activeBuildNameAtom } from '@/lib/store/builds/builds'
 import { reservedBuildNames } from '@/lib/store/builds/constants'
+import { sidebarStateAtom } from '@/components/sidebar/shared-client'
 
 export function BuildsQuickAccess() {
 	const buildNames = useAtomValue(buildNamesAtom)
+	const setSidebarState = useSetAtom(sidebarStateAtom)
 
 	const onNewBuildClick = useCallback<MouseEventHandler<HTMLElement>>(() => {
 		// TOOD: do this in a more reacty-way?
@@ -21,7 +23,8 @@ export function BuildsQuickAccess() {
 		if (sidebarCheckbox) sidebarCheckbox.checked = true
 		if (buildSettingsSection) buildSettingsSection.dataset.open = 'true'
 		if (buildNameInput) buildNameInput.focus()
-	}, [])
+		setSidebarState({ open: true })
+	}, [setSidebarState])
 
 	const customBuilds = buildNames.filter(
 		(name) =>
