@@ -19,7 +19,7 @@ type FormData = {
 	buildName: string
 }
 
-const defaultFormData: FormData = { buildName: 'My Build' }
+const defaultFormData: FormData = { buildName: 'Build Name' }
 
 export function SaveBuildForm() {
 	const buildNames = useAtomValue(buildNamesAtom)
@@ -31,6 +31,7 @@ export function SaveBuildForm() {
 		register,
 		handleSubmit,
 		formState: { errors },
+		resetField,
 	} = useForm<FormData>({ mode: 'onChange' })
 	const errorMessage = getHumanReadableErrorMessage(errors.buildName)
 	const validate = useCallback(
@@ -54,9 +55,10 @@ export function SaveBuildForm() {
 				)
 				return newStorage
 			})
+			resetField('buildName')
 			setActiveBuildName(data.buildName)
 		},
-		[activeBuildName, setActiveBuildName, setStorage],
+		[activeBuildName, setActiveBuildName, setStorage, resetField],
 	)
 
 	return (
@@ -64,7 +66,7 @@ export function SaveBuildForm() {
 			<div className='flex flex-col'>
 				<div className='mb-2 flex items-end justify-between'>
 					<label htmlFor='save-build-name' className='mb-0.5'>
-						Create a Build
+						Save current build
 					</label>
 					<input
 						disabled={!!errorMessage}

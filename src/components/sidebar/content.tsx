@@ -10,10 +10,8 @@ export function SidebarContent() {
 			<div className='absolute inset-0 flex flex-col overflow-y-auto bg-stone-950/90 p-8 pt-5'>
 				<div className='flex flex-col'>
 					<SidebarSection id='settings-builds' title='Builds' startOpen>
-						<Suspense fallback={null}>
-							<BuildList />
-							<SaveBuildForm />
-						</Suspense>
+						<BuildList />
+						<SaveBuildForm />
 					</SidebarSection>
 				</div>
 				<div className='sticky bottom-0 mt-auto z-20'>

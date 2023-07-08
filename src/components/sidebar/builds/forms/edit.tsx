@@ -1,16 +1,24 @@
-import clsx from 'clsx'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { MouseEventHandler, useCallback, useState } from 'react'
+import { useSetAtom, useAtom, useAtomValue } from 'jotai'
+import {
+	useState,
+	useCallback,
+	MouseEventHandler,
+	ButtonHTMLAttributes,
+} from 'react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
-import { getHumanReadableErrorMessage, isValidObjectKey } from './shared'
+import toast from 'react-hot-toast'
+import clsx from 'clsx'
+import { useExportBuild } from '@/components/hero/use-export-build'
+import {
+	getHumanReadableErrorMessage,
+	isValidObjectKey,
+} from '@/components/sidebar/builds/forms/shared'
 import {
 	buildStorageAtom,
 	activeBuildNameAtom,
 	buildNamesAtom,
 } from '@/lib/store/builds/builds'
 import { reservedBuildNames } from '@/lib/store/builds/constants'
-import { useExportBuild } from '@/components/hero/use-export-build'
 
 const notifySuccess = () => toast.success('Build URL copied to clipboard!')
 const notifyErrorInvalidBuild = () =>
@@ -20,7 +28,7 @@ type FormData = {
 	name: string
 }
 
-export async function BuildNameInputForm({ name }: { name: string }) {
+export function BuildNameInputForm({ name }: FormData) {
 	const [editing, setEditing] = useState(false)
 
 	const setStorage = useSetAtom(buildStorageAtom)
@@ -134,6 +142,7 @@ export async function BuildNameInputForm({ name }: { name: string }) {
 					<div
 						className={clsx(
 							'join relative flex',
+							DO_NOT_TOUCH && 'pr-2',
 							name === activeBuidName &&
 								!editing &&
 								'after:pointer-events-none after:absolute after:inset-0 after:rounded-md after:border after:border-primary after:gradient-mask-r-0',
@@ -158,36 +167,37 @@ export async function BuildNameInputForm({ name }: { name: string }) {
 							)}
 						/>
 
-						<button
-							onClick={toggleEdit}
-							className={clsx(
-								'join-item relative grid w-12 place-content-center border bg-stone-700 enabled:cursor-pointer disabled:bg-stone-900',
-								'peer-disabled:[&>span]:i-solar-pen-line-duotone [&>span]:disabled:text-stone-600',
-								errorMessage
-									? 'border-error bg-error [&>span]:i-solar-close-circle-bold [&>span]:text-stone-900'
-									: 'border-stone-600',
-							)}
-						>
-							<span className='i-solar-check-circle-linear inline-block text-sm text-success' />
-						</button>
+						{!DO_NOT_TOUCH && (
+							<button
+								onClick={toggleEdit}
+								className={clsx(
+									'join-item relative grid w-12 place-content-center border bg-stone-700 enabled:cursor-pointer disabled:bg-stone-900',
+									'peer-disabled:[&>span]:i-solar-pen-line-duotone [&>span]:disabled:text-stone-600',
+									'hover:text-success',
+									errorMessage
+										? 'border-error bg-error [&>span]:i-solar-close-circle-bold [&>span]:text-stone-900'
+										: 'border-stone-600',
+								)}
+							>
+								<span className='i-solar-check-circle-linear inline-block text-sm' />
+							</button>
+						)}
 					</div>
 
+					{!DO_NOT_TOUCH && (
+						<div>
+							<Button
+								icon='i-solar-trash-bin-2-outline'
+								disabled={DO_NOT_TOUCH}
+								onClick={deleteBuild}
+							/>
+						</div>
+					)}
 					<div>
-						<button
-							disabled={DO_NOT_TOUCH}
-							onClick={deleteBuild}
-							className='relative grid h-8 w-8 shrink-0 place-content-center rounded focus:ring-2 focus:ring-stone-300 enabled:cursor-pointer enabled:hover:text-primary disabled:opacity-30'
-						>
-							<span className='i-solar-trash-bin-2-outline inline-block' />
-						</button>
-					</div>
-					<div>
-						<button
+						<Button
+							icon='i-solar-link-round-angle-line-duotone'
 							onClick={shareBuild}
-							className='relative grid h-8 w-8 shrink-0 cursor-pointer place-content-center rounded hover:text-primary focus:ring-2 focus:ring-stone-300'
-						>
-							<span className='i-solar-link-round-angle-line-duotone inline-block' />
-						</button>
+						/>
 					</div>
 				</div>
 				<div
@@ -200,5 +210,22 @@ export async function BuildNameInputForm({ name }: { name: string }) {
 				</div>
 			</div>
 		</form>
+	)
+}
+
+function Button(
+	props: React.DetailedHTMLProps<
+		ButtonHTMLAttributes<HTMLButtonElement>,
+		HTMLButtonElement
+	> & { icon: string },
+) {
+	const { icon, ...buttonProps } = props
+	return (
+		<button
+			{...buttonProps}
+			className='transition-all ease-out-quart relative grid h-8 w-8 shrink-0 place-content-center rounded focus:outline-none enabled:hover:scale-110 focus:text-primary enabled:cursor-pointer enabled:hover:text-primary disabled:opacity-30'
+		>
+			<span className={`inline-block ${icon}`} />
+		</button>
 	)
 }

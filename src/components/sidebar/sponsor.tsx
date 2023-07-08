@@ -11,10 +11,11 @@ export function Sponsor() {
 			)}
 		>
 			<a
+				target='_blank'
 				className='relative z-10 flex w-full items-center justify-center py-4 text-center font-semibold ring-secondary'
 				href='https://www.buymeacoffee.com/rcoopr'
 			>
-				<span>Support my work</span>
+				<span>Support D4 Calc</span>
 				<span className='i-solar-tea-cup-bold-duotone mb-1 ml-2 inline-block' />
 			</a>
 		</div>

@@ -36,7 +36,7 @@ export const metadata = {
 	},
 	title: 'D4 Calc',
 	description: 'Diablo 4 Item Comparison & Dps Evaluation Tool',
-	themeColor: '#00ffff',
+	themeColor: '#f97316',
 }
 
 export default function RootLayout({
@@ -59,7 +59,7 @@ export default function RootLayout({
 						toastOptions={toastOptions}
 					/>
 					<div className='fixed bottom-2.5 left-2.5 h-16 w-16'>
-						{/* <DevTools /> */}
+						<DevTools />
 					</div>
 				</AtomProvider>
 			</body>

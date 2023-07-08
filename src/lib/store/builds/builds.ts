@@ -5,28 +5,65 @@ import { keys, reservedBuildNames } from './constants'
 import { Build, buildStorageSchema } from './schema'
 import { emptyBuild, emptyStorage } from './defaults'
 import { isSSR, noop } from '@/lib/utils'
-import { getLocalBuilds } from '@/lib/store/builds/utils'
 
-export const activeBuildNameAtom = atom(
-	isSSR() || window.location.pathname === '/'
-		? reservedBuildNames.default
-		: reservedBuildNames.import,
-)
+// export const activeBuildNameAtom = atom(
+// 	isSSR() || window.location.pathname === '/'
+// 		? reservedBuildNames.default
+// 		: reservedBuildNames.import,
+// )
+export const activeBuildNameAtom = atom(reservedBuildNames.default)
 
 // const initialBuilds = getInitialBuilds(keys.builds, emptyStorage)
 // if (!isSSR()) {
 // 	localStorage.setItem(keys.builds, JSON.stringify(initialBuilds))
 // }
 
+// export const buildStorageAtom = atomWithStorage(keys.builds, emptyStorage, {
+// 	getItem: (key, initialValue) => getLocalBuilds(key, initialValue),
+// 	setItem: (key, value) => {
+// 		if (!isSSR()) localStorage.setItem(key, JSON.stringify(value))
+// 	},
+// 	removeItem: (key) => {
+// 		if (!isSSR()) localStorage.removeItem(key)
+// 	},
+// 	subscribe: (key, callback, initialValue) => {
+// 		if (isSSR() || typeof window.addEventListener === 'undefined') {
+// 			return noop
+// 		}
+// 		const listener = (ev: StorageEvent) => {
+// 			if (ev.storageArea === localStorage && ev.key === key) {
+// 				let newValue
+// 				try {
+// 					newValue = buildStorageSchema.parse(
+// 						JSON.parse(ev.newValue ?? ''),
+// 					)
+// 				} catch {
+// 					newValue = initialValue
+// 				}
+// 				callback(newValue)
+// 			}
+// 		}
+// 		window.addEventListener('storage', listener)
+// 		return () => window.removeEventListener('storage', listener)
+// 	},
+// })
+
 export const buildStorageAtom = atomWithStorage(keys.builds, emptyStorage, {
-	getItem: (key, initialValue) => getLocalBuilds(key, initialValue),
-	setItem: (key, value) => {
-		if (!isSSR()) localStorage.setItem(key, JSON.stringify(value))
+	getItem(key, initialValue) {
+		try {
+			const storedValue = localStorage.getItem(key)
+			return buildStorageSchema.parse(JSON.parse(storedValue ?? ''))
+		} catch {
+			return initialValue
+		}
 	},
-	removeItem: (key) => {
-		if (!isSSR()) localStorage.removeItem(key)
+	setItem(key, value) {
+		!isSSR() && localStorage.setItem(key, JSON.stringify(value))
 	},
-	subscribe: (key, callback, initialValue) => {
+	removeItem(key) {
+		!isSSR() && localStorage.removeItem(key)
+	},
+	subscribe(key, callback, initialValue) {
 		if (isSSR() || typeof window.addEventListener === 'undefined') {
 			return noop
 		}
@@ -95,7 +132,7 @@ export const activeBuildAtom = atom<
 	},
 )
 
-export const buildNamesAtom = atom(async (get) => {
+export const buildNamesAtom = atom((get) => {
 	const storage = get(buildStorageAtom)
 	return Object.keys(storage)
 })

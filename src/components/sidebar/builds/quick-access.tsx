@@ -85,9 +85,9 @@ function BuildButton({ name }: { name: string }) {
 				data-build={name}
 				data-active={name === activeBuild}
 				onClick={onClick}
-				className='btn-ghost btn-square btn-sm btn grid place-content-center rounded-md p-2 hover:scale-110 hover:text-stone-300'
+				className='btn-ghost btn-square btn-sm btn grid place-content-center rounded-md p-2 hover:scale-110 hover:text-stone-300 data-[active="true"]:text-primary'
 			>
-				<div className='grid h-8 w-8 place-content-center rounded border-2 border-current font-bold data-[active="true"]:text-primary'>
+				<div className='grid h-8 w-8 place-content-center rounded border-2 border-current font-bold'>
 					{name.charAt(0)}
 				</div>
 			</button>

@@ -80,9 +80,7 @@ export function getImportBuild(decodedBuild?: string): Build {
 
 	const build = Object.assign({}, emptyBuild, importedBuild)
 
-	// console.groupCollapsed('import')
-	// console.table(importedBuild)
-	// console.groupEnd()
+	console.log({ importedBuild })
 
 	return build
 }
@@ -111,36 +109,3 @@ export function getDpsDiff(
 			return 0
 	}
 }
-
-// function getImportBuildUsingParams(params: string): Build {
-// 	const importedBuild = {...emptyBuild}
-
-//   for (const source of params.split("&")) {
-//     const sourceParts = source.split("=")
-//     if (sourceParts.length === 2 && sourceParts[1] in importedBuild) {
-//       if (sourceParts[1] === keys.wornItem) {
-//         const wornParam = Number(sourceParts[2])
-//         const wornItemNumber = Number.isNaN(wornParam) ? 0 : clamp(wornParam, 0, 2)
-//         const wornItem = wornItemNumber === 0 ? null : `item${wornItemNumber}`
-//         if (isWornItem(wornItem)) {
-//           importedBuild.wornItem = wornItem
-//         }
-//       } else {
-
-//         sourceParts[2].split("-").forEach((value, index) => {
-//           const valueAsNum = Number(value)
-//           if (index < stats.length && !Number.isNaN(valueAsNum)) {
-//             importedBuild[source as StatSource][stats[index].id] = valueAsNum
-//           }
-//         })
-//       }
-
-//       }
-//     }
-
-// 	console.groupCollapsed('import')
-// 	console.table(importedBuild)
-// 	console.groupEnd()
-
-// 	return importedBuild
-// }
