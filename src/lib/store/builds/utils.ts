@@ -71,16 +71,20 @@ export function getImportBuild(decodedBuild?: string): Build {
 		}
 	}
 
-	const wornParam = Number(url.searchParams.get(keys.wornItem))
-	const wornItemNumber = Number.isNaN(wornParam) ? 0 : clamp(wornParam, 0, 2)
-	const wornItem = wornItemNumber === 0 ? null : `item${wornItemNumber}`
+	const wornItem = url.searchParams.get(keys.wornItem)
 	if (isWornItem(wornItem)) {
 		importedBuild.wornItem = wornItem
 	}
 
 	const build = Object.assign({}, emptyBuild, importedBuild)
 
-	console.log({ importedBuild })
+	if (console.groupCollapsed) {
+		console.groupCollapsed('Import')
+		console.table(importedBuild)
+		console.groupEnd()
+	} else {
+		console.log({ importedBuild })
+	}
 
 	return build
 }
