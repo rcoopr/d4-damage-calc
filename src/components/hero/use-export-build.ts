@@ -25,7 +25,11 @@ export function useExportBuild(
 	const build = buildName ? builds[buildName] : activeBuild
 
 	const url = new URL(window.location.origin)
-	const log = {} as Record<StatSource | 'wornItem', DpsStats | string>
+
+	const utilisedBuildParts = {} as Record<
+		StatSource | 'wornItem',
+		DpsStats | string
+	>
 
 	return {
 		success: true,
@@ -34,19 +38,22 @@ export function useExportBuild(
 				const serializedStats = serializeStats(build, source)
 				if (serializedStats) {
 					url.searchParams.set(source, serializedStats)
-					log[source] = build[source]
+					utilisedBuildParts[source] = build[source]
 				}
 			}
 
 			if (build.wornItem) {
 				url.searchParams.set(keys.wornItem, build.wornItem)
-				log['wornItem'] = build.wornItem
+				utilisedBuildParts['wornItem'] = build.wornItem
 			}
 
 			console.group('export')
-			console.table(log)
+			console.table(utilisedBuildParts)
 			console.groupEnd()
-			copyTextToClipboard(url.toString())
+
+			const urlWithBuildPath = url.origin + '/' + url.searchParams.toString()
+
+			copyTextToClipboard(urlWithBuildPath.toString())
 		},
 	}
 }
