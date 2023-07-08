@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { SaveBuildForm } from '@/components/sidebar/builds/forms/new'
 import { BuildList } from '@/components/sidebar/builds/list'
 import { SidebarSection } from '@/components/sidebar/section'
