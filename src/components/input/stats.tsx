@@ -40,11 +40,12 @@ export function StatInput({ source }: { source: StatSource }) {
 						source={source}
 					>
 						<StatsInput
-							kind={stat.id === 'critChance' ? 'slider' : 'number'}
+							kind='number'
+							// kind={stat.id === 'critChance' ? 'slider' : 'number'}
 							source={source}
 							{...stat}
 							max={stat.id === 'critChance' ? 100 : undefined}
-							step={stat.id === 'critChance' ? '0.1' : undefined}
+							// step={stat.id === 'critChance' ? '0.1' : undefined}
 						/>
 					</InputContainer>
 				)
