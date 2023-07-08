@@ -11,10 +11,6 @@ import { isStatSource } from '@/lib/store/builds/utils'
 const target = 1.01
 const iLevelPerPercentInc = (5 * Math.log(target)) / Math.log(1.02)
 
-const calculateRelativeValue = (bucket1: number, bucket2: number) => {
-	return (1 + bucket2) / (1 + bucket1)
-}
-
 const statSourceAtom = atom<StatSource>(sources[0])
 
 export function RelativeStatValues() {
@@ -99,12 +95,10 @@ export function RelativeStatValues() {
 			</div>
 			<RelativeValue
 				width={relativeElementWidths[0]}
-				// label='10 Mainstat Equals...'
 				label={`${(incToReachTarget[0] * 10).toFixed(2)} Main Stat`}
 			/>
 			<RelativeValue
 				width={relativeElementWidths[1]}
-				// label={`${relativeValues[1].toFixed(2)} Additive`}
 				label={`${incToReachTarget[1].toFixed(2)} Additive`}
 			/>
 			<RelativeValue
