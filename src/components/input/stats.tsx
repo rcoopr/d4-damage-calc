@@ -8,6 +8,7 @@ import {
 	InputExtraProps,
 	NumberInput,
 	SliderInput,
+	TextAsNumberInput,
 } from '@/components/input/shared'
 import { StatSource, DpsStats, stats } from '@/lib/store/builds/schema'
 import { settingsAtom } from '@/lib/store/settings/settings'
@@ -77,16 +78,12 @@ function InputContainer({ id, label, source, children }: InputContainerProps) {
 }
 
 function StatsInput({ id, source, unit, kind, ...inputProps }: InputProps) {
-	const [build, setBuild] = useAtom(activeBuildAtom)
+	const build = useAtomValue(activeBuildAtom)
 	const stats = build[source]
 	const baseValue = build.char[id]
 	const wornItem = build.wornItem
 
 	const error = wornItem === source && baseValue < stats[id]
-	const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(ev) => setBuild({ [source]: { [id]: Number(ev.currentTarget.value) } }),
-		[setBuild, source, id],
-	)
 
 	return (
 		<div
@@ -103,9 +100,9 @@ function StatsInput({ id, source, unit, kind, ...inputProps }: InputProps) {
 
 			<NumberOrSliderInput
 				kind={kind}
-				id={`${source}-${id}`}
+				id={id}
+				source={source}
 				error={error}
-				onChange={onChange}
 				value={stats[id].toString()}
 				{...inputProps}
 			/>
@@ -132,6 +129,6 @@ function NumberOrSliderInput({
 	return kind === 'slider' ? (
 		<SliderInput {...props} />
 	) : (
-		<NumberInput {...props} />
+		<TextAsNumberInput {...props} />
 	)
 }
