@@ -1,5 +1,5 @@
 import isEqual from 'lodash.isequal'
-import { keys, reservedBuildNames } from './constants'
+import { keys, reservedBuildNames } from '../constants'
 import {
 	Build,
 	BuildStorage,

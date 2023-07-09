@@ -1,6 +1,7 @@
 import { SaveBuildForm } from '@/components/sidebar/builds/forms/new'
 import { BuildList } from '@/components/sidebar/builds/list'
 import { SidebarSection } from '@/components/sidebar/section'
+import { Settings } from '@/components/sidebar/settings/settings'
 import { Sponsor } from '@/components/sidebar/sponsor'
 
 export function SidebarContent() {
@@ -11,6 +12,13 @@ export function SidebarContent() {
 					<SidebarSection id='settings-builds' title='Builds' startOpen>
 						<BuildList />
 						<SaveBuildForm />
+					</SidebarSection>
+					<SidebarSection
+						id='settings-preferences'
+						title='Preferences'
+						startOpen
+					>
+						<Settings />
 					</SidebarSection>
 				</div>
 				<div className='sticky bottom-0 mt-auto z-20'>

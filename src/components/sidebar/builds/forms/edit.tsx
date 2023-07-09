@@ -18,7 +18,7 @@ import {
 	activeBuildNameAtom,
 	buildNamesAtom,
 } from '@/lib/store/builds/builds'
-import { reservedBuildNames } from '@/lib/store/builds/constants'
+import { reservedBuildNames } from '@/lib/store/constants'
 
 const notifySuccess = () => toast.success('Build URL copied to clipboard!')
 const notifyErrorInvalidBuild = () =>

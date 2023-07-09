@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, ChangeEventHandler } from 'react'
 import { activeBuildAtom } from '@/lib/store/builds/builds'
 import {
@@ -10,6 +10,7 @@ import {
 	SliderInput,
 } from '@/components/input/shared'
 import { StatSource, DpsStats, stats } from '@/lib/store/builds/schema'
+import { settingsAtom } from '@/lib/store/settings/settings'
 
 type HTMLInputProps = React.DetailedHTMLProps<
 	React.InputHTMLAttributes<HTMLInputElement>,
@@ -29,6 +30,8 @@ type InputContainerProps = Pick<InputProps, 'id' | 'label' | 'source'> & {
 }
 
 export function StatInput({ source }: { source: StatSource }) {
+	const { sliders } = useAtomValue(settingsAtom)
+
 	return (
 		<>
 			{stats.map((stat) => {
@@ -40,12 +43,17 @@ export function StatInput({ source }: { source: StatSource }) {
 						source={source}
 					>
 						<StatsInput
-							kind='number'
-							// kind={stat.id === 'critChance' ? 'slider' : 'number'}
+							kind={
+								stat.id === 'critChance' && sliders
+									? 'slider'
+									: 'number'
+							}
 							source={source}
 							{...stat}
 							max={stat.id === 'critChance' ? 100 : undefined}
-							// step={stat.id === 'critChance' ? '0.1' : undefined}
+							step={
+								stat.id === 'critChance' && sliders ? '0.1' : undefined
+							}
 						/>
 					</InputContainer>
 				)

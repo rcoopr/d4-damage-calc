@@ -3,7 +3,7 @@
 import { useAtomValue } from 'jotai'
 import { buildNamesAtom } from '@/lib/store/builds/builds'
 import { BuildNameInputForm } from '@/components/sidebar/builds/forms/edit'
-import { reservedBuildNames } from '@/lib/store/builds/constants'
+import { reservedBuildNames } from '@/lib/store/constants'
 
 export function BuildList() {
 	const buildNames = useAtomValue(buildNamesAtom)

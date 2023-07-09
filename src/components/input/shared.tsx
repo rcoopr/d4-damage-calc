@@ -1,4 +1,8 @@
+'use client'
+
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
+import { settingsAtom } from '@/lib/store/settings/settings'
 
 type HTMLInputProps = React.DetailedHTMLProps<
 	React.InputHTMLAttributes<HTMLInputElement>,
@@ -12,6 +16,8 @@ export function NumberInput({
 	error,
 	...inputProps
 }: HTMLInputProps & InputExtraProps) {
+	const { inputSize } = useAtomValue(settingsAtom)
+
 	return (
 		<input
 			type='number'
@@ -19,7 +25,12 @@ export function NumberInput({
 			min='0'
 			{...inputProps}
 			className={clsx(
-				'border w-32 md:w-64 rounded-md block px-2.5 py-1.5 pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
+				'border w-32 md:w-64 rounded-md block pl-8 placeholder-stone-400 text-stone-100 outline-none focus:ring-2',
+				inputSize === 'small'
+					? 'px-2 py-0.5'
+					: inputSize === 'medium'
+					? 'px-2.5 py-1.5'
+					: 'px-3.5 py-2 text-lg',
 				error
 					? 'focus:ring-error focus:border-error border-error bg-error-content selection:bg-error/50'
 					: 'focus:ring-primary focus:border-primary border-stone-600 bg-stone-700',

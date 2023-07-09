@@ -1,4 +1,4 @@
-import { reservedBuildNames } from './constants'
+import { reservedBuildNames } from '../constants'
 import { DpsStats, Build, BuildStorage } from './schema'
 
 // Define values for very first page load

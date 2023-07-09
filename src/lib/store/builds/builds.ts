@@ -1,7 +1,7 @@
 import { SetStateAction, atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import merge from 'lodash.merge'
-import { keys, reservedBuildNames } from './constants'
+import { keys, reservedBuildNames } from '../constants'
 import { Build, buildStorageSchema } from './schema'
 import { emptyBuild, emptyStorage } from './defaults'
 import { isSSR, noop } from '@/lib/utils'

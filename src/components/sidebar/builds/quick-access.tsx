@@ -3,7 +3,7 @@
 import { useAtomValue, useAtom, useSetAtom } from 'jotai'
 import { useCallback, MouseEventHandler, useEffect, useState } from 'react'
 import { buildNamesAtom, activeBuildNameAtom } from '@/lib/store/builds/builds'
-import { reservedBuildNames } from '@/lib/store/builds/constants'
+import { reservedBuildNames } from '@/lib/store/constants'
 import { sidebarStateAtom } from '@/components/sidebar/shared-client'
 
 export function BuildsQuickAccess() {

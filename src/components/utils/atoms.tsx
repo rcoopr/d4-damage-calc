@@ -6,7 +6,7 @@ import {
 	buildStorageAtom,
 	activeBuildNameAtom,
 } from '@/lib/store/builds/builds'
-import { keys, reservedBuildNames } from '@/lib/store/builds/constants'
+import { keys, reservedBuildNames } from '@/lib/store/constants'
 import { emptyStorage } from '@/lib/store/builds/defaults'
 import { getInitialBuilds } from '@/lib/store/builds/utils'
 

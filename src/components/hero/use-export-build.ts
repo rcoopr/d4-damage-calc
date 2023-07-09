@@ -1,7 +1,7 @@
 import copyTextToClipboard from 'copy-text-to-clipboard'
 import { useAtomValue } from 'jotai'
 import { activeBuildAtom, buildStorageAtom } from '@/lib/store/builds/builds'
-import { keys } from '@/lib/store/builds/constants'
+import { keys } from '@/lib/store/constants'
 import {
 	StatSource,
 	sources,
