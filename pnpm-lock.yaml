@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@emotion/react': ^11.11.1
+  '@formkit/auto-animate': ^0.7.0
   '@iconify-json/solar': ^1.1.1
   '@swc-jotai/debug-label': ^0.0.10
   '@swc-jotai/react-refresh': ^0.0.8
@@ -44,6 +45,7 @@ specifiers:
 
 dependencies:
   '@emotion/react': 11.11.1_i73ekzlbntu7jol6ph2fvy4mga
+  '@formkit/auto-animate': 0.7.0
   '@types/node': 20.3.3
   '@types/react': 18.2.14
   '@types/react-dom': 18.2.6
@@ -299,6 +301,10 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       tabbable: 6.2.0
+    dev: false
+
+  /@formkit/auto-animate/0.7.0:
+    resolution: {integrity: sha512-RczHUr0AhRPssREoNdRjLfk2b/id9/DFnbIq18QM8L7E4zNV3XH+WO480EZ46BQHDEsv76YPJ0JbG2Y2i3GfXw==}
     dev: false
 
   /@humanwhocodes/config-array/0.11.10:

@@ -1,12 +1,10 @@
 'use client'
 
 import clsx from 'clsx'
-import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, ChangeEventHandler } from 'react'
+import { useAtomValue } from 'jotai'
 import { activeBuildAtom, activeBuildNameAtom } from '@/lib/store/builds/builds'
 import {
 	InputExtraProps,
-	NumberInput,
 	SliderInput,
 	TextAsNumberInput,
 } from '@/components/input/shared'
