@@ -1,12 +1,10 @@
 'use client'
 
 import clsx from 'clsx'
-import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, ChangeEventHandler } from 'react'
-import { activeBuildAtom } from '@/lib/store/builds/builds'
+import { useAtomValue } from 'jotai'
+import { activeBuildAtom, activeBuildNameAtom } from '@/lib/store/builds/builds'
 import {
 	InputExtraProps,
-	NumberInput,
 	SliderInput,
 	TextAsNumberInput,
 } from '@/components/input/shared'
@@ -32,6 +30,7 @@ type InputContainerProps = Pick<InputProps, 'id' | 'label' | 'source'> & {
 
 export function StatInput({ source }: { source: StatSource }) {
 	const { sliders } = useAtomValue(settingsAtom)
+	const activeBuildName = useAtomValue(activeBuildNameAtom)
 
 	return (
 		<>
@@ -44,6 +43,7 @@ export function StatInput({ source }: { source: StatSource }) {
 						source={source}
 					>
 						<StatsInput
+							key={activeBuildName}
 							kind={
 								stat.id === 'critChance' && sliders
 									? 'slider'

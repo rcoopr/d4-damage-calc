@@ -1,3 +1,5 @@
+'use client'
+
 import { MouseEventHandler, useCallback, useRef } from 'react'
 
 export function UsageHint() {

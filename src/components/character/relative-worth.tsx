@@ -72,7 +72,7 @@ export function RelativeStatValues() {
 
 	return (
 		<>
-			<div className='mt-6 flex items-center justify-between'>
+			<div className='flex items-center justify-between'>
 				<h2 className='pr-4 text-2xl font-bold whitespace-nowrap'>
 					Relative Values
 				</h2>

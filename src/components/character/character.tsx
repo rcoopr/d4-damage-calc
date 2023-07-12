@@ -1,4 +1,5 @@
 import { RelativeStatValues } from '@/components/character/relative-worth'
+import { ItemSuggestions } from '@/components/hero/item-suggestions'
 import { StatInput } from '@/components/input/stats'
 
 export function CharacterSection() {
@@ -10,6 +11,8 @@ export function CharacterSection() {
 					&ensp;
 				</h3>
 				<StatInput source='char' />
+				<ItemSuggestions />
+				<div className='divider' />
 				<RelativeStatValues />
 			</div>
 		</div>
