@@ -32,6 +32,7 @@ type InputContainerProps = Pick<InputProps, 'id' | 'label' | 'source'> & {
 
 export function StatInput({ source }: { source: StatSource }) {
 	const { sliders } = useAtomValue(settingsAtom)
+	const activeBuildName = useAtomValue(activeBuildNameAtom)
 
 	return (
 		<>
@@ -44,6 +45,7 @@ export function StatInput({ source }: { source: StatSource }) {
 						source={source}
 					>
 						<StatsInput
+							key={activeBuildName}
 							kind={
 								stat.id === 'critChance' && sliders
 									? 'slider'
