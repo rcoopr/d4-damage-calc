@@ -56,11 +56,16 @@ export function ItemSuggestions() {
 						<span className='mx-10'>Disclaimer</span>
 					</h3>
 					<p className='mb-4'>
-						This is based on your character stats and we assume full
+						Numbers are based on your character stats and we assume full
 						effectiveness of conditional damage boosts such as{' '}
 						<span className='italic font-mono'>
 							Damage to Crowd Controlled
 						</span>
+					</p>
+					<p className='mb-4'>
+						This is meant as a way to explore how much damage each stat
+						roll can be worth, but you should assess how much real-world
+						value you can get from the conditional modifiers
 					</p>
 					<p className='mb-4'>
 						There are many variables which change the answer to the
