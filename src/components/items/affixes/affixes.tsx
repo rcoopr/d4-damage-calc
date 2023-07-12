@@ -174,37 +174,37 @@ export function ItemAffixes() {
 					))}
 				</select>
 			</div>
-			<div className='flex items-center gap-2 mt-6'>
-				<input
-					id='hide-inherent'
-					value={weaponInherentData.name}
-					type='checkbox'
-					onChange={onHideAffix}
-					checked={hiddenAffixes.includes(weaponInherentData.name)}
-					className='peer appearance-none fixed h-0 w-0'
-				/>
-				<label
-					htmlFor='hide-inherent'
-					className='inline-block shrink-0 i-solar-eye-line-duotone w-8 cursor-pointer peer-checked:opacity-30'
-				/>
-				<div className='peer-checked:opacity-30'>
-					<span>{weaponInherentData.label}</span>
-					<span className='text-stone-500 italic pl-2 text-sm'>
-						(Inherent)
-					</span>
-				</div>
-				<div className='grow text-right font-mono pr-2 shrink-0 peer-checked:opacity-30'>
-					+
-					{formatDps(weaponInherentData.increase, {
-						asPercent: true,
-					})}
-				</div>
-			</div>
 
 			<div
 				ref={parent}
-				className='flex flex-col gap-0.5 [&>div:nth-child(-n+4)]:from-success/20 [&>div:nth-child(-n+4)]:text-success mt-2 h-96 overflow-y-auto scrollbar-thin relative'
+				className='flex flex-col gap-0.5 [&>div:nth-child(-n+4)]:from-success/20 [&>div:nth-child(-n+5)]:text-success mt-2 h-96 overflow-y-auto scrollbar-thin relative'
 			>
+				<div className='flex items-center gap-2 mt-6 !bg-transparent !text-stone-300'>
+					<input
+						id='hide-inherent'
+						value={weaponInherentData.name}
+						type='checkbox'
+						onChange={onHideAffix}
+						checked={hiddenAffixes.includes(weaponInherentData.name)}
+						className='peer appearance-none fixed h-0 w-0'
+					/>
+					<label
+						htmlFor='hide-inherent'
+						className='inline-block shrink-0 i-solar-eye-line-duotone w-8 cursor-pointer peer-checked:opacity-30'
+					/>
+					<div className='peer-checked:opacity-30'>
+						<span>{weaponInherentData.label}</span>
+						<span className='text-stone-500 italic pl-2 text-sm'>
+							(Inherent)
+						</span>
+					</div>
+					<div className='grow text-right font-mono pr-2 shrink-0 peer-checked:opacity-30'>
+						+
+						{formatDps(weaponInherentData.increase, {
+							asPercent: true,
+						})}
+					</div>
+				</div>
 				{data.map((affix) => (
 					<div
 						key={affix.name}
