@@ -3,7 +3,7 @@
 import clsx from 'clsx'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, ChangeEventHandler } from 'react'
-import { activeBuildAtom } from '@/lib/store/builds/builds'
+import { activeBuildAtom, activeBuildNameAtom } from '@/lib/store/builds/builds'
 import {
 	InputExtraProps,
 	NumberInput,
