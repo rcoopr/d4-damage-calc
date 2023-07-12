@@ -177,7 +177,7 @@ export function ItemAffixes() {
 
 			<div
 				ref={parent}
-				className='flex flex-col gap-0.5 [&>div:nth-child(-n+4)]:from-success/20 [&>div:nth-child(-n+5)]:text-success mt-2 h-96 overflow-y-auto scrollbar-thin relative'
+				className='flex flex-col gap-0.5 [&>div:nth-child(-n+5)]:from-success/20 [&>div:nth-child(-n+5)]:text-success mt-2 h-96 overflow-y-auto scrollbar-thin relative'
 			>
 				<div className='flex items-center gap-2 mt-6 !bg-transparent !text-stone-300'>
 					<input
