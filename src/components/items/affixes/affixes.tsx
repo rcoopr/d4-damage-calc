@@ -30,10 +30,10 @@ function appendAffixWithIncrease(
 
 	const roll = affix.range[1]
 	const slots = weapon.slots
-	affixRoll = roll * slots
+	affixRoll = roll * slots * efficiency
 
 	if (affix.bucket) {
-		const bonus = affix.bucket.value(roll * slots)
+		const bonus = affix.bucket.value(affixRoll)
 
 		increase = getStatMultiplierComparison(
 			affix.bucket.stat,

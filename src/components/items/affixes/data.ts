@@ -3,6 +3,7 @@ import { DpsStats } from '@/lib/store/builds/schema'
 export type Affix = {
 	name: string
 	label: string | ((roll: number) => string)
+	eff: number
 	range: [number, number]
 	bucket?: { stat: keyof DpsStats; value: (roll: number) => number }
 }
@@ -30,68 +31,68 @@ export function isItem(maybeItem: string): maybeItem is WeaponId {
 // prettier-ignore
 const affixes = {
   shared: {
-    overpowerDmg:         { name: 'Demolition',       range: [21.0, 42.0], label: r => `+${r}% Overpower Damage` },
-    vuln:                 { name: 'Cruel',            range: [16.5, 23.5], bucket: {stat: 'vulnerable', value: r => r}, label: r => `+${r}% Vulnerable Damage` },
-    critDmg:              { name: 'Focused',          range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Critical Strike Damage` },
+    overpowerDmg:         { name: 'Demolition',       eff: 1, range: [21.0, 42.0], label: r => `+${r}% Overpower Damage` },
+    vuln:                 { name: 'Cruel',            eff: 0.60, range: [16.5, 23.5], bucket: {stat: 'vulnerable', value: r => r}, label: r => `+${r}% Vulnerable Damage` },
+    critDmg:              { name: 'Focused',          eff: 0.83, range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Critical Strike Damage` },
     
-    dmgStunned:           { name: 'Imposing',         range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Stunned Enemies` },
-    dmgSlowed:            { name: 'Poacher',          range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Slowed Enemies` },
-    dmgDistant:           { name: 'Reaching',         range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Distant Enemies` },
-    dmgClose:             { name: 'Riposting',        range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Close Enemies` },
+    dmgStunned:           { name: 'Imposing',         eff: 1, range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Stunned Enemies` },
+    dmgSlowed:            { name: 'Poacher',          eff: 1, range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Slowed Enemies` },
+    dmgDistant:           { name: 'Reaching',         eff: 1, range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Distant Enemies` },
+    dmgClose:             { name: 'Riposting',        eff: 1, range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Close Enemies` },
     
-    dmgInjured:           { name: 'Guillotine',       range: [21.0, 35.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Injured Enemies` },
-    dmgCCed:              { name: 'Punishing',        range: [9.50, 16.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Crowd Controlled Enemies` },
-    dmgDot:               { name: 'Lingering',        range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage Over Time` },
+    dmgInjured:           { name: 'Guillotine',       eff: 1, range: [21.0, 35.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Injured Enemies` },
+    dmgCCed:              { name: 'Punishing',        eff: 0.7, range: [9.50, 16.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Crowd Controlled Enemies` },
+    dmgDot:               { name: 'Lingering',        eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage Over Time` },
     
-    dmgBasic:             { name: 'Fundamental',      range: [18.5, 39.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Basic Skill Damage` },
-    dmgCore:              { name: 'Brutal',           range: [12.5, 19.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Core Skill Damage` },
-    dmgUlt:               { name: 'Pinnacle',         range: [14.0, 21.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Ultimate Skill Damage` },
+    dmgBasic:             { name: 'Fundamental',      eff: 1, range: [18.5, 39.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Basic Skill Damage` },
+    dmgCore:              { name: 'Brutal',           eff: 1, range: [12.5, 19.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Core Skill Damage` },
+    dmgUlt:               { name: 'Pinnacle',         eff: 1, range: [14.0, 21.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Ultimate Skill Damage` },
     
-    execute:              { name: 'Executing',        range: [4.40, 10.0], label: r => `+${r}% Lucky hit: Chance to Execute Injured Non-Elites` },
+    execute:              { name: 'Executing',        eff: 1, range: [4.40, 10.0], label: r => `+${r}% Lucky hit: Chance to Execute Injured Non-Elites` },
     
-    allStat:              { name: 'Harmonious',       range: [20.0, 28.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} All Stats` },
+    allStat:              { name: 'Harmonious',       eff: 1, range: [20.0, 28.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} All Stats` },
   },
 
   mainstat: {
-    dex:                  { name: 'Adroit',           range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Dexterity` },
-    str:                  { name: 'Powerful',         range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Strength` },
-    int:                  { name: 'Wise',             range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Intelligence` },
-    will:                 { name: 'Determined',       range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Willpower` },
+    dex:                  { name: 'Adroit',           eff: 5 / 6, range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Dexterity` },
+    str:                  { name: 'Powerful',         eff: 5 / 6, range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Strength` },
+    int:                  { name: 'Wise',             eff: 5 / 6, range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Intelligence` },
+    will:                 { name: 'Determined',       eff: 5 / 6, range: [49.0, 63.0], bucket: {stat: 'mainStat', value: r => r}, label: r => `+${r} Willpower` },
   },
 
   status: {
-    dmgPoison:            { name: 'Festering',        range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Poisoned Enemies` },
-    dmgChilled:           { name: 'Gelid',            range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Chilled Enemies` },
-    dmgFrozen:            { name: 'Glacial',          range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Frozen Enemies` },
-    dmgBurning:           { name: 'Conflagrating',    range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Burning Enemies` },
+    dmgPoison:            { name: 'Festering',        eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Poisoned Enemies` },
+    dmgChilled:           { name: 'Gelid',            eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Chilled Enemies` },
+    dmgFrozen:            { name: 'Glacial',          eff: 1.2, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Frozen Enemies` },
+    dmgBurning:           { name: 'Conflagrating',    eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Burning Enemies` },
   },
 
   barb: {
-    dmgBleed:             { name: 'Execution',        range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Bleeding Enemies` },
-    dmgBerserking:        { name: 'Vehement',         range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage while Berserking` },
+    dmgBleed:             { name: 'Execution',        eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Bleeding Enemies` },
+    dmgBerserking:        { name: 'Vehement',         eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage while Berserking` },
   },
   druid: {
-    critDmgLightning:     { name: 'Precision',        range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Lightning Critical Strike Damage` },
-    critDmgWerewolf:      { name: 'Claw Sharpening',  range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Critical Strike Damage with Werewolf Skills` },
-    overpowerDmgWerebear: { name: 'Hide Bolstering',  range: [28.0, 42.0], label: r => `+${r}% Overpower Damage with Werebear Skills` },
-    critDmgEarth:         { name: 'Land Sundering',   range: [14.0, 21.0], label: r => `+${r}% Critical Strike Damage with Earth Skills` },
+    critDmgLightning:     { name: 'Precision',        eff: 0.83, range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Lightning Critical Strike Damage` },
+    critDmgWerewolf:      { name: 'Claw Sharpening',  eff: 0.83, range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Critical Strike Damage with Werewolf Skills` },
+    overpowerDmgWerebear: { name: 'Hide Bolstering',  eff: 1, range: [28.0, 42.0], label: r => `+${r}% Overpower Damage with Werebear Skills` },
+    critDmgEarth:         { name: 'Land Sundering',   eff: 0.83, range: [14.0, 21.0], label: r => `+${r}% Critical Strike Damage with Earth Skills` },
   },
   necro: {
-    critDmgBone:          { name: `Joint Splitter's`, range: [14.0, 21.0], label: r => `+${r}% Critical Strike Damage with Bone Skills` },
-    dmgShadowed:          { name: 'Festering',        range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Affected by Shadow Damage Over Time Enemies` },
+    critDmgBone:          { name: `Joint Splitter's`, eff: 0.83, range: [14.0, 21.0], label: r => `+${r}% Critical Strike Damage with Bone Skills` },
+    dmgShadowed:          { name: 'Festering',        eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Affected by Shadow Damage Over Time Enemies` },
   },
   rogue: {
-    dmgTrapped:           { name: 'Advantageous',     range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Enemies Affected by Trap Skills` },
-    dmgDazed:             { name: 'Startling',        range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Dazed Enemies` },
-    critDmgImbued:        { name: 'Caustic',          range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Critical Strike Damage with Imbued Skills` },
+    dmgTrapped:           { name: 'Advantageous',     eff: 1, range: [7.00, 14.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Enemies Affected by Trap Skills` },
+    dmgDazed:             { name: 'Startling',        eff: 1, range: [16.5, 23.5], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Dazed Enemies` },
+    critDmgImbued:        { name: 'Caustic',          eff: 0.83, range: [14.0, 21.0], bucket: {stat: 'critDamage', value: r => r}, label: r => `+${r}% Critical Strike Damage with Imbued Skills` },
   },
   sorc: {
   },
 
   weapons: {
-    dmgHealthy:           {name: `Opportunist's`,     range: [21.0, 35.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Healthy Enemies` },
-    lucky:                {name: 'Lucky',             range: [4.40, 10.0], label: r => `+${r}% Lucky Hit Chance` },
-    lifeOnKill:           {name: 'Harvesting',        range: [101.5, 101.5], label: r => `+${r}% Life On Kill` },
+    dmgHealthy:           {name: `Opportunist's`,     eff: 1, range: [21.0, 35.0], bucket: {stat: 'additive', value: r => r}, label: r => `+${r}% Damage to Healthy Enemies` },
+    lucky:                {name: 'Lucky',             eff: 1, range: [4.40, 10.0], label: r => `+${r}% Lucky Hit Chance` },
+    lifeOnKill:           {name: 'Harvesting',        eff: 1, range: [101.5, 101.5], label: r => `+${r}% Life On Kill` },
   }
 } satisfies Record<string, Record<string,  Affix>>
 
@@ -164,13 +165,19 @@ export const weapons = {
 	sword: {
 		id: 'sword',
 		label: 'Sword',
-		inherent: { affix: affixes.shared.critDmg, efficiency: 35 / 42 },
+		inherent: {
+			affix: affixes.shared.critDmg,
+			efficiency: ((35 / 42) * 1) / 2,
+		},
 		slots: 1,
 	},
 	sword2h: {
 		id: 'sword2h',
 		label: 'Sword (2H)',
-		inherent: { affix: affixes.shared.critDmg, efficiency: 35 / 42 },
+		inherent: {
+			affix: affixes.shared.critDmg,
+			efficiency: ((35 / 42) * 1) / 2,
+		},
 		slots: 2,
 	},
 	polearm: {
@@ -212,7 +219,10 @@ export const weapons = {
 	xbow: {
 		id: 'xbow',
 		label: 'Crossbow',
-		inherent: { affix: affixes.shared.vuln, efficiency: 40 / 47 },
+		inherent: {
+			affix: affixes.shared.vuln,
+			efficiency: 40 / 47,
+		},
 		slots: 2,
 	},
 	bow: {
